@@ -1,9 +1,12 @@
 NAME = minishell
-VPATH = src: ./src
+VPATH = src: ./src src: ./src/builtins
 SRC_FOLDER = minishell.c \
 			 minishell-command.c \
 			 variable.c \
 			 variable-next.c \
+			 echo.c \
+			 echo-next.c \
+			 echo-parse.c \
 			 common.c \
 			 flag.c
 SRC = $(SRC_FOLDER) \
