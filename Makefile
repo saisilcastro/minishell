@@ -7,6 +7,7 @@ SRC_FOLDER = minishell.c \
 			 echo.c \
 			 echo-next.c \
 			 echo-parse.c \
+			 export.c \
 			 common.c \
 			 flag.c
 SRC = $(SRC_FOLDER) \
@@ -22,10 +23,12 @@ endif
 
 all: $(NAME)
 $(NAME): $(SRCOBJ)
-	$(CC) $^ $(LIB) -o $(NAME) -g3
+	$(CC) $^ $(LIB) -o $(NAME)
 ${OBJ}/%.o : %.c
 	$(call CREATE, ${OBJ})
-	$(CC) -c $< -o $@ $(INCLUDE)
+	$(CC) -c $< -o $@ $(INCLUDE) -g3
+leak:
+	valgrind --leak-check=full -q ./$(NAME)
 clean:
 	$(call REMOVE, ${OBJ}/*.o)
 fclean: clean

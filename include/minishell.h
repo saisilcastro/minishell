@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/18 15:34:19 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 09:55:52 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ extern void	shell_set(t_minishell *set);
 extern void	shell_command(t_minishell *set);
 extern void	shell_parse(t_minishell *set, char *command);
 extern void	shell_pop(t_minishell *set);
+
+extern void	export(int argc, char **argv, t_variable *var);
 
 #endif
