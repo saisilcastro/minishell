@@ -6,26 +6,18 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 09:58:46 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 14:51:50 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+#include <unistd.h>
 
-// this is a blood test to see if the new branch has or not been updated
+void	mine(void);
 
 int	main(int argc, char **argv)
 {
-	t_variable	*var = NULL;
-	t_variable	*upd;
-
-	export(argc, argv, var);
-	upd = var;
-	while (upd)
-	{
-		printf("%s %s\n", upd->name, upd->value);
-		upd = upd->next;
-	}
+	mine();
 	return (0);
 }
 
@@ -39,7 +31,8 @@ void	mine(void)
 	variable_next_last(&var, variable_push("float", "25.2"));
 	command = readline("$");
 	echo_parse(&echo, var, command);
-	echo_execute(echo, Off);
+	echo_execute(echo, On);
 	echo_pop(echo);
+	variable_pop(var);
 	free(command);
 }

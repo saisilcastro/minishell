@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:39:20 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/18 17:45:12 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 12:58:04 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,21 @@ void	echo_parse(t_echo **set, t_variable *var, char *command)
 	while (*update)
 	{
 		update = has_variable(set, var, update);
+		if (*update && *update != '$' && has_space(*update))
+		{
+			echo_next_last(set, echo_push(" "));
+			while (*update && has_space(*update))
+				update++;
+		}
 		update = has_word(set, update);
-		update++;
+		if (*update && *update != '$' && has_space(*update))
+		{
+			echo_next_last(set, echo_push(" "));
+			while (*update && *update != '$' && has_space(*update))
+				update++;
+		}
+		if (*update && *update != '$')
+			update++;
 	}
 }
 
@@ -43,7 +56,8 @@ static char	*has_word(t_echo **set, char *command)
 		command++;
 	}
 	*(buffer + i) = '\0';
-	echo_next_last(set, echo_push(buffer));
+	if (i)
+		echo_next_last(set, echo_push(ms_strdup(buffer)));
 	return (command);
 }
 
@@ -65,7 +79,7 @@ static char	*has_variable(t_echo **set, t_variable *var, char *command)
 		*(buffer + i) = '\0';
 		local = variable_search(var, buffer);
 		if (local)
-			echo_next_last(set, echo_push(local->value));
+			echo_next_last(set, echo_push(ms_strdup(local->value)));
 	}
 	return (command);
 }

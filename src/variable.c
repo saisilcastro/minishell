@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/18 16:35:51 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 12:55:27 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ t_variable	*variable_push(char *name, char *value)
 
 	set = (t_variable *)malloc(sizeof(t_variable));
 	variable_set(set);
-	set->name = name;
-	set->value = value;
+	set->name = ms_strdup(name);
+	set->value = ms_strdup(value);
 	return (set);
 }
 
@@ -52,6 +52,10 @@ void	variable_pop(t_variable *head)
 	while (head)
 	{
 		next = head->next;
+		if (head->name)
+			free(head->name);
+		if (head->value)
+			free(head->value);
 		free(head);
 		head = next;
 	}

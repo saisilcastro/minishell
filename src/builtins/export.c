@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 10:16:22 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 14:51:13 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,5 @@ void	export(int argc, char **argv, t_variable *var)
 
 	index = 2;
 	while (argc-- > 2)
-	{
-		variable_node(argv[index++]);
-		//variable_next_first(&var, variable_node(argv[index++]));
-	}
+		variable_next_first(&var, variable_node(argv[index++]));
 }

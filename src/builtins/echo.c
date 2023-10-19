@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:06:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/18 16:46:37 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 12:58:57 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_echo	*echo_push(char *data)
 	t_echo	*set;
 
 	set = (t_echo *)malloc(sizeof(t_echo));
-	set->data = data;
+	set->data = ms_strdup(data);
 	set->next = NULL;
 	return (set);
 }
@@ -31,7 +31,7 @@ void	echo_execute(t_echo *set, t_status newline)
 	update = set;
 	while (update)
 	{
-		printf("%s", update->data);
+		printf("(%s)", update->data);
 		update = update->next;
 	}
 	if (newline)
@@ -45,6 +45,8 @@ void	echo_pop(t_echo *list)
 	while (list)
 	{
 		next = list->next;
+		if (list->data)
+			free(list->data);
 		free(list);
 		list = next;
 	}
