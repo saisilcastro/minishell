@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:17:48 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/19 12:37:15 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/19 16:39:29 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	count_size(char *string)
 	return (count);
 }
 
-static char	*get_value(char *string)
+char	*get_value(char *string)
 {
 	int		index;
 	char	*value;
@@ -91,15 +91,12 @@ static char	*get_value(char *string)
 	return (value);
 }
 
-t_variable	*variable_node(char *string)
+char	*get_name(char *string)
 {
-	char		*name;
-	char		*value;
 	int			index;
 	int			size;
+	char		*name;
 
-	size = 0;
-	index = 0;
 	while (string[++index] && string[index] != '=')
 		size++;
 	name = (char *)malloc(size * sizeof(char));
@@ -107,7 +104,21 @@ t_variable	*variable_node(char *string)
 	while (string[++index] && string[index] != '=')
 		name[index] = string[index];
 	name[index] = '\0';
-	value = get_value(string + (index + 1));
+	return (name);
+}
+
+t_variable	*variable_node(char *string)
+{
+	char		*name;
+	char		*value;
+
+	if (!ms_isalpha(string[0]) && string[0] != 95)
+	{
+		printf("command not found\n");
+		exit(0);
+	}
+	name = get_name(string);
+	value = get_value(string + (ms_strlen(name) + 1));
 	printf("%s %s\n", name, value);
 	return (variable_push(name, value));
 }

@@ -10,6 +10,7 @@ SRC_FOLDER = minishell.c \
 			 export.c \
 			 export_utils.c \
 			 unset.c \
+			 pwd.c \
 			 common.c \
 			 flag.c
 SRC = $(SRC_FOLDER) \
