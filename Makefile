@@ -8,6 +8,8 @@ SRC_FOLDER = minishell.c \
 			 echo-next.c \
 			 echo-parse.c \
 			 export.c \
+			 export_utils.c \
+			 unset.c \
 			 common.c \
 			 flag.c
 SRC = $(SRC_FOLDER) \

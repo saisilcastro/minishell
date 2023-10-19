@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 12:23:15 by lumedeir         ###   ########.fr       */
+/*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
+/*   Updated: 2023/10/19 12:41:11 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,15 @@
 #include <minishell.h>
 #include <stdio.h>
 
-void	export(int argc, char **argv, t_variable **var)
+void	unset(t_variable **var, char *name)
 {
-	int	index;
+	t_variable	*unset_var;
+	int			i;
 
-	index = 2;
-	while (argc-- > 2)
-		variable_next_first(var, variable_node(argv[index++]));
+	i = 0;
+	unset_var = *var;
+	while (unset_var && !ms_strcmp(unset_var->name, name))
+		unset_var = unset_var->next;
+	while (unset_var->value[i])
+		unset_var->value[i++] = '\0';
 }
