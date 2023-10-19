@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 13:06:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 12:58:57 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:10:04 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	echo_execute(t_echo *set, t_status newline)
 	update = set;
 	while (update)
 	{
-		printf("(%s)", update->data);
+		printf("%s", update->data);
 		update = update->next;
 	}
 	if (newline)

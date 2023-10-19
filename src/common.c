@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 14:30:54 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:09:12 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ char	*ms_strdup(char *str)
 		*(buffer + len) = *(str + len);
 		len++;
 	}
+	*(buffer + len) = '\0';
 	return (buffer);
 }

@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 15:39:20 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 12:58:04 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:00:20 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,30 @@ static char	*has_word(t_echo **set, char *command);
 void	echo_parse(t_echo **set, t_variable *var, char *command)
 {
 	char	*update;
+	int		i;
 
 	update = command;
+	i = 0;
 	while (*update)
 	{
 		update = has_variable(set, var, update);
-		if (*update && *update != '$' && has_space(*update))
-		{
-			echo_next_last(set, echo_push(" "));
-			while (*update && has_space(*update))
-				update++;
-		}
 		update = has_word(set, update);
-		if (*update && *update != '$' && has_space(*update))
-		{
-			echo_next_last(set, echo_push(" "));
-			while (*update && *update != '$' && has_space(*update))
-				update++;
-		}
-		if (*update && *update != '$')
+		if (*update)
 			update++;
 	}
+}
+
+static char	*load_word(char *buffer, char *command, int *i, char c)
+{
+	*i = 0;
+	command++;
+	while (*command && *command != c)
+	{
+		*(buffer + *i) = *command++;
+		*i += 1;
+	}
+	*(buffer + *i) = '\0';
+	return (command);
 }
 
 static char	*has_word(t_echo **set, char *command)
@@ -47,17 +50,18 @@ static char	*has_word(t_echo **set, char *command)
 	char	buffer[65535];
 	int		i;
 
-	if (*command == '$')
-		return (command);
 	i = 0;
-	while (*command && !has_space(*command))
+	if (*command)
 	{
-		*(buffer + i++) = *command;
-		command++;
+		if (*command == '\"')
+			command = load_word(buffer, command, &i, '\"');
+		else if (*command == '\'')
+			command = load_word(buffer, command, &i, '\'');
+		if (i)
+		{
+			echo_next_last(set, echo_push(buffer));
+		}
 	}
-	*(buffer + i) = '\0';
-	if (i)
-		echo_next_last(set, echo_push(ms_strdup(buffer)));
 	return (command);
 }
 
@@ -79,7 +83,7 @@ static char	*has_variable(t_echo **set, t_variable *var, char *command)
 		*(buffer + i) = '\0';
 		local = variable_search(var, buffer);
 		if (local)
-			echo_next_last(set, echo_push(ms_strdup(local->value)));
+			echo_next_last(set, echo_push(local->value));
 	}
 	return (command);
 }
