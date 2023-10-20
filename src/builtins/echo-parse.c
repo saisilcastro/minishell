@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo-parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 15:39:20 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 22:59:21 by mister-code      ###   ########.fr       */
-=======
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 15:39:20 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 18:00:20 by lde-cast         ###   ########.fr       */
->>>>>>> 3f4fbd6ebadf898171379d0b2401ff166fcedf75
+/*   Created: 2023/10/19 23:18:50 by mister-code       #+#    #+#             */
+/*   Updated: 2023/10/19 23:22:05 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +27,7 @@ void	echo_parse(t_echo **set, t_variable *var, char *command)
 	{
 		update = has_variable(set, var, update);
 		update = has_word(set, update);
-<<<<<<< HEAD
 		if (*update && *command != '$')
-=======
-		if (*update)
->>>>>>> 3f4fbd6ebadf898171379d0b2401ff166fcedf75
 			update++;
 	}
 }
@@ -53,10 +42,7 @@ static char	*load_word(char *buffer, char *command, int *i, char c)
 		*i += 1;
 	}
 	*(buffer + *i) = '\0';
-<<<<<<< HEAD
 	command++;
-=======
->>>>>>> 3f4fbd6ebadf898171379d0b2401ff166fcedf75
 	return (command);
 }
 
@@ -75,11 +61,8 @@ static char	*has_word(t_echo **set, char *command)
 		if (i)
 		{
 			echo_next_last(set, echo_push(buffer));
-<<<<<<< HEAD
 			if (*command == ' ')
 				echo_next_last(set, echo_push(" "));
-=======
->>>>>>> 3f4fbd6ebadf898171379d0b2401ff166fcedf75
 		}
 	}
 	return (command);
@@ -91,11 +74,7 @@ static char	*has_variable(t_echo **set, t_variable *var, char *command)
 	char		buffer[65535];
 	int			i;
 
-<<<<<<< HEAD
 	if (*command && *command == '$')
-=======
-	if (*command == '$')
->>>>>>> 3f4fbd6ebadf898171379d0b2401ff166fcedf75
 	{
 		i = 0;
 		command++;
@@ -108,11 +87,8 @@ static char	*has_variable(t_echo **set, t_variable *var, char *command)
 		local = variable_search(var, buffer);
 		if (local)
 			echo_next_last(set, echo_push(local->value));
-<<<<<<< HEAD
 		if (*command == ' ')
 			echo_next_last(set, echo_push(" "));
-=======
->>>>>>> 3f4fbd6ebadf898171379d0b2401ff166fcedf75
 	}
 	return (command);
 }
