@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:17:48 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/19 16:39:29 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/20 11:30:20 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	count_size(char *string)
 		return (double_quote(string));
 	while (string[++index] != '\0')
 		count++;
-	return (count);
+	return (count + 1);
 }
 
 char	*get_value(char *string)
@@ -97,9 +97,11 @@ char	*get_name(char *string)
 	int			size;
 	char		*name;
 
+	index = -1;
+	size = 0;
 	while (string[++index] && string[index] != '=')
 		size++;
-	name = (char *)malloc(size * sizeof(char));
+	name = (char *)malloc((size + 1) * sizeof(char));
 	index = -1;
 	while (string[++index] && string[index] != '=')
 		name[index] = string[index];
@@ -119,6 +121,5 @@ t_variable	*variable_node(char *string)
 	}
 	name = get_name(string);
 	value = get_value(string + (ms_strlen(name) + 1));
-	printf("%s %s\n", name, value);
 	return (variable_push(name, value));
 }
