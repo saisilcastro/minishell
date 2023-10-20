@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/20 16:52:28 by lumedeir         ###   ########.fr       */
+/*   Created: 2023/10/20 14:53:48 by lumedeir          #+#    #+#             */
+/*   Updated: 2023/10/20 15:18:00 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
 #include <stdio.h>
 
-int	main(int argc, char **argv)
+void	env(void)
 {
-	char 	*test;
+	extern char	**__environ;
 
-	test = readline(PURPLE"minishell:" WHITE);
-	parser(test);
-	//printf("%s\n", test);
-	//parser("isso é um teste");
-	return (0);
+	while (*__environ)
+	{
+		printf("%s\n", *__environ);
+		__environ++;
+	}
 }

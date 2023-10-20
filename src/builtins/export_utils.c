@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:17:48 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/20 11:30:20 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/20 15:58:53 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,25 +101,12 @@ char	*get_name(char *string)
 	size = 0;
 	while (string[++index] && string[index] != '=')
 		size++;
+	if (!string[index])
+		return (0);
 	name = (char *)malloc((size + 1) * sizeof(char));
 	index = -1;
 	while (string[++index] && string[index] != '=')
 		name[index] = string[index];
 	name[index] = '\0';
 	return (name);
-}
-
-t_variable	*variable_node(char *string)
-{
-	char		*name;
-	char		*value;
-
-	if (!ms_isalpha(string[0]) && string[0] != 95)
-	{
-		printf("command not found\n");
-		exit(0);
-	}
-	name = get_name(string);
-	value = get_value(string + (ms_strlen(name) + 1));
-	return (variable_push(name, value));
 }

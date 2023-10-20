@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/20 11:25:27 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/20 15:07:52 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	print_envirolment(void)
 
 	while (*__environ)
 	{
-		printf("%s\n", *__environ);
+		printf("declare -x %s=\"%s\"\n", get_name(*__environ),
+			get_value(*__environ + (ms_strlen(get_name(*__environ)) + 1)));
 		__environ++;
 	}
 }
@@ -49,6 +50,21 @@ static void	new_value(t_variable **var, char *string, char *number)
 		curr = curr->next;
 	free(curr->value);
 	curr->value = number;
+}
+
+t_variable	*variable_node(char *string)
+{
+	char		*name;
+	char		*value;
+
+	if (!ms_isalpha(string[0]) && string[0] != 95)
+	{
+		printf("command not found\n");
+		exit(0);
+	}
+	name = get_name(string);
+	value = get_value(string + (ms_strlen(name) + 1));
+	return (variable_push(name, value));
 }
 
 void	export(int argc, char **argv, t_variable **var)

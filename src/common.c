@@ -6,11 +6,12 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 16:23:06 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/20 16:12:12 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <common.h>
+#include <stdlib.h>
 
 char	has_space(char c)
 {
@@ -46,4 +47,25 @@ t_status	ms_strcmp(char *one, char *two)
 	if (!*one && !*two)
 		return (On);
 	return (Off);
+}
+
+char	*ms_strdup(char *str)
+{
+	char	*buffer;
+	int		len;
+
+	len = 0;
+	while (*(str + len))
+		len++;
+	buffer = (char *)malloc((len + 1) * sizeof(char));
+	if (!buffer)
+		return (NULL);
+	len = 0;
+	while (*(str + len))
+	{
+		*(buffer + len) = *(str + len);
+		len++;
+	}
+	*(buffer + len) = '\0';
+	return (buffer);
 }

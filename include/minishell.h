@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 16:39:22 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/20 16:53:12 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@
 # include <variable.h>
 # include <builtins/echo.h>
 # include <command.h>
+
+# define GREEN "\033[0;32m"
+# define RED "\033[0;31m"
+# define CYAN "\033[0;36m"
+# define WHITE "\033[0;37m"
+# define PURPLE "\033[1;35m"
+
+// typedef struct s_command	t_command;
+// {
+// 	t_command	*cmd;
+// 	t_variable	*args;
+// };
 
 typedef struct s_minishell	t_minishell;
 struct s_minishell{
@@ -39,4 +51,7 @@ void				unset(t_variable **var, char *name);
 
 void				*pwd(void);
 
+void				env(void);
+
+void	parser(char *line, t_variable **var);
 #endif
