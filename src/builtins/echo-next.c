@@ -6,11 +6,11 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 14:53:02 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/18 14:54:52 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/18 15:34:54 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <echo.h>
+#include <builtins/echo.h>
 
 void	echo_next_last(t_echo **list, t_echo *set)
 {
