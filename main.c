@@ -6,30 +6,33 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/18 13:16:45 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:46:57 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <variable.h>
-#include <stdio.h>
+#include <minishell.h>
+#include <unistd.h>
 
-int	main(void)
+void	mine(void);
+
+int	main(int argc, char **argv)
 {
+	mine();
 	return (0);
 }
 
-void	test()
+void	mine(void)
 {
+	t_echo		*echo = NULL;
 	t_variable	*var = NULL;
-	t_variable	*update;
+	char		*command;
 
-	variable_next_first(&var, variable_push("test", "5"));
-	variable_next_first(&var, variable_push("float", "15.8"));
-	update = var;
-	while (update)
-	{
-		printf("%s %s\n", update->name, update->value);
-		update = update->next;
-	}
+	variable_next_last(&var, variable_push("int", "10"));
+	variable_next_last(&var, variable_push("float", "25.2"));
+	command = readline("$");
+	echo_parse(&echo, var, command);
+	echo_execute(echo, On);
+	echo_pop(echo);
 	variable_pop(var);
+	free(command);
 }
