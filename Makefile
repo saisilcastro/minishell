@@ -4,12 +4,11 @@ SRC_FOLDER = minishell.c \
 			 minishell-command.c \
 			 variable.c \
 			 variable-next.c \
+			 command.c \
+			 command-parser.c \
 			 echo.c \
-			 echo-next.c \
-			 echo-parse.c \
 			 export.c \
-			 common.c \
-			 flag.c
+			 common.c
 SRC = $(SRC_FOLDER) \
 	  main.c
 INCLUDE = -I./include
