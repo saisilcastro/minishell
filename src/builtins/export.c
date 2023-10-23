@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/20 15:07:52 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:34:00 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <minishell.h>
 #include <stdio.h>
 
-static void	print_envirolment(void)
+void	print_envirolment(void)
 {
 	extern char	**__environ;
 
@@ -67,22 +67,32 @@ t_variable	*variable_node(char *string)
 	return (variable_push(name, value));
 }
 
-void	export(int argc, char **argv, t_variable **var)
+void	export(char *line, t_variable **var)
 {
-	int		index;
+	int		count;
 	char	*name;
 
-	index = 2;
-	if (argc == 2 && ms_strcmp(argv[1], "export"))
+	count = 0;
+	if (line[count] == '\0')
 		print_envirolment();
-	while (argc-- > 2)
+	while (line[count] != '\0')
 	{
-		name = get_name(argv[index]);
+		while (line[count] && line[count] == ' ')
+			count++;
+		name = get_name(line + count);
+		if (!name)
+		{
+			printf(PURPLE"minishell: " WHITE "export: "
+				"not a valid identifier\n");
+			return ;
+		}
 		if (variable_check(var, name))
-			new_value(var, get_name(argv[index]),
-				get_value(argv[index] + (ms_strlen(name) + 1)));
+			new_value(var, get_name(line + count),
+				get_value(line + ((ms_strlen(name) + 1) + count)));
 		else
-			variable_next_first(var, variable_node(argv[index++]));
+			variable_next_first(var, variable_node(line + count));
+		while (line[count] != ' ' && line[count] != '\0')
+			count++;
 		free(name);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/20 16:53:12 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/23 10:23:53 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,18 @@ extern void			shell_command(t_minishell *set);
 extern void			shell_parse(t_minishell *set, char *command);
 extern void			shell_pop(t_minishell *set);
 
-extern void			export(int argc, char **argv, t_variable **var);
+extern void			export(char *line, t_variable **var);
+extern void			print_envirolment(void);
 extern t_variable	*variable_node(char *string);
-char				*get_name(char *string);
-char				*get_value(char *string);
+extern char			*get_name(char *string);
+extern char			*get_value(char *string);
 
-void				unset(t_variable **var, char *name);
+extern void			unset(t_variable **var, char *name);
 
-void				*pwd(void);
+extern void			*pwd(void);
 
-void				env(void);
+extern void			env(void);
 
-void	parser(char *line, t_variable **var);
+extern void			parser(char *line, t_variable **var);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/20 15:36:59 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:36:46 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ void	unset(t_variable **var, char *name)
 		while (unset_var->value[index])
 			unset_var->value[index++] = '\0';
 	else
-		printf("unset: command \"%s\" not found.\n", name);
+		printf(PURPLE"minishell: " WHITE "unset:\"%s\" not found.\n", name);
 }

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:09:21 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/20 16:12:28 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:05:45 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ extern t_status	ms_strcmp(char *one, char *two);
 int				ms_isalpha(int c);
 int				ms_strlen(const char *str);
 char			*ms_strdup(char *str);
+unsigned int	ms_strlcat(char *dest, const char *src, int size);
 
 #endif

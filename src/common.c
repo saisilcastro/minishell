@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/20 16:12:12 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:29:11 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ int	ms_isalpha(int c)
 
 t_status	ms_strcmp(char *one, char *two)
 {
+	if (!*one || !*two)
+		return (Off);
 	while (*one && *two && *one == *two)
 	{
 		one++;
 		two++;
 	}
-	if (!*one && !*two)
+	if (!*one || !*two)
 		return (On);
 	return (Off);
 }
@@ -68,4 +70,28 @@ char	*ms_strdup(char *str)
 	}
 	*(buffer + len) = '\0';
 	return (buffer);
+}
+
+unsigned int	ms_strlcat(char *dest, const char *src, int size)
+{
+	size_t		sizedest;
+	size_t		sizesrc;
+	size_t		count;
+
+	if (size == 0 && dest == 0)
+		return (0);
+	sizedest = ms_strlen(dest);
+	sizesrc = ms_strlen((char *)src);
+	count = 0;
+	if (size > sizedest)
+	{
+		while (src[count] != 0 && count + sizedest < size - 1)
+		{
+			dest[sizedest + count] = src[count];
+			count++;
+		}
+		dest[sizedest + count] = '\0';
+		return (sizesrc + sizedest);
+	}
+	return (sizesrc + size);
 }
