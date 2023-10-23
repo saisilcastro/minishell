@@ -1,7 +1,6 @@
 NAME = minishell
 VPATH = src: ./src src: ./src/builtins
 SRC_FOLDER = minishell.c \
-			 minishell-command.c \
 			 variable.c \
 			 variable-next.c \
 			 command.c \

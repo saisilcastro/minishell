@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/23 15:04:06 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/23 16:20:29 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	shell_loop(t_minishell *set)
 	char	*command;
 	t_command	*upd;
 
-	command = readline(">");
-	command_parser(&set->cmd, command);
+	command = readline(PURPLE">minishell: " WHITE);
+	command_parser(&set->cmd, set->var, command);
 	upd = set->cmd;
 	while (upd)
 	{
