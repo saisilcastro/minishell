@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/19 15:09:12 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:09:53 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ char	has_space(char c)
 	if ((c > 7 && c <= 13) || c == 32)
 		return (1);
 	return (0);
+}
+
+t_status	ms_isalpha(char c)
+{
+	if ((c > 64 && c < 91)
+		|| (c > 96 && c < 123))
+		return (On);
+	return (Off);
 }
 
 t_status	ms_strcmp(char *one, char *two)

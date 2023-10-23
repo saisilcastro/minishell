@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo-next.c                                        :+:      :+:    :+:   */
+/*   command-parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 14:53:02 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/18 15:34:54 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/10/23 14:54:09 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <builtins/echo.h>
+#include <command.h>
+#include <common.h>
+#include <stdio.h>
 
-void	echo_next_last(t_echo **list, t_echo *set)
+void	command_parser(t_command **list, char *command)
 {
-	t_echo	*update;
+	char	buffer[1024];
+	int		i;
 
-	if (!*list)
+	while (*command)
 	{
-		*list = set;
-		return ;
+		while (*command && has_space(*command))
+			command++;
+		i = 0;
+		while (*command && !has_space(*command))
+			*(buffer + i++) = *command++;
+		*(buffer + i) = '\0';
+		command_next_last(list, command_push(buffer));
+		if (!*command)
+			break ;
+		command++;
 	}
-	update = *list;
-	while (update->next)
-		update = update->next;
-	update->next = set;
 }
