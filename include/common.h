@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:09:21 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/23 12:05:45 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:08:35 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ enum e_status{
 
 extern char		has_space(char c);
 extern t_status	ms_strcmp(char *one, char *two);
-int				ms_isalpha(int c);
-int				ms_strlen(const char *str);
-char			*ms_strdup(char *str);
-unsigned int	ms_strlcat(char *dest, const char *src, int size);
+extern t_status	ms_isalpha(char c);
+extern char		*ms_strdup(char *str);
 
 #endif
