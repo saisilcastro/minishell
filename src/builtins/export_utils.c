@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:17:48 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/23 11:29:39 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/23 15:27:20 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	count_size(char *string)
 
 	count = 0;
 	index = -1;
-	if (string[0] == 39)
+	if (string[0] == '\'')
 		return (quote(string));
 	else if (string[0] == '"')
 		return (double_quote(string));

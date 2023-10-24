@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell-command.c                                :+:      :+:    :+:   */
+/*   command-parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 21:55:01 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/04 10:08:48 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/10/23 14:54:09 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <command.h>
+#include <common.h>
+#include <stdio.h>
 
-void	shell_parse(t_minishell *set, char *command)
+void	command_parser(t_command **list, char *command)
 {
-	if (!set || !command)
-		return ;
+	char	buffer[1024];
+	int		i;
+
 	while (*command)
 	{
+		while (*command && has_space(*command))
+			command++;
+		i = 0;
+		while (*command && !has_space(*command))
+			*(buffer + i++) = *command++;
+		*(buffer + i) = '\0';
+		command_next_last(list, command_push(buffer));
+		if (!*command)
+			break ;
+		command++;
 	}
-	free(command);
-}
-
-void	shell_command(t_minishell *set)
-{
-	if (!set)
-		return ;
-	shell_parse(set, readline("$"));
 }

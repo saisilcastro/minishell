@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/23 10:23:53 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/23 15:14:33 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 # include <variable.h>
 # include <builtins/echo.h>
 # include <command.h>
@@ -25,21 +26,17 @@
 # define WHITE "\033[0;37m"
 # define PURPLE "\033[1;35m"
 
-// typedef struct s_command	t_command;
-// {
-// 	t_command	*cmd;
-// 	t_variable	*args;
-// };
-
 typedef struct s_minishell	t_minishell;
 struct s_minishell{
 	t_variable	*var;
 	t_command	*cmd;
+	void		(*builtin)(t_minishell *set, char *command);
 };
 
 extern void			shell_set(t_minishell *set);
 extern void			shell_command(t_minishell *set);
 extern void			shell_parse(t_minishell *set, char *command);
+extern void			shell_loop(t_minishell *set);
 extern void			shell_pop(t_minishell *set);
 
 extern void			export(char *line, t_variable **var);

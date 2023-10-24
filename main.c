@@ -6,21 +6,19 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/23 11:30:53 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/23 15:12:42 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <stdio.h>
+#include <unistd.h>
 
-int	main(int argc, char **argv)
+int	main(void)
 {
-	char	*test;
-	t_variable	*var;
+	t_minishell	hell;
 
-	var = NULL;
-	test = readline(PURPLE"minishell:" WHITE);
-	parser(test, &var);
-	// printf("%s = %s\n", var->name, var->value);
+	shell_set(&hell);
+	shell_loop(&hell);
+	shell_pop(&hell);
 	return (0);
 }
