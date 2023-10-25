@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   common.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 15:17:11 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:32:09 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <common.h>
 #include <minishell.h>
 #include <stdlib.h>
 

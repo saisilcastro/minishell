@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command-parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 15:16:45 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:39:24 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <command.h>
-#include <common.h>
-#include <stdio.h>
 
 static char	*symbol(char *command, char *buffer, int *i, char c)
 {
@@ -25,7 +22,6 @@ static char	*symbol(char *command, char *buffer, int *i, char c)
 	}
 	if (*command != c)
 		return (NULL);
-	command++;
 	return (command);
 }
 

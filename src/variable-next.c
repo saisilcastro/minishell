@@ -6,11 +6,11 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 12:18:28 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/18 12:18:53 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:31:36 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <variable.h>
+#include <minishell.h>
 
 void	variable_next_first(t_variable **head, t_variable *set)
 {

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   variable.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 10:59:55 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 14:51:16 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:26:11 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VARIABLE_H
 # define VARIABLE_H
 
-# include <common.h>
+# include <minishell.h>
 
 typedef struct s_variable	t_variable;
 struct s_variable

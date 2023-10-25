@@ -6,12 +6,11 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/23 14:49:18 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:32:25 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <command.h>
-#include <common.h>
+#include <minishell.h>
 
 t_command	*command_push(char *name)
 {
