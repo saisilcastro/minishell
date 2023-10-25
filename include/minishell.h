@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 15:55:30 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/25 16:24:01 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <variable.h>
 # include <common.h>
 # include <builtins/echo.h>
-# include <variable.h>
 # include <command.h>
 # include <signal.h>
 # define GREEN "\033[0;32m"
@@ -41,12 +41,13 @@ extern void	shell_parse(t_minishell *set, char *command);
 extern void	shell_loop(t_minishell *set);
 extern void	shell_pop(t_minishell *set);
 
-extern void	export(t_minishell *shell);
+extern void	export(t_command **list, t_variable *var);
 extern void	expansion(t_command **list, t_variable *var);
 extern char	*get_name(char *string);
 extern char	*get_value(char *str_value);
 extern char	*copy_arr(char **arr, t_variable *var);
 
 extern void	pwd(void);
+void		env(void);
 
 #endif

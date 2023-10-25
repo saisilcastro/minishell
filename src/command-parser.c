@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command-parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 15:39:24 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/25 16:25:19 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,24 @@ static char	*catch_parsing(char *command, char *buffer)
 	return (command);
 }
 
+static void	call_bulting(char *bulting, t_command *list, t_variable *var)
+{
+	// if (ms_strcmp("echo", bulting))
+	// 	echo();
+	// if (ms_strcmp("cd", bulting))
+	// 	cd();
+	if (ms_strcmp("pwd", bulting))
+		pwd();
+	// else if (ms_strcmp("export", bulting))
+	// 	export(&list, var);
+	// else if (ms_strcmp("unset", bulting))
+	// 	unset(var, line);
+	else if (ms_strcmp("env", bulting))
+		env();
+	// if (ms_strcmp("exit", bulting))
+	// 	exit();
+}
+
 void	command_parser(t_command **list, t_variable *var, char *command)
 {
 	char	buffer[1024];
@@ -63,4 +81,5 @@ void	command_parser(t_command **list, t_variable *var, char *command)
 		command++;
 	}
 	expansion(list, var);
+	call_bulting((*list)->name, (*list)->next, var);
 }
