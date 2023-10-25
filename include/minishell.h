@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/23 15:47:03 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:15:30 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ extern void	shell_parse(t_minishell *set, char *command);
 extern void	shell_loop(t_minishell *set);
 extern void	shell_pop(t_minishell *set);
 
-extern void	export(int argc, char **argv, t_variable *var);
+extern void	export(t_minishell *shell);
+extern void	expansion(t_command **list, t_variable *var);
+extern char	*get_name(char *string);
+extern char	*get_value(char *str_value);
+extern char	*copy_arr(char **arr, t_variable *var);
 
 #endif

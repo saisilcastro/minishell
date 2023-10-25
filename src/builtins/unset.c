@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/24 15:49:52 by lumedeir         ###   ########.fr       */
+/*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
+/*   Updated: 2023/10/23 11:36:46 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <unistd.h>
 
-int	main(void)
+void	unset(t_variable **var, char *name)
 {
-	t_minishell	hell;
+	t_variable	*unset_var;
+	int			index;
 
-	shell_set(&hell);
-	shell_loop(&hell);
-	shell_pop(&hell);
-	return (0);
+	index = 0;
+	unset_var = *var;
+	while (unset_var && !ms_strcmp(unset_var->name, name))
+		unset_var = unset_var->next;
+	if (unset_var && !ms_strcmp(unset_var->name, name))
+		while (unset_var->value[index])
+			unset_var->value[index++] = '\0';
+	else
+		printf(PURPLE"minishell: " WHITE "unset:\"%s\" not found.\n", name);
 }

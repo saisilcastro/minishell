@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/24 15:49:52 by lumedeir         ###   ########.fr       */
+/*   Created: 2023/10/19 23:22:39 by mister-code       #+#    #+#             */
+/*   Updated: 2023/10/23 14:46:25 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int	main(void)
+void	echo_execute(char *text, t_status newline)
 {
-	t_minishell	hell;
-
-	shell_set(&hell);
-	shell_loop(&hell);
-	shell_pop(&hell);
-	return (0);
+	if (!text)
+		return ;
+	printf("%s", text);
+	if (newline)
+		printf("\n");
 }

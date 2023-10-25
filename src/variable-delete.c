@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   variable-delete.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/24 15:49:52 by lumedeir         ###   ########.fr       */
+/*   Created: 2023/10/18 12:42:43 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/10/18 13:06:04 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
-#include <unistd.h>
+#include <variable.h>
 
-int	main(void)
+void	variable_delete(t_variable **list, char *name)
 {
-	t_minishell	hell;
+	t_variable	*update;
 
-	shell_set(&hell);
-	shell_loop(&hell);
-	shell_pop(&hell);
-	return (0);
+	update = *list;
+	while (update)
+	{
+		if (ms_strcmp(update->name, name))
+		{
+			update->value = "";
+			return ;
+		}
+		update = update->next;
+	}
 }
