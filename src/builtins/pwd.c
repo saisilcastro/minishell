@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.h                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 14:50:09 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 12:51:07 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/10/19 14:54:28 by lumedeir          #+#    #+#             */
+/*   Updated: 2023/10/25 15:55:11 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ECHO_H
-# define ECHO_H
+#include <minishell.h>
 
-# include <minishell.h>
-
-extern void	echo_execute(t_command *cmd);
-
-#endif
+void	pwd(void)
+{
+	printf("%s\n", getcwd(NULL, 0));
+}

@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.h                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 14:50:09 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 12:51:07 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/10/25 16:17:29 by lumedeir          #+#    #+#             */
+/*   Updated: 2023/10/25 16:18:35 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ECHO_H
-# define ECHO_H
+#include <minishell.h>
 
-# include <minishell.h>
+void	env(void)
+{
+	extern char	**__environ;
 
-extern void	echo_execute(t_command *cmd);
-
-#endif
+	while (*__environ)
+	{
+		printf("%s\n", *__environ);
+		__environ++;
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/23 16:20:29 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:46:37 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,18 @@ void	shell_set(t_minishell *set)
 
 void	shell_loop(t_minishell *set)
 {
-	char	*command;
-	t_command	*upd;
+	char		*command;
+	t_status	run;
 
-	command = readline(PURPLE">minishell: " WHITE);
-	command_parser(&set->cmd, set->var, command);
-	upd = set->cmd;
-	while (upd)
+	run = On;
+	while (run)
 	{
-		printf("%s\n", upd->name);
-		upd = upd->next;
+		command = readline(PURPLE">minishell: " WHITE);
+		command_parser(&set->cmd, set->var, command);
+		run = builtin_execute(set);
+		free(command);
+		command_pop(&set->cmd);
 	}
-	free(command);
 }
 
 void	shell_pop(t_minishell *set)
@@ -41,5 +41,6 @@ void	shell_pop(t_minishell *set)
 	if (!set)
 		return ;
 	variable_pop(set->var);
-	command_pop(set->cmd);
+	if (set->cmd)
+		command_pop(&set->cmd);
 }

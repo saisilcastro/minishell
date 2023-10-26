@@ -6,19 +6,54 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:22:39 by mister-code       #+#    #+#             */
-/*   Updated: 2023/10/23 14:46:25 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/26 16:02:59 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <stdio.h>
-#include <stdlib.h>
 
-void	echo_execute(char *text, t_status newline)
+void	skip_newline(t_command **cmd, t_status *newline)
 {
-	if (!text)
+	int	size;
+	int	i;
+
+	if (*cmd && !ms_strncmp((*cmd)->name, "-n", 2))
+	{
+		while (*cmd)
+		{
+			size = ms_strlen((*cmd)->name);
+			i = 1;
+			while (i < size)
+			{
+				if ((*cmd)->name[i] != 'n')
+					return ;
+				i++;
+			}
+			*newline = Off;
+			*cmd = (*cmd)->next;
+		}
+	}
+}
+
+void	echo_execute(t_command *cmd)
+{
+	t_command	*upd;
+	t_status	newline;
+	char		space;
+
+	newline = On;
+	space = ' ';
+	if (!cmd)
 		return ;
-	printf("%s", text);
+	upd = cmd;
+	skip_newline(&upd, &newline);
+	while (upd)
+	{	
+		if (upd->next == NULL)
+			space = '\0';
+		printf("%s%c", upd->name, space);
+		upd = upd->next;
+	}
 	if (newline)
 		printf("\n");
 }
