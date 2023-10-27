@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 16:24:01 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/26 16:14:37 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ extern void	export(t_command **list, t_variable *var);
 extern void	expansion(t_command **list, t_variable *var);
 extern char	*get_name(char *string);
 extern char	*get_value(char *str_value);
-extern char	*copy_arr(char **arr, t_variable *var);
+extern char	**copy_arr(char **arr, char **var);
+extern char	**copy_list(t_variable **var);
 
 extern void	pwd(void);
 void		env(void);

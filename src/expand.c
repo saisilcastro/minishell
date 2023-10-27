@@ -3,15 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/25 15:30:37 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/26 16:40:44 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 #include <stdio.h>
+
+static void	update_quotes(t_command *list)
+{
+	char	copy[40000];
+	int		index;
+	int		index2;
+
+	index = -1;
+	while (list->name[++index] && list->name[index] != '\'')
+		copy[index] = list->name[index];
+	index2 = index + 1;
+	while (list->name[index2] && list->name[index2] != '\'')
+	{
+		copy[index] = list->name[index2++];
+		index++;
+	}
+	index2 += 1;
+	while (list->name[index2])
+	{
+		copy[index] = list->name[index2];
+		index++;
+		index2++;
+	}
+	copy[index] = '\0';
+	free (list->name);
+	list->name = ms_strdup(copy);
+}
 
 static void	update(t_command *list, char *value, int size)
 {
@@ -77,7 +104,9 @@ void	expansion(t_command **list, t_variable *var)
 	count = 0;
 	while (current)
 	{
-		if (ms_strchr(current->name, '$'))
+		if (ms_strchr(current->name, '\''))
+			update_quotes(current);
+		else if (ms_strchr(current->name, '$'))
 			expand(current, var);
 		current = current->next;
 	}

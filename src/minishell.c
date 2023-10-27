@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 16:25:49 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/26 16:21:24 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void	shell_loop(t_minishell *set)
 	variable_next_last(&set->var, variable_push("test2", "finally works"));
 	command_parser(&set->cmd, set->var, command);
 	upd = set->cmd;
-	// while (upd)
-	// {
-	// 	printf("%s\n", upd->name);
-	// 	upd = upd->next;
-	// }
+	while (upd)
+	{
+		printf("%s\n", upd->name);
+		upd = upd->next;
+	}
 	free(command);
 }
 
