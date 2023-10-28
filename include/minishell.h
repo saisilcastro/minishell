@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 17:50:05 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/27 20:28:25 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ extern char	*get_name(char *string);
 extern char	*get_value(char *str_value);
 extern char	*copy_arr(char **arr, t_variable *var);
 
+extern void	cd(t_command *set);
 extern void	pwd(void);
 extern void	env(void);
-extern void	unset(t_variable **var, char *names);
+extern void	unset(t_variable **var, t_command *cmd);
 
 #endif

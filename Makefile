@@ -8,6 +8,7 @@ SRC_FOLDER = minishell.c \
 			 expand.c \
 			 builtin.c \
 			 echo.c \
+			 cd.c \
 			 pwd.c \
 			 export.c \
 			 export-utils.c \

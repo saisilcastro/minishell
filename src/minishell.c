@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 17:46:37 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/27 14:05:16 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	shell_loop(t_minishell *set)
 	char		*command;
 	t_status	run;
 
+	variable_next_last(&set->var, variable_push("test1", "Hello world!"));
 	run = On;
 	while (run)
 	{
