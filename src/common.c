@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/29 14:39:30 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/10/30 13:11:50 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*ms_strdup(char *str)
 	int		len;
 
 	len = 0;
+	if (!str)
+		return (NULL);
 	while (*(str + len))
 		len++;
 	buffer = (char *)malloc((len + 1) * sizeof(char));

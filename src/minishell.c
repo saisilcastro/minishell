@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/29 14:48:34 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/10/30 18:06:28 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	shell_loop(t_minishell *set)
 	while (run)
 	{
 		command = readline(PURPLE">minishell: " WHITE);
+		add_history(command);
 		command_parser(&set->cmd, set->var, command);
 		run = builtin_execute(set);
 		free(command);
@@ -44,4 +45,5 @@ void	shell_pop(t_minishell *set)
 	variable_pop(set->var);
 	if (set->cmd)
 		command_pop(&set->cmd);
+	rl_clear_history();
 }

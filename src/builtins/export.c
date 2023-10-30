@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/29 17:39:20 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/10/30 17:52:32 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static t_variable *variable_clone(t_variable *variable)
+static t_variable	*variable_clone(t_variable *variable)
 {
 	t_variable	*set;
 	t_variable	*update;
@@ -41,13 +41,12 @@ void	variable_swap(t_variable **first, t_variable **second)
 	(*second)->value = upd.value;
 }
 
-static void	print_sorted_command(t_variable *variable)
+static t_variable	*bubble_sort(t_variable *variable)
 {
 	t_variable	*sorted;
 	t_variable	*first;
 	t_variable	*second;
-	t_variable	*upd;
-	
+
 	sorted = variable_clone(variable);
 	first = sorted;
 	while (first)
@@ -61,6 +60,15 @@ static void	print_sorted_command(t_variable *variable)
 		}
 		first = first->next;
 	}
+	return (sorted);
+}
+
+static void	print_sorted_command(t_variable *variable)
+{
+	t_variable	*sorted;
+	t_variable	*upd;
+
+	sorted = bubble_sort(variable);
 	upd = sorted;
 	while (upd)
 	{

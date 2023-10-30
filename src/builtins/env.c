@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 16:17:29 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/29 12:42:16 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/10/30 13:21:12 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	env()
+void	env(void)
 {
 	extern char	**__environ;
 	int			i;
