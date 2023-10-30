@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/27 20:28:25 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:53:22 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,17 @@ struct s_minishell{
 	t_command	*cmd;
 };
 
-# include <builtins/builtin.h>
-
 extern void	shell_set(t_minishell *set);
 extern void	shell_command(t_minishell *set);
 extern void	shell_parse(t_minishell *set, char *command);
 extern void	shell_loop(t_minishell *set);
 extern void	shell_pop(t_minishell *set);
 
-extern void	export(t_command **list, t_variable *var);
+extern t_status	builtin_execute(t_minishell *set);
+
+extern void	environment_push(t_minishell *set);
+extern void	export(t_variable **var, t_command *cmd);
+extern void	export_variable(t_variable **var, t_command *cmd);
 extern void	expansion(t_command **list, t_variable *var);
 extern char	*get_name(char *string);
 extern char	*get_value(char *str_value);

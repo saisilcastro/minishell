@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 15:18:29 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/29 14:39:30 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_status	ms_isdigit(char c)
 	return (Off);
 }
 
-t_status	ms_strcmp(char *one, char *two)
+int		ms_strcmp(char *one, char *two)
 {
 	while (*one && *two && *one == *two)
 	{
@@ -43,8 +43,8 @@ t_status	ms_strcmp(char *one, char *two)
 		two++;
 	}
 	if (!*one && !*two)
-		return (On);
-	return (Off);
+		return (0);
+	return (*one - *two);
 }
 
 char	*ms_strdup(char *str)

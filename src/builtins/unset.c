@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/27 20:38:42 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/29 17:55:21 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,28 @@ void	unset(t_variable **variable, t_command *command)
 {
 	t_variable	*var;
 	t_command	*cmd;
+	t_status	found;
 
-	var = *variable;
-	while (var)
+	cmd = command;
+	while (cmd)
 	{
-		cmd = command;
-		while (cmd)
+		found = Off;
+		var = *variable;
+		while (var)
 		{
-			if (!strcmp(var->name, cmd->name))
+			if (!ms_strcmp(var->name, cmd->name))
 			{
-				free(var->value);
+				if (var->value)
+					free(var->value);
 				var->value = (char *)malloc(sizeof(char));
 				*(var->value + 0) = '\0';
+				found = On;
 			}
-			else
-				printf(PURPLE"minishell: " WHITE
-					"unset:\"%s\" not found.\n", cmd->name);
-			cmd = cmd->next;
+			var = var->next;
 		}
-		var = var->next;
+		if (!found)
+			printf(PURPLE"minishell: " WHITE
+					"unset:\"%s\" not found.\n", cmd->name);
+		cmd = cmd->next;
 	}
 }

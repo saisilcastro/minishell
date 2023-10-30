@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/27 14:05:16 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/29 14:48:34 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	shell_loop(t_minishell *set)
 	char		*command;
 	t_status	run;
 
-	variable_next_last(&set->var, variable_push("test1", "Hello world!"));
+	environment_push(set);
 	run = On;
 	while (run)
 	{

@@ -3,6 +3,7 @@ VPATH = src: ./src src: ./src/builtins
 SRC_FOLDER = minishell.c \
 			 variable.c \
 			 variable-next.c \
+			 environment_push.c \
 			 command.c \
 			 command-parser.c \
 			 expand.c \
@@ -11,7 +12,7 @@ SRC_FOLDER = minishell.c \
 			 cd.c \
 			 pwd.c \
 			 export.c \
-			 export-utils.c \
+			 export-variable.c \
 			 unset.c \
 			 env.c \
 			 common.c

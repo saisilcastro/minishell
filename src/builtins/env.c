@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 16:17:29 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/25 16:18:35 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/29 12:42:16 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	env(void)
+void	env()
 {
 	extern char	**__environ;
+	int			i;
 
-	while (*__environ)
-	{
-		printf("%s\n", *__environ);
-		__environ++;
-	}
+	i = -1;
+	while (*(__environ + ++i))
+		printf("%s\n", *(__environ + i));
 }
