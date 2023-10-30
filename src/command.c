@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 15:32:25 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:23:57 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void	command_next_last(t_command **list, t_command *set)
 	upd->next = set;
 }
 
-void	command_pop(t_command *list)
+void	command_pop(t_command **list)
 {
 	t_command	*next;
 
-	while (list)
+	while (*list)
 	{
-		next = list->next;
-		free(list);
-		list = next;
-	}	
+		next = (*list)->next;
+		free(*list);
+		*list = next;
+	}
 }

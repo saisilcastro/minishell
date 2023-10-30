@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 15:32:09 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/27 16:42:00 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,31 @@ int	ms_strncmp(char *str1, char *str2, int n)
 	while ((count < n) && (str3[count] != '\0' || str4[count] != '\0'))
 	{
 		if (count < n && str3[count] != str4[count])
-		{
 			return (str3[count] - str4[count]);
-		}
 		count++;
 	}
 	return (0);
+}
+
+char	*ms_strjoin(char *s1, char *s2)
+{
+	char	*new_str;
+	int		total_size;
+
+	total_size = ms_strlen(s1) + ms_strlen(s2);
+	new_str = (char *)malloc((total_size + 1) * sizeof(char));
+	if (new_str == NULL)
+		return (NULL);
+	while (s1 && *s1 != '\0')
+		*new_str++ = *s1++;
+	while (s2 && *s2 != '\0')
+		*new_str++ = *s2++;
+	*new_str = '\0';
+	return ((new_str - total_size));
+}
+
+void	free_arr(char **arr)
+{
+	while (**arr && *arr)
+		free(*arr);
 }

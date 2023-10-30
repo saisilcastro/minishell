@@ -1,0 +1,11 @@
+já foi:
+  - env | grep a -> (na tela gráfica);
+  - unset PWD, unset PWD
+  - -cat -> ctrl c -> 2 (130);
+-. -> exit code
+-<a | asdf -> inverter a mensagem de erro os inputs tem que soltar a mensagem no final; ??
+-- <a | asdf & - redirect vazio | qualquer coisa
+- váriações dentro do unset PATH
+- env | wc -l
+- env | env
+- env | asdf

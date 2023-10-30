@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:09:21 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 15:13:48 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/27 15:17:44 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ extern char		*ms_strchr(char *str, int c);
 extern t_status	ms_isdigit(char c);
 extern int		ms_strlen(const char *str);
 extern int		ms_strncmp(char *str1, char *str2, int n);
+extern char		*ms_strjoin(char *s1, char *s2);
+void			free_arr(char **arr);
 
 #endif

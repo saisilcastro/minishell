@@ -6,11 +6,13 @@ SRC_FOLDER = minishell.c \
 			 command.c \
 			 command-parser.c \
 			 expand.c \
-			 pwd.c \
-			 env.c \
+			 builtin.c \
 			 echo.c \
+			 pwd.c \
 			 export.c \
 			 export-utils.c \
+			 unset.c \
+			 env.c \
 			 common.c
 SRC = $(SRC_FOLDER) \
 	  main.c

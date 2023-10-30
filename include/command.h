@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 12:47:56 by mister-code       #+#    #+#             */
-/*   Updated: 2023/10/26 12:36:10 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/27 16:42:36 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ struct s_command
 extern void			command_parser(t_command **list, t_variable *var, char *c);
 extern t_command	*command_push(char *name);
 extern void			command_next_last(t_command **list, t_command *set);
-extern void			command_pop(t_command *list);
+extern void			command_pop(t_command **list);
 
 #endif

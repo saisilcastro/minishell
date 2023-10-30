@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 16:46:04 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/27 16:42:47 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*catch_parsing(char *command, char *buffer)
 	i = 0;
 	while (*command && !has_space(*command))
 	{
-		if (*command == '\'' || *command == '\"')
+		if (*command == '\"')
 			command = symbol(command, buffer, &i, *command);
 		if (!command)
 		{
@@ -41,34 +41,18 @@ static char	*catch_parsing(char *command, char *buffer)
 		}
 		if (!*command)
 			break ;
-		*(buffer + i++) = *command++;
+		if (*command != '\"')
+			*(buffer + i++) = *command;
+		command++;
 	}
 	*(buffer + i) = '\0';
 	return (command);
 }
 
-static void	call_bulting(char *bulting, t_command *list, t_variable *var)
-{
-	// if (ms_strcmp("echo", bulting))
-	// 	echo();
-	// if (ms_strcmp("cd", bulting))
-	// 	cd();
-	if (ms_strcmp("pwd", bulting))
-		pwd();
-	// else if (ms_strcmp("export", bulting))
-	// 	export(&list, var);
-	// else if (ms_strcmp("unset", bulting))
-	// 	unset(var, line);
-	else if (ms_strcmp("env", bulting))
-		env();
-	// if (ms_strcmp("exit", bulting))
-	// 	exit();
-}
-
 void	command_parser(t_command **list, t_variable *var, char *command)
 {
-	char	buffer[1024];
-	int		i;
+	char		buffer[1024];
+	int			i;
 
 	while (*command)
 	{
@@ -81,5 +65,4 @@ void	command_parser(t_command **list, t_variable *var, char *command)
 		command++;
 	}
 	expansion(list, var);
-	call_bulting((*list)->name, (*list)->next, var);
 }

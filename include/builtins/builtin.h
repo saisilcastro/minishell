@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.h                                             :+:      :+:    :+:   */
+/*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 14:50:09 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 12:51:07 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/10/26 12:45:02 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/10/26 17:44:34 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ECHO_H
-# define ECHO_H
+#ifndef	BUILTIN_H
+# define BUILTIN_H
 
 # include <minishell.h>
 
-extern void	echo_execute(t_command *cmd);
+extern t_status	builtin_execute(t_minishell *set);
 
 #endif

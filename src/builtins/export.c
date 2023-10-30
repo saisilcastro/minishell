@@ -6,15 +6,17 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 16:15:02 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/27 18:29:28 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+#include <minishell.h>
+
 static void	alphabetical_order(char **arr, int n, int i)
 {
-	char	temp[50];
+	char	temp[500000];
 	int		j;
 
 	if (i >= n - 1)
@@ -42,23 +44,24 @@ void	print_envirolment(t_variable *var)
 
 	curr = var;
 	count = 0;
-	alpha_order = copy_arr(__environ, copy_list(&var));
-	while (alpha_order[count])
+	alpha_order = copy_arr(copy_list(var));
+	while (alpha_order[count] && *alpha_order[count])
 		count++;
 	alphabetical_order(alpha_order, count, 0);
 	while (alpha_order)
 	{
-		printf("declare -x %s=\"%s\"\n", get_name(*alpha_order),
+		printf("declare -x %s=\"%s\"\n", get_name(*alpha_order);
 			get_value(*alpha_order + (ms_strlen(get_name(*alpha_order)) + 1)));
 		alpha_order++;
 	}
+	free_arr(alpha_order);
 }
 
-static int	variable_check(t_variable **var, char *string)
+static int	variable_check(t_variable *var, char *string)
 {
 	t_variable	*curr;
 
-	curr = *var;
+	curr = var;
 	while (curr)
 	{
 		if (ms_strcmp(curr->name, string))
@@ -68,11 +71,11 @@ static int	variable_check(t_variable **var, char *string)
 	return (0);
 }
 
-static void	new_value(t_variable **var, char *name, char *new_value)
+static void	new_value(t_variable *var, char *name, char *new_value)
 {
 	t_variable	*curr;
 
-	curr = *var;
+	curr = var;
 	while (curr && !ms_strcmp(curr->name, name))
 		curr = curr->next;
 	free(curr->value);
@@ -94,7 +97,7 @@ t_variable	*validate_values(char *name, char *value)
 	return (variable_push(name, value));
 }
 
-void	export(t_command **list, t_variable *var)
+void	export(t_command **list, t_variable **var)
 {
 	t_command	*curr;
 	char		*name;
@@ -102,7 +105,7 @@ void	export(t_command **list, t_variable *var)
 
 	if (!(*list)->next)
 	{
-		print_envirolment(var);
+		print_envirolment(*var);
 		return ;
 	}
 	curr = *list;
@@ -110,13 +113,13 @@ void	export(t_command **list, t_variable *var)
 	while (curr)
 	{
 		name = get_name(curr->name);
-		value = ms_strdup(curr->name + ms_strlen(name));
-		if (!ms_strchr(curr->name, '=') && !variable_check(&var, name))
-			variable_next_first(&var, validate_values(name, NULL));
-		else if (variable_check(&var, name))
-			new_value(&var, name, value);
+		value = ms_strdup(curr->name + (ms_strlen(name) + 1));
+		if (ms_strchr(curr->name, '=') && !variable_check(*var, name) && !value)
+			variable_next_first(var, validate_values(name, NULL));
+		else if (variable_check(*var, name))
+			new_value(*var, name, value);
 		else
-			variable_next_first(&var, validate_values(name, value));
+			variable_next_first(var, validate_values(name, value));
 		curr = curr->next;
 		free(name);
 	}
