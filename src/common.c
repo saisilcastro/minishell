@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/30 13:11:50 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/31 16:40:42 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,3 +117,24 @@ int	ms_strncmp(char *str1, char *str2, int n)
 	}
 	return (0);
 }
+
+int	ms_name_cmp(char *str1, char *str2, int n)
+{
+	int	count;
+
+	count = 0;
+	while ((count < n) && (str1[count] != '\0' || str2[count] != '\0'))
+	{
+		if (count < n && str1[count] != str2[count])
+			return (str1[count] - str2[count]);
+		count++;
+	}
+	if (!str1[count] && !str2[count])
+		return (0);
+	if (!str1)
+		return (0);
+	if (!str2)
+		return (str1[count] - str2[count]);
+	return (0);
+}
+

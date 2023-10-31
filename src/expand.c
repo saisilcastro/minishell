@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/31 15:38:45 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/31 16:43:19 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	find_var(t_command *list, t_variable *var, int index)
 	curr_var = var;
 	while (curr_var)
 	{
-		if (!ms_strncmp(list->name + index,
+		if (!ms_name_cmp(list->name + index,
 				curr_var->name, ms_strlen(curr_var->name)))
 			if (ms_strlen(curr_var->name) > ms_strlen(temp->name))
 				temp = curr_var;

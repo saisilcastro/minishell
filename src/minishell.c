@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/31 11:15:23 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/31 16:32:30 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	shell_loop(t_minishell *set)
 
 	environment_push(set);
 	run = On;
-	variable_next_first(&set->var, variable_push("test", "80"));
+	variable_next_first(&set->var, variable_push("test", "ola 90"));
 	variable_next_first(&set->var, variable_push("test2", "90"));
 	while (run)
 	{
