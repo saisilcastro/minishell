@@ -3,124 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/27 18:29:28 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:52:32 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-#include <minishell.h>
-
-static void	alphabetical_order(char **arr, int n, int i)
+static t_variable	*variable_clone(t_variable *variable)
 {
-	char	temp[500000];
-	int		j;
+	t_variable	*set;
+	t_variable	*update;
 
-	if (i >= n - 1)
-		return ;
-	j = i + 1;
-	while (j < n)
+	set = NULL;
+	update = variable;
+	while (update)
 	{
-		if (arr[j][0] < arr[i][0])
+		variable_next_last(&set, variable_push(update->name, update->value));
+		update = update->next;
+	}
+	return (set);
+}
+
+void	variable_swap(t_variable **first, t_variable **second)
+{
+	t_variable	upd;
+
+	if (!*first || !*second)
+		return ;
+	upd.name = (*first)->name;
+	upd.value = (*first)->value;
+	(*first)->name = (*second)->name;
+	(*first)->value = (*second)->value;
+	(*second)->name = upd.name;
+	(*second)->value = upd.value;
+}
+
+static t_variable	*bubble_sort(t_variable *variable)
+{
+	t_variable	*sorted;
+	t_variable	*first;
+	t_variable	*second;
+
+	sorted = variable_clone(variable);
+	first = sorted;
+	while (first)
+	{
+		second = first->next;
+		while (second)
 		{
-			strcpy(temp, arr[i]);
-			strcpy(arr[i], arr[j]);
-			strcpy(arr[j], temp);
+			if (ms_strcmp(first->name, second->name) > 0)
+				variable_swap(&first, &second);
+			second = second->next;
 		}
-		j++;
+		first = first->next;
 	}
-	alphabetical_order(arr, n, i + 1);
+	return (sorted);
 }
 
-void	print_envirolment(t_variable *var)
+static void	print_sorted_command(t_variable *variable)
 {
-	extern char	**__environ;
-	char		**alpha_order;
-	t_variable	*curr;
-	int			count;
+	t_variable	*sorted;
+	t_variable	*upd;
 
-	curr = var;
-	count = 0;
-	alpha_order = copy_arr(copy_list(var));
-	while (alpha_order[count] && *alpha_order[count])
-		count++;
-	alphabetical_order(alpha_order, count, 0);
-	while (alpha_order)
+	sorted = bubble_sort(variable);
+	upd = sorted;
+	while (upd)
 	{
-		printf("declare -x %s=\"%s\"\n", get_name(*alpha_order);
-			get_value(*alpha_order + (ms_strlen(get_name(*alpha_order)) + 1)));
-		alpha_order++;
+		if (ms_strlen(upd->value))
+			printf("declare -x %s=\"%s\"\n", upd->name, upd->value);
+		upd = upd->next;
 	}
-	free_arr(alpha_order);
+	variable_pop(sorted);
 }
 
-static int	variable_check(t_variable *var, char *string)
+void	export(t_variable **variable, t_command *command)
 {
-	t_variable	*curr;
-
-	curr = var;
-	while (curr)
-	{
-		if (ms_strcmp(curr->name, string))
-			return (1);
-		curr = curr->next;
-	}
-	return (0);
-}
-
-static void	new_value(t_variable *var, char *name, char *new_value)
-{
-	t_variable	*curr;
-
-	curr = var;
-	while (curr && !ms_strcmp(curr->name, name))
-		curr = curr->next;
-	free(curr->value);
-	curr->value = new_value;
-}
-
-t_variable	*validate_values(char *name, char *value)
-{
-	if (!ms_isalpha(name[0]) && name[0] != 95)
-	{
-		printf(PURPLE ">minishell: " WHITE
-			"export: '%s': not a valid identifier\n", name);
-		return (0);
-	}
-	if (value == NULL)
-		return (variable_push(name, ms_strdup("\0")));
-	if ((!ms_isalpha(value[0]) && value[0] != 95) && !ms_isdigit(value[0]))
-		return (0);
-	return (variable_push(name, value));
-}
-
-void	export(t_command **list, t_variable **var)
-{
-	t_command	*curr;
-	char		*name;
-	char		*value;
-
-	if (!(*list)->next)
-	{
-		print_envirolment(*var);
-		return ;
-	}
-	curr = *list;
-	curr = curr->next;
-	while (curr)
-	{
-		name = get_name(curr->name);
-		value = ms_strdup(curr->name + (ms_strlen(name) + 1));
-		if (ms_strchr(curr->name, '=') && !variable_check(*var, name) && !value)
-			variable_next_first(var, validate_values(name, NULL));
-		else if (variable_check(*var, name))
-			new_value(*var, name, value);
-		else
-			variable_next_first(var, validate_values(name, value));
-		curr = curr->next;
-		free(name);
-	}
+	if (command && !command->next)
+		print_sorted_command(*variable);
+	export_variable(variable, command->next);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/27 16:42:00 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:11:50 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_status	ms_isdigit(char c)
 	return (Off);
 }
 
-t_status	ms_strcmp(char *one, char *two)
+int		ms_strcmp(char *one, char *two)
 {
 	while (*one && *two && *one == *two)
 	{
@@ -43,8 +43,8 @@ t_status	ms_strcmp(char *one, char *two)
 		two++;
 	}
 	if (!*one && !*two)
-		return (On);
-	return (Off);
+		return (0);
+	return (*one - *two);
 }
 
 char	*ms_strdup(char *str)
@@ -53,6 +53,8 @@ char	*ms_strdup(char *str)
 	int		len;
 
 	len = 0;
+	if (!str)
+		return (NULL);
 	while (*(str + len))
 		len++;
 	buffer = (char *)malloc((len + 1) * sizeof(char));
@@ -114,27 +116,4 @@ int	ms_strncmp(char *str1, char *str2, int n)
 		count++;
 	}
 	return (0);
-}
-
-char	*ms_strjoin(char *s1, char *s2)
-{
-	char	*new_str;
-	int		total_size;
-
-	total_size = ms_strlen(s1) + ms_strlen(s2);
-	new_str = (char *)malloc((total_size + 1) * sizeof(char));
-	if (new_str == NULL)
-		return (NULL);
-	while (s1 && *s1 != '\0')
-		*new_str++ = *s1++;
-	while (s2 && *s2 != '\0')
-		*new_str++ = *s2++;
-	*new_str = '\0';
-	return ((new_str - total_size));
-}
-
-void	free_arr(char **arr)
-{
-	while (**arr && *arr)
-		free(*arr);
 }

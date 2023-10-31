@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/27 16:42:04 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:38:45 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,11 @@ static void	update_quotes(t_command *list)
 	index = -1;
 	while (list->name[++index] && list->name[index] != '\'')
 		copy[index] = list->name[index];
-	index2 = index + 1;
-	while (list->name[index2] && list->name[index2] != '\'')
-	{
-		copy[index] = list->name[index2++];
-		index++;
-	}
-	index2 += 1;
-	while (list->name[index2])
+	index2 = index;
+	while (list->name[++index2] && list->name[index2] != '\'')
 	{
 		copy[index] = list->name[index2];
 		index++;
-		index2++;
 	}
 	copy[index] = '\0';
 	free (list->name);
@@ -66,6 +59,25 @@ static void	update(t_command *list, char *value, int size)
 	list->name = ms_strdup(copy);
 }
 
+static void	find_var(t_command *list, t_variable *var, int index)
+{
+	t_variable	*curr_var;
+	t_variable	*temp;
+
+	temp = var;
+	curr_var = var;
+	while (curr_var)
+	{
+		if (!ms_strncmp(list->name + index,
+				curr_var->name, ms_strlen(curr_var->name)))
+			if (ms_strlen(curr_var->name) > ms_strlen(temp->name))
+				temp = curr_var;
+		curr_var = curr_var->next;
+	}
+	if (temp)
+		update(list, temp->value, ms_strlen(temp->name));
+}
+
 static void	expand(t_command *list, t_variable *var)
 {
 	t_variable	*curr_var;
@@ -78,20 +90,8 @@ static void	expand(t_command *list, t_variable *var)
 			index++;
 		curr_var = var;
 		if (list->name && list->name[index] == '$')
-		{
-			while (curr_var)
-			{
-				if (!ms_strncmp(list->name + (index + 1),
-						curr_var->name, ms_strlen(curr_var->name)))
-				{
-					update(list, curr_var->value, ms_strlen(curr_var->name));
-					index = -1;
-					break ;
-				}
-				curr_var = curr_var->next;
-			}
-			index++;
-		}
+			find_var(list, var, (index + 1));
+		index++;
 	}
 }
 
@@ -101,10 +101,10 @@ void	expansion(t_command **list, t_variable *var)
 	int			count;
 
 	current = *list;
-	count = 0;
 	while (current)
 	{
-		if (ms_strchr(current->name, '\''))
+		count = value_position(current->name);
+		if (current->name[count] && current->name[count] == '\'')
 			update_quotes(current);
 		else if (ms_strchr(current->name, '$'))
 			expand(current, var);

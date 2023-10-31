@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 17:23:57 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:43:54 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	command_pop(t_command **list)
 	while (*list)
 	{
 		next = (*list)->next;
+		if ((*list)->name)
+			free((*list)->name);
 		free(*list);
 		*list = next;
 	}

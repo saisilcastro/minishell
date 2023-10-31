@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/27 18:24:10 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/31 11:15:23 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,17 @@ void	shell_loop(t_minishell *set)
 {
 	char		*command;
 	t_status	run;
-	t_variable	*curr;
 
+	environment_push(set);
 	run = On;
-	variable_next_last(&set->var, variable_push("test1", "Hello world!"));
-	variable_next_last(&set->var, variable_push("test2", "finally works"));
+	variable_next_first(&set->var, variable_push("test", "80"));
+	variable_next_first(&set->var, variable_push("test2", "90"));
 	while (run)
 	{
 		command = readline(PURPLE">minishell: " WHITE);
+		add_history(command);
 		command_parser(&set->cmd, set->var, command);
 		run = builtin_execute(set);
-		curr = set->var;
-		while (curr)
-		{
-			printf("%s=%s\n", curr->name, curr->value);
-			curr = curr->next;
-		}
 		free(command);
 		command_pop(&set->cmd);
 	}
@@ -52,4 +47,5 @@ void	shell_pop(t_minishell *set)
 	variable_pop(set->var);
 	if (set->cmd)
 		command_pop(&set->cmd);
+	rl_clear_history();
 }

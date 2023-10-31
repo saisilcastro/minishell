@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 16:17:29 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/25 16:18:35 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/10/30 13:21:12 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 void	env(void)
 {
 	extern char	**__environ;
+	int			i;
 
-	while (*__environ)
-	{
-		printf("%s\n", *__environ);
-		__environ++;
-	}
+	i = -1;
+	while (*(__environ + ++i))
+		printf("%s\n", *(__environ + i));
 }
