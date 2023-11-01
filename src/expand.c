@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/31 16:43:19 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/01 11:07:34 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,17 @@ static void	find_var(t_command *list, t_variable *var, int index)
 	t_variable	*curr_var;
 	t_variable	*temp;
 
-	temp = var;
 	curr_var = var;
 	while (curr_var)
 	{
 		if (!ms_name_cmp(list->name + index,
 				curr_var->name, ms_strlen(curr_var->name)))
+		{
+			if (!temp)
+				temp = curr_var;
 			if (ms_strlen(curr_var->name) > ms_strlen(temp->name))
 				temp = curr_var;
+		}
 		curr_var = curr_var->next;
 	}
 	if (temp)
@@ -80,7 +83,6 @@ static void	find_var(t_command *list, t_variable *var, int index)
 
 static void	expand(t_command *list, t_variable *var)
 {
-	t_variable	*curr_var;
 	int			index;
 
 	index = 0;
@@ -88,7 +90,6 @@ static void	expand(t_command *list, t_variable *var)
 	{
 		while (list->name[index] && list->name[index] != '$')
 			index++;
-		curr_var = var;
 		if (list->name && list->name[index] == '$')
 			find_var(list, var, (index + 1));
 		index++;
