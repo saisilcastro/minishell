@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/29 16:53:22 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/01 13:38:02 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <variable.h>
 # include <common.h>
 # include <command.h>
-# include <builtins/echo.h>
 # include <signal.h>
 # define GREEN "\033[0;32m"
 # define RED "\033[0;31m"
@@ -35,25 +34,23 @@ struct s_minishell{
 	t_command	*cmd;
 };
 
-extern void	shell_set(t_minishell *set);
-extern void	shell_command(t_minishell *set);
-extern void	shell_parse(t_minishell *set, char *command);
-extern void	shell_loop(t_minishell *set);
-extern void	shell_pop(t_minishell *set);
+extern void		shell_set(t_minishell *set);
+extern void		shell_command(t_minishell *set);
+extern void		shell_parse(t_minishell *set, char *command);
+extern void		shell_loop(t_minishell *set);
+extern void		shell_pop(t_minishell *set);
 
 extern t_status	builtin_execute(t_minishell *set);
+extern void		environment_push(t_minishell *set);
+extern void		export_variable(t_variable **var, t_command *cmd);
+extern void		expansion(t_command **list, t_variable *var);
+extern void		node_delete(t_command **cmd, char *name);
 
-extern void	environment_push(t_minishell *set);
-extern void	export(t_variable **var, t_command *cmd);
-extern void	export_variable(t_variable **var, t_command *cmd);
-extern void	expansion(t_command **list, t_variable *var);
-extern char	*get_name(char *string);
-extern char	*get_value(char *str_value);
-extern char	*copy_arr(char **arr, t_variable *var);
-
-extern void	cd(t_command *set);
-extern void	pwd(void);
-extern void	env(void);
-extern void	unset(t_variable **var, t_command *cmd);
+extern void		export(t_variable **var, t_command *cmd);
+extern void		cd(t_command *set);
+extern void		pwd(void);
+extern void		env(void);
+extern void		unset(t_variable **var, t_command *cmd);
+extern void		echo_execute(t_command *cmd);
 
 #endif

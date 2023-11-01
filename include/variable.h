@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 10:59:55 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/31 12:17:27 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:37:53 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ extern void			variable_next_last(t_variable **list, t_variable *set);
 extern t_variable	*variable_search(t_variable *list, char *name);
 extern void			variable_delete(t_variable **list, char *name);
 extern void			variable_pop(t_variable *list);
-extern				int	value_position(char *list);
+extern int			value_position(char *list);
 
 #endif

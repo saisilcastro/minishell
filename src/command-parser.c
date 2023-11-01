@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/31 11:01:21 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/01 16:55:30 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static char	*catch_parsing(char *command, char *buffer)
 			return (0);
 		}
 		if (!*command)
+			break ;
+		if (has_space(*command))
 			break ;
 		if (*command != '\"')
 			*(buffer + i++) = *command;

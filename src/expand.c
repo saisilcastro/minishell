@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/01 11:07:34 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/01 16:58:35 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,17 @@ static void	update(t_command *list, char *value, int size)
 	list->name = ms_strdup(copy);
 }
 
-static void	find_var(t_command *list, t_variable *var, int index)
+static void	find_var(t_command *line, t_variable *var, int index,
+		t_command **list)
 {
-	t_variable	*curr_var;
 	t_variable	*temp;
+	t_variable	*curr_var;
 
 	curr_var = var;
+	temp = NULL;
 	while (curr_var)
 	{
-		if (!ms_name_cmp(list->name + index,
+		if (!ms_name_cmp(line->name + index,
 				curr_var->name, ms_strlen(curr_var->name)))
 		{
 			if (!temp)
@@ -78,20 +80,24 @@ static void	find_var(t_command *list, t_variable *var, int index)
 		curr_var = curr_var->next;
 	}
 	if (temp)
-		update(list, temp->value, ms_strlen(temp->name));
+		update(line, temp->value, ms_strlen(temp->name));
+	else if (line->name[0] == '$')
+		node_delete(list, line->name);
 }
 
-static void	expand(t_command *list, t_variable *var)
+static void	expand(t_command *list, t_variable *var, t_command **cmd)
 {
-	int			index;
+	int	index;
 
 	index = 0;
-	while (list->name[index])
+	while (list->name && list->name[index])
 	{
 		while (list->name[index] && list->name[index] != '$')
 			index++;
+		if (list->name && !list->name[index])
+			break ;
 		if (list->name && list->name[index] == '$')
-			find_var(list, var, (index + 1));
+			find_var(list, var, (index + 1), cmd);
 		index++;
 	}
 }
@@ -99,16 +105,26 @@ static void	expand(t_command *list, t_variable *var)
 void	expansion(t_command **list, t_variable *var)
 {
 	t_command	*current;
+	t_command	*export;
 	int			count;
 
 	current = *list;
+	export = *list;
 	while (current)
 	{
+		if (!ms_strncmp(export->name, "export", 6) && current->name[0] == '$')
+		{
+			printf(PURPLE"minishell: " WHITE" \"%s\" "
+				"not a valid identifier\n", current->name);
+			node_delete(list, current->name);
+			current = current->next;
+			continue ;
+		}
 		count = value_position(current->name);
 		if (current->name[count] && current->name[count] == '\'')
 			update_quotes(current);
 		else if (ms_strchr(current->name, '$'))
-			expand(current, var);
+			expand(current, var, list);
 		current = current->next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/29 17:55:21 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/01 11:34:45 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ void	unset(t_variable **variable, t_command *command)
 {
 	t_variable	*var;
 	t_command	*cmd;
-	t_status	found;
 
 	cmd = command;
 	while (cmd)
 	{
-		found = Off;
 		var = *variable;
 		while (var)
 		{
@@ -31,13 +29,9 @@ void	unset(t_variable **variable, t_command *command)
 					free(var->value);
 				var->value = (char *)malloc(sizeof(char));
 				*(var->value + 0) = '\0';
-				found = On;
 			}
 			var = var->next;
 		}
-		if (!found)
-			printf(PURPLE"minishell: " WHITE
-					"unset:\"%s\" not found.\n", cmd->name);
 		cmd = cmd->next;
 	}
 }
