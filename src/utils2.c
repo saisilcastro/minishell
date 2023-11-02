@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 11:39:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/01 11:40:16 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:13:49 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	ms_strncmp(char *str1, char *str2, int n)
 	unsigned char	*str4;
 	int				count;
 
+	if (!str1 || !str2)
+		return (1);
 	str3 = (unsigned char *)str1;
 	str4 = (unsigned char *)str2;
 	count = 0;

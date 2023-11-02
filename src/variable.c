@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/01 16:11:02 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:18:42 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	value_position(char *list)
 	int	count;
 
 	count = 0;
+	if (!list)
+		return (0);
 	while (list[count] && list[count] != '=')
 		count++;
 	if (!list[count])

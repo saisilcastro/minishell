@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/01 16:58:35 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:37:30 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,26 +105,25 @@ static void	expand(t_command *list, t_variable *var, t_command **cmd)
 void	expansion(t_command **list, t_variable *var)
 {
 	t_command	*current;
-	t_command	*export;
 	int			count;
 
-	current = *list;
-	export = *list;
+	current = (*list)->next;
 	while (current)
 	{
-		if (!ms_strncmp(export->name, "export", 6) && current->name[0] == '$')
+		if (!ms_strncmp((*list)->name, "export", 6) && current->next
+			&& current->next->name[0] == '$')
 		{
-			printf(PURPLE"minishell: " WHITE" \"%s\" "
-				"not a valid identifier\n", current->name);
-			node_delete(list, current->name);
-			current = current->next;
+			node_delete(list, current->next->name);
 			continue ;
 		}
-		count = value_position(current->name);
-		if (current->name[count] && current->name[count] == '\'')
-			update_quotes(current);
-		else if (ms_strchr(current->name, '$'))
-			expand(current, var, list);
-		current = current->next;
+		else
+		{
+			count = value_position(current->name);
+			if (current->name && current->name[count] == '\'')
+				update_quotes(current);
+			else if (current->name && ms_strchr(current->name, '$'))
+				expand(current, var, list);
+			current = current->next;
+		}
 	}
 }
