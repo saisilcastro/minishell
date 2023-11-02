@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/01 13:38:02 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:48:58 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ extern void		environment_push(t_minishell *set);
 extern void		export_variable(t_variable **var, t_command *cmd);
 extern void		expansion(t_command **list, t_variable *var);
 extern void		node_delete(t_command **cmd, char *name);
+extern void		error(char *error, char **command, t_minishell *set);
+extern void		command_parser(t_minishell *set, char *command);
 
 extern void		export(t_variable **var, t_command *cmd);
 extern void		cd(t_command *set);

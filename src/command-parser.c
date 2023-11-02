@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/02 12:47:03 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:03:29 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ static char	*symbol_remaider(char *command, char *buffer, int *i, char c)
 		*(buffer + *i) = *command++;
 		*i += 1;
 	}
+	if (*command != c)
+		return (NULL);
 	return (command);
 }
 
-static char	*catch_parsing(char *command, char *buffer)
+static char	*catch_parsing(char *command, char *buffer, t_minishell *set)
 {
 	int	i;
 
@@ -51,13 +53,10 @@ static char	*catch_parsing(char *command, char *buffer)
 	{
 		if (*command == '\"')
 			command = symbol_remover(command, buffer, &i, *command);
-		if (*command == '\'')
+		else if (command && *command == '\'')
 			command = symbol_remaider(command, buffer, &i, *command);
 		if (!command)
-		{
-			printf(PURPLE "minishell: " WHITE "command not found.\n");
-			return (0);
-		}
+			error("Error: Unclosed quotes in the string.", &command, set);
 		if (!*command)
 			break ;
 		if (has_space(*command))
@@ -67,24 +66,25 @@ static char	*catch_parsing(char *command, char *buffer)
 		command++;
 	}
 	*(buffer + i) = '\0';
-	printf("%s\n", buffer);
 	return (command);
 }
 
-void	command_parser(t_command **list, t_variable *var, char *command)
+void	command_parser(t_minishell *set, char *command)
 {
 	char		buffer[1024];
 	int			i;
 
+	if (!command)
+		return ;
 	while (*command)
 	{
 		while (*command && has_space(*command))
 			command++;
-		command = catch_parsing(command, buffer);
-		command_next_last(list, command_push(buffer));
-		if (!*command)
+		command = catch_parsing(command, buffer, set);
+		command_next_last(&set->cmd, command_push(buffer));
+		if (!command || !*command)
 			break ;
 		command++;
 	}
-	expansion(list, var);
+	expansion(&set->cmd, set->var);
 }

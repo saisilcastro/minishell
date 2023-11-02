@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/02 12:37:30 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:17:42 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ void	expansion(t_command **list, t_variable *var)
 	t_command	*current;
 	int			count;
 
+	if (!*list)
+		return ;
 	current = (*list)->next;
 	while (current)
 	{
@@ -119,7 +121,8 @@ void	expansion(t_command **list, t_variable *var)
 		else
 		{
 			count = value_position(current->name);
-			if (current->name && current->name[count] == '\'')
+			if (current->name && current->name[count] == '\''
+				&& current->name[ms_strlen(current->name)] == '\'')
 				update_quotes(current);
 			else if (current->name && ms_strchr(current->name, '$'))
 				expand(current, var, list);
