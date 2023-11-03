@@ -1,0 +1,8 @@
+/bin/ls -l
+/bin/ls -la
+/bin/ls ..
+/bin/ls /
+export -pasdf
+/bin/ls -
+/bin/ls -asldfjskljafd
+/bin/ls aslkdfj$PWD

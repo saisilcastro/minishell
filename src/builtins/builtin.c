@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 12:46:45 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/29 13:41:52 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/02 17:16:00 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_status	builtin_execute(t_minishell *set)
 		unset(&set->var, set->cmd->next);
 	if (!strncmp(set->cmd->name, "env", 3))
 		env();
+	if (!set->cmd->next && !strncmp(set->cmd->name, "clear", 5))
+		rl_clear_history();
 	if (!strncmp(set->cmd->name, "exit", 4))
 		return (Off);
 	return (On);

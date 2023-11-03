@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_push.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 12:05:32 by mister-code       #+#    #+#             */
-/*   Updated: 2023/10/29 12:43:44 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/01 11:29:21 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*name_get(char *command, char *name)
 	return (command);
 }
 
-static char *value_get(char *command, char *value)
+static char	*value_get(char *command, char *value)
 {
 	int	i;
 

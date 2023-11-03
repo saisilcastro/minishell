@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
+#    Updated: 2023/11/01 13:39:24 by lumedeir         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = minishell
 VPATH = src: ./src src: ./src/builtins
 SRC_FOLDER = minishell.c \
@@ -13,9 +25,11 @@ SRC_FOLDER = minishell.c \
 			 pwd.c \
 			 export.c \
 			 export-variable.c \
+			 variable-delete.c \
 			 unset.c \
 			 env.c \
-			 common.c
+			 utils2.c \
+			 utils.c
 SRC = $(SRC_FOLDER) \
 	  main.c
 INCLUDE = -I./include

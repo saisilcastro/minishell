@@ -1,74 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   common.c                                           :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/30 13:11:50 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/11/01 11:39:37 by lumedeir          #+#    #+#             */
+/*   Updated: 2023/11/02 17:51:19 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <stdlib.h>
-
-char	has_space(char c)
-{
-	if ((c > 7 && c <= 13) || c == 32)
-		return (1);
-	return (0);
-}
-
-t_status	ms_isalpha(char c)
-{
-	if ((c > 64 && c < 91)
-		|| (c > 96 && c < 123))
-		return (On);
-	return (Off);
-}
-
-t_status	ms_isdigit(char c)
-{
-	if (c >= '0' && c <= '9')
-		return (On);
-	return (Off);
-}
-
-int		ms_strcmp(char *one, char *two)
-{
-	while (*one && *two && *one == *two)
-	{
-		one++;
-		two++;
-	}
-	if (!*one && !*two)
-		return (0);
-	return (*one - *two);
-}
-
-char	*ms_strdup(char *str)
-{
-	char	*buffer;
-	int		len;
-
-	len = 0;
-	if (!str)
-		return (NULL);
-	while (*(str + len))
-		len++;
-	buffer = (char *)malloc((len + 1) * sizeof(char));
-	if (!buffer)
-		return (NULL);
-	len = 0;
-	while (*(str + len))
-	{
-		*(buffer + len) = *(str + len);
-		len++;
-	}
-	*(buffer + len) = '\0';
-	return (buffer);
-}
 
 char	*ms_strchr(char *str, int c)
 {
@@ -106,6 +48,8 @@ int	ms_strncmp(char *str1, char *str2, int n)
 	unsigned char	*str4;
 	int				count;
 
+	if (!str1 || !str2)
+		return (1);
 	str3 = (unsigned char *)str1;
 	str4 = (unsigned char *)str2;
 	count = 0;
@@ -116,4 +60,38 @@ int	ms_strncmp(char *str1, char *str2, int n)
 		count++;
 	}
 	return (0);
+}
+
+int	ms_name_cmp(char *str1, char *str2, int n)
+{
+	int	count;
+
+	count = 0;
+	while ((count < n) && (str1[count] != '\0' || str2[count] != '\0'))
+	{
+		if (count < n && str1[count] != str2[count])
+			return (str1[count] - str2[count]);
+		count++;
+	}
+	if (!str1[count] && !str2[count])
+		return (0);
+	if (!str1)
+		return (0);
+	if (!str2)
+		return (str1[count] - str2[count]);
+	return (0);
+}
+
+void	ms_putstr_fd(char *s, int fd)
+{
+	int	c;
+
+	c = 0;
+	if (s == 0)
+		return ;
+	while (s[c] != '\0')
+	{
+		write(fd, &s[c], 1);
+		c++;
+	}
 }

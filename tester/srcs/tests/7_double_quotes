@@ -1,0 +1,8 @@
+echo "cat lol.c | cat > lol.c"
+"echo oi"
+"echo -n"
+"ls"
+ls "srcs"
+cat "Makefile"
+"slkdfjsdlaçfjdlskaçfjkds"
+"<<EOF | wc -l"

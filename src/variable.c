@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/26 12:26:38 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:18:42 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ t_variable	*variable_push(char *name, char *value)
 	set->name = ms_strdup(name);
 	set->value = ms_strdup(value);
 	return (set);
+}
+
+int	value_position(char *list)
+{
+	int	count;
+
+	count = 0;
+	if (!list)
+		return (0);
+	while (list[count] && list[count] != '=')
+		count++;
+	if (!list[count])
+		return (0);
+	return (count + 1);
 }
 
 t_variable	*variable_search(t_variable *list, char *name)

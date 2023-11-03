@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command-parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/29 13:38:33 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/02 21:25:04 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,30 @@ static char	*symbol_remaider(char *command, char *buffer, int *i, char c)
 		*(buffer + *i) = *command++;
 		*i += 1;
 	}
+	if (*command != c)
+		return (NULL);
 	return (command);
 }
 
-static char	*catch_parsing(char *command, char *buffer)
+//static void	error(char *error, t_minishell *set)
+//{
+//	ms_putstr_fd(PURPLE">minishell: " WHITE, 2);
+//	ms_putstr_fd(error, 2);
+//	write(2, "\n", 1);
+//	command_pop(&set->cmd);
+//	shell_loop(set);
+//}
+
+static char	*error(t_minishell *set, char *error)
+{
+	ms_putstr_fd(PURPLE">minishell: " WHITE, 2);
+	ms_putstr_fd(error, 2);
+	write(2, "\n", 1);
+	command_pop(&set->cmd);
+	return (NULL);
+}
+
+static char	*catch_parsing(char *command, char *buffer, t_minishell *set)
 {
 	int	i;
 
@@ -51,14 +71,13 @@ static char	*catch_parsing(char *command, char *buffer)
 	{
 		if (*command == '\"')
 			command = symbol_remover(command, buffer, &i, *command);
-		if (*command == '\'')
+		else if (command && *command == '\'')
 			command = symbol_remaider(command, buffer, &i, *command);
 		if (!command)
-		{
-			printf(PURPLE "minishell: " WHITE "command not found.\n");
-			exit(0);
-		}
+			return (error(set, "command is not valid\n"));
 		if (!*command)
+			break ;
+		if (has_space(*command))
 			break ;
 		if (*command != '\"')
 			*(buffer + i++) = *command;
@@ -68,20 +87,24 @@ static char	*catch_parsing(char *command, char *buffer)
 	return (command);
 }
 
-void	command_parser(t_command **list, t_variable *var, char *command)
+void	command_parser(t_minishell *set, char *command)
 {
 	char		buffer[1024];
+	char		*update;
 	int			i;
 
-	while (*command)
+	if (!command)
+		return ;
+	update = command;
+	while (*update)
 	{
-		while (*command && has_space(*command))
-			command++;
-		command = catch_parsing(command, buffer);
-		command_next_last(list, command_push(buffer));
-		if (!*command)
+		while (*update && has_space(*update))
+			update++;
+		update = catch_parsing(update, buffer, set);
+		command_next_last(&set->cmd, command_push(buffer));
+		if (!update || !*update)
 			break ;
-		command++;
+		update++;
 	}
-	expansion(list, var);
+	expansion(&set->cmd, set->var);
 }

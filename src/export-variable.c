@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export-variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/10/29 17:26:39 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/01 13:17:21 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,32 @@ static char	*value_get(char *command, char *value)
 	while (*command)
 		*(value + i++) = *command++;
 	*(value + i) = '\0';
-	return (command); 
+	return (command);
+}
+
+static t_status	variable_check(t_variable **var, char *name)
+{
+	t_variable	*curr;
+
+	curr = *var;
+	while (curr)
+	{
+		if (!ms_strncmp(curr->name, name, ms_strlen(curr->name)))
+			return (On);
+		curr = curr->next;
+	}
+	return (Off);
+}
+
+static void	new_value(t_variable **var, char *name, char *value)
+{
+	t_variable	*curr;
+
+	curr = *var;
+	while (curr && ms_strncmp(curr->name, name, ms_strlen(curr->name)))
+		curr = curr->next;
+	free (curr->value);
+	curr->value = ms_strdup(value);
 }
 
 void	export_variable(t_variable **variable, t_command *command)
@@ -42,14 +67,17 @@ void	export_variable(t_variable **variable, t_command *command)
 	char		name[64];
 	char		value[65535];
 	char		*update;
-	
+
 	cmd = command;
 	while (cmd)
 	{
 		update = cmd->name;
 		update = name_get(update, name);
 		update = value_get(update, value);
-		variable_next_last(variable, variable_push(name, value));
+		if (variable_check(variable, name) && ms_strchr(cmd->name, '='))
+			new_value(variable, name, value);
+		else
+			variable_next_last(variable, variable_push(name, value));
 		cmd = cmd->next;
 	}
 }

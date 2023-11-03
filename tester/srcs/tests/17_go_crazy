@@ -1,0 +1,26 @@
+$PWD
+dsbksdgbksdghsd
+$EMPTY
+$EMPTY echo hi
+./test_files/invalid_permission
+./missing.out
+missing.out
+"aaa"
+test_files
+./test_files
+/test_files
+minishell.h
+$
+$?
+README.md
+mkdir phoenixpaste
+chmod 000 phoenixpaste
+cd phoenixpaste
+export a=teste
+unset a
+export a=teste 
+unset a=teste
+export n=3
+exit
+exit $n
+jsfkljsdklfjdaslçf
