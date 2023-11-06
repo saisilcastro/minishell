@@ -6,85 +6,128 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/02 18:03:29 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:51:51 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char	*symbol_remover(char *command, char *buffer, int *i, char c)
+static void	symbol_remover(char *command, char *buffer, int *i)
 {
-	command++;
-	while (*command && *command != c)
+	int	index;
+
+	index = 0;
+	if (*command == '\"')
+		return ;
+	while (command[index] && command[index] != '\"')
 	{
-		*(buffer + *i) = *command++;
+		*(buffer + *i) = command[index];
 		*i += 1;
+		index++;
 	}
-	if (*command != c)
-		return (NULL);
-	return (command);
 }
 
-static char	*symbol_remaider(char *command, char *buffer, int *i, char c)
+static void	symbol_remaider(char *command, char *buffer, int *i)
 {
-	*(buffer + *i) = *command++;
+	int	index;
+
+	index = 1;
+	if (!command || command[1] == '\'')
+		return ;
+	*(buffer + *i) = command[0];
 	*i += 1;
-	while (*command && *command != c)
+	while (command[index] && command[index] != '\'')
 	{
-		*(buffer + *i) = *command++;
+		*(buffer + *i) = command[index];
 		*i += 1;
+		index++;
 	}
-	if (*command == c)
-	{
-		*(buffer + *i) = *command++;
-		*i += 1;
-	}
-	if (*command != c)
-		return (NULL);
-	return (command);
+	*(buffer + *i) = command[index];
+	*i += 1;
 }
 
-static char	*catch_parsing(char *command, char *buffer, t_minishell *set)
+void	error(t_minishell *set, char *error)
 {
-	int	i;
-
-	i = 0;
-	while (*command && !has_space(*command))
-	{
-		if (*command == '\"')
-			command = symbol_remover(command, buffer, &i, *command);
-		else if (command && *command == '\'')
-			command = symbol_remaider(command, buffer, &i, *command);
-		if (!command)
-			error("Error: Unclosed quotes in the string.", &command, set);
-		if (!*command)
-			break ;
-		if (has_space(*command))
-			break ;
-		if (*command != '\"')
-			*(buffer + i++) = *command;
-		command++;
-	}
-	*(buffer + i) = '\0';
-	return (command);
+	ms_putstr_fd(PURPLE">minishell: " WHITE, 2);
+	ms_putstr_fd(error, 2);
+	write(2, "\n", 1);
+	command_pop(&set->cmd);
 }
 
-void	command_parser(t_minishell *set, char *command)
+t_status	quotes_is_closed(char *command, char c,
+	t_minishell *set, t_status msg)
 {
-	char		buffer[1024];
-	int			i;
+	int	index;
+
+	index = 0;
+	while (command && command[++index])
+	{
+		if (command[index] == c)
+			return (On);
+	}
+	if (msg == On)
+		error(set, "Unclosed quotes in the string.");
+	return (Off);
+}
+
+static int	catch_parsing(char *command, char *buffer, t_minishell *set)
+{
+	int	index;
+	int	index2;
+
+	index = -1;
+	index2 = 0;
+	while (command && command[++index] && !has_space(command[index]))
+	{
+		if (command[index] == '\'' || command[index] == '\"')
+		{
+			if (!quotes_is_closed(command + index, command[index], set, On))
+				return (-1);
+			if (command[index] == '\'')
+			{
+				symbol_remaider(command + index, buffer, &index2);
+				if (command[index] == '\'')
+					index++;
+				while (command[index] && command[index] != '\'')
+					index++;
+			}
+			else
+			{
+				symbol_remover(command + (index + 1), buffer, &index2);
+				if (command[index] == '\"')
+					index++;
+				while (command[index] && command[index] != '\"')
+					index++;
+			}
+			if (!command[index])
+				break ;
+		}
+		else
+			*(buffer + index2++) = command[index];
+	}
+	*(buffer + index2) = '\0';
+	return (index);
+}
+
+t_status	command_parser(t_minishell *set, char *command)
+{
+	char		buffer[4050];
+	int			update;
+	int			index;
 
 	if (!command)
-		return ;
-	while (*command)
+		return (Off);
+	index = 0;
+	while (command[index])
 	{
-		while (*command && has_space(*command))
-			command++;
-		command = catch_parsing(command, buffer, set);
+		while (command[index] && has_space(command[index]))
+			index++;
+		update = catch_parsing(command + index, buffer, set);
+		if (update == -1)
+			return (Off);
 		command_next_last(&set->cmd, command_push(buffer));
-		if (!command || !*command)
-			break ;
-		command++;
+		index += update;
 	}
-	expansion(&set->cmd, set->var);
+	expansion(&set->cmd, set->var, set);
+	return (On);
 }
