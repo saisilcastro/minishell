@@ -1,23 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/08 12:55:24 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/11/08 14:56:03 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	main(void)
+int	ms_atoi(char *str)
 {
-	t_minishell	hell;
+	int	number;
+	int	mul;
 
-	shell_set(&hell);
-	shell_loop(&hell);
-	shell_pop(&hell);
-	return ((unsigned char)hell.status);
+	number = 0;
+	mul = 1;
+	while (*str && has_space(*str))
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			mul = -1;
+		str++;
+	}
+	while (*str && ms_isdigit(*str))
+	{
+		number *= 10;
+		number += (*str - 48);
+		str++;
+	}
+	return (number * mul);
 }
