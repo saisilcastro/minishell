@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/10 14:52:39 by lumedeir         ###   ########.fr       */
+=======
+/*   Updated: 2023/11/09 12:03:16 by lde-cast         ###   ########.fr       */
+>>>>>>> e7bab5dce1b21612d7ec0f6979d197e57a1ff251
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +36,14 @@ typedef struct s_minishell	t_minishell;
 struct s_minishell{
 	t_variable	*var;
 	t_command	*cmd;
+	t_command	*file;
+	short		status;
 };
 
 extern void		shell_set(t_minishell *set);
 extern void		shell_command(t_minishell *set);
 extern void		shell_parse(t_minishell *set, char *command);
+extern t_status	shell_io(t_minishell *set);
 extern void		shell_loop(t_minishell *set);
 extern void		shell_pop(t_minishell *set);
 

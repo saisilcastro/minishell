@@ -3,16 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
+#    By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2023/11/10 13:28:17 by lumedeir         ###   ########.fr        #
+=======
+#    Updated: 2023/11/08 17:27:50 by lde-cast         ###   ########.fr        #
+>>>>>>> e7bab5dce1b21612d7ec0f6979d197e57a1ff251
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 VPATH = src: ./src src: ./src/builtins
 SRC_FOLDER = minishell.c \
+			 minishell-io.c \
+			 minishell-loop.c \
 			 variable.c \
 			 variable-next.c \
 			 environment_push.c \
@@ -29,7 +35,11 @@ SRC_FOLDER = minishell.c \
 			 handle-quotes.c \
 			 unset.c \
 			 env.c \
+<<<<<<< HEAD
 			 error.c \
+=======
+			 utils3.c \
+>>>>>>> e7bab5dce1b21612d7ec0f6979d197e57a1ff251
 			 utils2.c \
 			 utils.c
 SRC = $(SRC_FOLDER) \

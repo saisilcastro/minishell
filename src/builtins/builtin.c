@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 12:46:45 by lde-cast          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/09 16:11:42 by lumedeir         ###   ########.fr       */
+=======
+/*   Updated: 2023/11/08 15:05:56 by lde-cast         ###   ########.fr       */
+>>>>>>> e7bab5dce1b21612d7ec0f6979d197e57a1ff251
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+static void	ms_exit(t_command *cmd, short status)
+{
+	char	*command;
+
+	if (!cmd)
+		exit((unsigned char)status);
+	command = cmd->name;
+	while (*command && (ms_isdigit(*command) || *command == '-'))
+		command++;
+	if (!*command)
+		status = ms_atoi(cmd->name);
+	else
+		status = 2;
+	exit(status);
+}
 
 t_status	builtin_execute(t_minishell *set)
 {
@@ -33,6 +53,6 @@ t_status	builtin_execute(t_minishell *set)
 	if (!set->cmd->next && !strncmp(set->cmd->name, "clear", 5))
 		rl_clear_history();
 	if (!strncmp(set->cmd->name, "exit", 4))
-		return (Off);
+		ms_exit(set->cmd->next, set->status);
 	return (On);
 }
