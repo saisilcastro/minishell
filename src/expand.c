@@ -6,50 +6,42 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/06 16:33:08 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:08:08 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <stdio.h>
 
-static void	update_quotes(t_command *list, t_minishell *set)
+static void	skip(t_command *list, int position)
 {
 	char	copy[40000];
 	int		index;
-	int		index2;
 
 	index = -1;
-	while (list->name[++index] && list->name[index] != '\'')
+	while (list->name[++index] && index < (position - 1))
 		copy[index] = list->name[index];
-	if (!quotes_is_closed(list->name + index, list->name[index], set, Off))
-		return ;
-	index2 = index;
-	while (list->name[++index2] && list->name[index2] != '\'')
+	while (list->name[position] && (list->name[position] == 0x5F
+			|| ms_isalpha(list->name[position])
+			|| ms_isdigit(list->name[position])))
+		position++;
+	while (list->name[position])
 	{
-		copy[index] = list->name[index2];
-		index++;
-	}
-	while (list->name[++index2] && list->name[index2] != '\0')
-	{
-		copy[index] = list->name[index2];
+		copy[index] = list->name[position++];
 		index++;
 	}
 	copy[index] = '\0';
 	free (list->name);
 	list->name = ms_strdup(copy);
-	if (ms_strchr(list->name, '\''))
-		update_quotes(list, set);
 }
 
-static void	update(t_command *list, char *value, int size)
+static void	update(t_command *list, char *value, int size, int position)
 {
 	char	copy[40000];
 	int		index;
 	int		index2;
 
 	index = -1;
-	while (list->name[++index] && list->name[index] != '$')
+	while (list->name[++index] && index < position)
 		copy[index] = list->name[index];
 	index2 = index + size + 1;
 	while (value && *value)
@@ -69,13 +61,15 @@ static void	update(t_command *list, char *value, int size)
 }
 
 static void	find_var(t_command *line, t_variable *var, int index,
-		t_command **list)
+		t_minishell *set)
 {
 	t_variable	*temp;
 	t_variable	*curr_var;
 
 	curr_var = var;
 	temp = NULL;
+	// if (line->name[index] == 0x3F)
+	// 	update(line, ms_atoi(set->status), ms_strlen(temp->name), index - 1);
 	while (curr_var)
 	{
 		if (!ms_name_cmp(line->name + index,
@@ -89,9 +83,9 @@ static void	find_var(t_command *line, t_variable *var, int index,
 		curr_var = curr_var->next;
 	}
 	if (temp)
-		update(line, temp->value, ms_strlen(temp->name));
-	else if (line->name[0] == '$')
-		node_delete(list, line->name);
+		update(line, temp->value, ms_strlen(temp->name), index - 1);
+	else
+		skip(line, index);
 }
 
 static void	expand(t_command *list, t_variable *var, t_command **cmd,
@@ -102,42 +96,55 @@ static void	expand(t_command *list, t_variable *var, t_command **cmd,
 	index = 0;
 	while (list->name && list->name[index])
 	{
-		if (list->name[index] == '\''
-			&& quotes_is_closed(list->name + index,
-				list->name[index], set, Off))
+		if (list->name[index] == '\'')
 		{
 			index++;
 			while (list->name[index] && list->name[index] != '\'')
 				index++;
 			index++;
 		}
-		if (list->name && !list->name[index])
-			break ;
-		if (list->name && list->name[index] == '$')
-			find_var(list, var, (index + 1), cmd);
-		if (list->name[index] != '\'')
+		else if (list->name[index] == '\"')
+		{
+			while (list->name[++index] && list->name[index] != '"')
+			{
+				if (list->name[index] == '$' && (list->name[index + 1] == 0x5F
+						|| ms_isalpha(list->name[index + 1])
+						|| list->name[index + 1] == 0x3F))
+				{
+					find_var(list, var, (index + 1), cmd);
+					index = 0;
+				}
+			}
+			index++;
+		}
+		if (list->name && list->name[index] == '$' && (list->name[index + 1]
+				== 0x5F || ms_isalpha(list->name[index + 1])
+				|| list->name[index + 1] == '?'))
+		{
+			find_var(list, var, (index + 1), set);
+			index = 0;
+		}
+		if (list->name[index] && list->name[index]
+			!= '\'' && list->name[index] != '"')
 			index++;
 	}
-	if (ms_strchr(list->name, '\''))
-		update_quotes(list, set);
 }
 
 void	expansion(t_command **list, t_variable *var, t_minishell *set)
 {
 	t_command	*current;
-	t_status	permission;
 	int			count;
 
 	if (!*list)
 		return ;
 	current = (*list)->next;
-	permission = On;
 	while (current)
 	{
 		if (!ms_strncmp((*list)->name, "export", 6)
 			&& current->next && current->next->name[0] == '$')
 		{
 			node_delete(list, current->next->name);
+			error("export: not a valid identifier");
 			continue ;
 		}
 		else
@@ -145,6 +152,8 @@ void	expansion(t_command **list, t_variable *var, t_minishell *set)
 			count = value_position(current->name);
 			if (current->name && ms_strchr(current->name, '$'))
 				expand(current, var, list, set);
+			if (ms_strchr(current->name, '\'') || ms_strchr(current->name, '"'))
+				remove_quotes(current, set);
 			current = current->next;
 		}
 	}

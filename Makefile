@@ -6,7 +6,7 @@
 #    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/01 13:39:24 by lumedeir         ###   ########.fr        #
+#    Updated: 2023/11/10 13:28:17 by lumedeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,10 @@ SRC_FOLDER = minishell.c \
 			 export.c \
 			 export-variable.c \
 			 variable-delete.c \
+			 handle-quotes.c \
 			 unset.c \
 			 env.c \
+			 error.c \
 			 utils2.c \
 			 utils.c
 SRC = $(SRC_FOLDER) \

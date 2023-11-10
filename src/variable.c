@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/02 12:18:42 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:46:09 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_variable	*variable_push(char *name, char *value)
 	variable_set(set);
 	set->name = ms_strdup(name);
 	set->value = ms_strdup(value);
+	set->next = NULL;
 	return (set);
 }
 

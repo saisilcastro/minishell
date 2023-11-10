@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/01 13:08:07 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:12:35 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,18 @@ static void	print_sorted_command(t_variable *variable)
 	upd = sorted;
 	while (upd)
 	{
-		if (ms_strlen(upd->value))
+		if (upd->value == NULL)
+			printf("declare -x %s\n", upd->name);
+		else
 			printf("declare -x %s=\"%s\"\n", upd->name, upd->value);
 		upd = upd->next;
 	}
 	variable_pop(sorted);
 }
 
-void	export(t_variable **variable, t_command *command)
+void	export(t_variable **variable, t_command *command, t_minishell *set)
 {
 	if (command && !command->next)
 		print_sorted_command(*variable);
-	export_variable(variable, command->next);
+	export_variable(variable, command->next, set);
 }

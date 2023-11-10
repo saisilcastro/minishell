@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/10 12:10:33 by lumedeir         ###   ########.fr       */
+/*   Created: 2023/11/10 12:29:41 by lumedeir          #+#    #+#             */
+/*   Updated: 2023/11/10 12:31:08 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	unset(t_variable **variable, t_command *command)
+void	error_and_clear(t_minishell *set, char *error)
 {
-	t_variable	*var;
-	t_command	*cmd;
+	ms_putstr_fd(PURPLE">minishell: " WHITE, 2);
+	ms_putstr_fd(error, 2);
+	write(2, "\n", 1);
+	command_pop(&set->cmd);
+}
 
-	cmd = command;
-	while (cmd)
-	{
-		var = *variable;
-		while (var)
-		{
-			if (!ms_strcmp(var->name, cmd->name))
-			{
-				variable_delete(variable, cmd->name);
-				break ;
-			}
-			var = var->next;
-		}
-		cmd = cmd->next;
-	}
+void	error(char *error)
+{
+	ms_putstr_fd(PURPLE">minishell: " WHITE, 2);
+	ms_putstr_fd(error, 2);
+	write(2, "\n", 1);
 }

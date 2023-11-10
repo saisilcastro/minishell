@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 12:46:45 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/06 15:51:53 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:11:42 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_status	builtin_execute(t_minishell *set)
 	if (!strncmp(set->cmd->name, "pwd", 3))
 		pwd();
 	if (!strncmp(set->cmd->name, "export", 6))
-		export(&set->var, set->cmd);
+		export(&set->var, set->cmd, set);
 	if (!strncmp(set->cmd->name, "unset", 5))
 		unset(&set->var, set->cmd->next);
 	if (!strncmp(set->cmd->name, "env", 3))

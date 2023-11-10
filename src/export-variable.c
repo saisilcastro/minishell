@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/01 13:17:21 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:32:51 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,52 @@ static t_status	variable_check(t_variable **var, char *name)
 	curr = *var;
 	while (curr)
 	{
-		if (!ms_strncmp(curr->name, name, ms_strlen(curr->name)))
+		if (!ms_strncmp(curr->name, name, ms_strlen(name)))
 			return (On);
 		curr = curr->next;
 	}
 	return (Off);
 }
 
+static t_status	valid_name(char *name)
+{
+	int	index;
+
+	if (!name || !*name)
+		return (Off);
+	index = 0;
+	if (!ms_isalpha(name[0]) && name[0] != 0x5F)
+		return (Off);
+	while (name[++index])
+	{
+		if (!ms_isalpha(name[index]) && !ms_isdigit(name[index])
+			&& name[index] != 0x5F)
+		{
+			error("export: not a valid identifier");
+			return (Off);
+		}
+	}
+	return (On);
+}
+
 static void	new_value(t_variable **var, char *name, char *value)
 {
 	t_variable	*curr;
 
+	if (!*var)
+		return ;
 	curr = *var;
-	while (curr && ms_strncmp(curr->name, name, ms_strlen(curr->name)))
+	while (ms_strncmp(curr->name, name, ms_strlen(name)))
 		curr = curr->next;
-	free (curr->value);
-	curr->value = ms_strdup(value);
+	if (curr->value)
+		free (curr->value);
+	if (*value)
+		curr->value = ms_strdup(value);
+	else
+		curr->value = ms_strdup(value);
 }
 
-void	export_variable(t_variable **variable, t_command *command)
+void	export_variable(t_variable **variable, t_command *command, t_minishell *set)
 {
 	t_command	*cmd;
 	char		name[64];
@@ -76,8 +103,18 @@ void	export_variable(t_variable **variable, t_command *command)
 		update = value_get(update, value);
 		if (variable_check(variable, name) && ms_strchr(cmd->name, '='))
 			new_value(variable, name, value);
-		else
-			variable_next_last(variable, variable_push(name, value));
+		else if (!variable_check(variable, name))
+		{
+			if (valid_name(name))
+			{
+				if (!ms_strlen(value) && !ms_strchr(cmd->name, '='))
+					variable_next_last(variable, variable_push(name, NULL));
+				else
+					variable_next_last(variable, variable_push(name, value));
+			}
+			// else
+			// 	//status=1;
+		}
 		cmd = cmd->next;
 	}
 }

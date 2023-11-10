@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/06 16:14:12 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:52:39 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,20 @@ extern void		shell_pop(t_minishell *set);
 
 extern t_status	builtin_execute(t_minishell *set);
 extern void		environment_push(t_minishell *set);
-extern void		export_variable(t_variable **var, t_command *cmd);
+extern void		export_variable(t_variable **var,
+					t_command *cmd, t_minishell *set);
 extern void		expansion(t_command **list, t_variable *var, t_minishell *set);
 extern void		node_delete(t_command **cmd, char *name);
-extern void		error(t_minishell *set, char *error);
+extern void		error_and_clear(t_minishell *set, char *error);
 extern t_status	command_parser(t_minishell *set, char *command);
-extern t_status	quotes_is_closed(char *command, char c, t_minishell *set, t_status msg);
+extern t_status	quotes_is_closed(char *command,
+					char c, t_minishell *set, t_status msg);
+extern void		error(char *error);
+extern void		update_quotes(t_command *list, t_minishell *set, char c);
+extern void		remove_quotes(t_command *list, t_minishell *set);
 
-extern void		export(t_variable **var, t_command *cmd);
+extern void		export(t_variable **variable,
+					t_command *command, t_minishell *set);
 extern void		cd(t_command *set);
 extern void		pwd(void);
 extern void		env(void);
