@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/11 06:37:01 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/11 07:25:56 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	shell_redirect_major(t_minishell *set)
 {
 	int	fd;
 
+	fd = -1;
 	if (!ms_strncmp(set->cmd->name, ">", 1) && set->cmd->next)
 	{
 		if (access(set->cmd->next->name, F_OK))
