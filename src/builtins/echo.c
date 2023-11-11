@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:22:39 by mister-code       #+#    #+#             */
-/*   Updated: 2023/10/26 16:02:59 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/10 17:05:42 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	skip_newline(t_command **cmd, t_status *newline)
 	}
 }
 
-void	echo_execute(t_command *cmd)
+void	echo_execute(t_minishell *set)
 {
 	t_command	*upd;
 	t_status	newline;
@@ -43,9 +43,9 @@ void	echo_execute(t_command *cmd)
 
 	newline = On;
 	space = ' ';
-	if (!cmd)
+	if (!set->cmd)
 		return ;
-	upd = cmd;
+	upd = set->cmd->next;
 	skip_newline(&upd, &newline);
 	while (upd)
 	{	

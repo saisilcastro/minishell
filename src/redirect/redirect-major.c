@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   redirect-major.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/27 14:06:43 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/10 16:35:22 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/11/11 06:37:01 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	cd(t_minishell *set)
+void	shell_redirect_major(t_minishell *set)
 {
-	chdir(set->cmd->name);
+	int	fd;
+
+	if (!ms_strncmp(set->cmd->name, ">", 1) && set->cmd->next)
+	{
+		if (access(set->cmd->next->name, F_OK))
+			unlink(set->cmd->next->name);
+		fd = open(set->cmd->next->name, O_WRONLY | O_CREAT);
+	}
+	write(fd, "\0", 1);
+	close(fd);
 }

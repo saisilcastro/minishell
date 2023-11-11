@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   minishell-signal.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/27 14:06:43 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/10 16:35:22 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/11/10 12:52:25 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/11/10 12:54:35 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	cd(t_minishell *set)
+void	shell_ctrl_c(int signal)
 {
-	chdir(set->cmd->name);
+}
+
+void	shell_ctrl_backslash(int signal)
+{
 }

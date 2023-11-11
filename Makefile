@@ -3,23 +3,30 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
+#    By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/01 13:39:24 by lumedeir         ###   ########.fr        #
+#    Updated: 2023/11/10 22:09:56 by lde-cast         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-VPATH = src: ./src src: ./src/builtins
+VPATH = src: ./src src: ./src/builtins src: ./src/redirect
 SRC_FOLDER = minishell.c \
+			 minishell-function.c \
+			 minishell-signal.c \
+			 minishell-io.c \
+			 minishell-loop.c \
+			 redirect-minor.c \
+			 redirect-double-minor.c \
+			 redirect-major.c \
+			 redirect-double-major.c \
 			 variable.c \
 			 variable-next.c \
 			 environment_push.c \
 			 command.c \
 			 command-parser.c \
 			 expand.c \
-			 builtin.c \
 			 echo.c \
 			 cd.c \
 			 pwd.c \
@@ -28,6 +35,8 @@ SRC_FOLDER = minishell.c \
 			 variable-delete.c \
 			 unset.c \
 			 env.c \
+			 exit.c \
+			 utils3.c \
 			 utils2.c \
 			 utils.c
 SRC = $(SRC_FOLDER) \

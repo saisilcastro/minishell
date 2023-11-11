@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/01 13:08:07 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:40:38 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,14 @@ static void	print_sorted_command(t_variable *variable)
 	variable_pop(sorted);
 }
 
-void	export(t_variable **variable, t_command *command)
+void	export(t_minishell *set)
 {
+	t_command	*command;
+	t_variable	*variable;
+
+	command = set->cmd;
+	variable = set->var;
 	if (command && !command->next)
-		print_sorted_command(*variable);
-	export_variable(variable, command->next);
+		print_sorted_command(variable);
+	export_variable(&variable, command->next);
 }
