@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/10 21:58:11 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:15:52 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	shell_loop(t_minishell *set)
 	run = On;
 	while (run)
 	{
-		set->status = 0;
 		command = readline(PURPLE">minishell: " WHITE);
 		if (!*command)
 		{

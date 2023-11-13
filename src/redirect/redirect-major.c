@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirect-major.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/12 20:31:43 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/13 17:14:38 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void file_replacer(t_minishell *set)
+static void	file_replacer(t_minishell *set)
 {
 	int	fd;
 
@@ -27,14 +27,19 @@ static void file_replacer(t_minishell *set)
 
 static void	file_in_execute(t_minishell *set)
 {
+	char		**execute;
 	t_command	*cmd;
+	int			i;
 
-	printf("[%s]\n", set->cmd->name);
 	if (!set->cmd->next)
 		return ;
+	i = 1;
+	execute = (char **)malloc((command_size(set->cmd) - 1) * sizeof(char *));
+	*(execute + 0) = ms_strdup(set->cmd->name);
 	cmd = set->cmd->next->next->next;
 	while (cmd)
 	{
+		*(execute + i++) = ms_strdup(cmd->name);
 		printf("{%s}\n", cmd->name);
 		cmd = cmd->next;
 	}

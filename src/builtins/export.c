@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/10 16:40:38 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:20:41 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,11 @@ void	export(t_minishell *set)
 	t_command	*command;
 	t_variable	*variable;
 
+	if (set->status != 0)
+		set->status = 0;
 	command = set->cmd;
 	variable = set->var;
 	if (command && !command->next)
 		print_sorted_command(variable);
-	export_variable(&variable, command->next);
+	export_variable(set);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/12 12:55:52 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/13 15:42:14 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,19 @@ extern void		shell_ctrl_c(int sig);
 extern void		shell_ctrl_backslash(int sig);
 
 extern void		environment_push(t_minishell *set);
-extern void		export_variable(t_variable **var, t_command *cmd);
+extern void		export_variable(t_minishell *set);
 extern void		expansion(t_command **list, t_variable *var, t_minishell *set);
 extern void		node_delete(t_command **cmd, char *name);
-extern void		error(t_minishell *set, char *error);
 extern t_status	command_parser(t_minishell *set, char *command);
-extern t_status	quotes_is_closed(char *command, char c, t_minishell *set, t_status msg);
+extern t_status	quotes_is_closed(char *command, char c,
+					t_minishell *set, t_status msg);
+extern void		error(char *error);
+extern void		error_and_clear(t_minishell *set, char *error);
+extern void		update_quotes(t_command *list, t_minishell *set, char c);
+extern void		remove_quotes(t_command *list, t_minishell *set);
+extern int		upd_index(char *command, char c);
+extern void		find_var(t_command *line, t_variable *var, int index,
+					t_minishell *set);
 
 extern void		shell_redirect_minor(t_minishell *set);
 extern void		shell_redirect_double_minor(t_minishell *set);

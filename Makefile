@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+         #
+#    By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/12 12:57:04 by mister-code      ###   ########.fr        #
+#    Updated: 2023/11/13 15:43:36 by lde-cast         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ SRC_FOLDER = minishell.c \
 			 minishell-path.c \
 			 minishell-function.c \
 			 minishell-signal.c \
-			 minishell-io.c \
 			 minishell-loop.c \
 			 redirect-minor.c \
 			 redirect-double-minor.c \
@@ -24,19 +23,22 @@ SRC_FOLDER = minishell.c \
 			 redirect-double-major.c \
 			 variable.c \
 			 variable-next.c \
+			 variable-find.c \
+			 variable-delete.c \
 			 environment_push.c \
 			 command.c \
 			 command-parser.c \
+			 handle-quotes.c \
 			 expand.c \
 			 echo.c \
 			 cd.c \
 			 pwd.c \
 			 export.c \
 			 export-variable.c \
-			 variable-delete.c \
 			 unset.c \
 			 env.c \
 			 exit.c \
+			 error.c \
 			 utils3.c \
 			 utils2.c \
 			 utils.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export-variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/01 13:17:21 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:32:50 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,48 +36,83 @@ static char	*value_get(char *command, char *value)
 	return (command);
 }
 
-static t_status	variable_check(t_variable **var, char *name)
+static t_status	valid_name(char *name)
 {
-	t_variable	*curr;
+	int	index;
 
-	curr = *var;
-	while (curr)
+	if (!name || !*name)
+		return (Off);
+	index = 0;
+	if (!ms_isalpha(name[0]) && name[0] != 0x5F)
+		return (Off);
+	while (name[++index])
 	{
-		if (!ms_strncmp(curr->name, name, ms_strlen(curr->name)))
-			return (On);
-		curr = curr->next;
+		if (!ms_isalpha(name[index]) && !ms_isdigit(name[index])
+			&& name[index] != 0x5F)
+		{
+			error("export: not a valid identifier");
+			return (Off);
+		}
 	}
-	return (Off);
+	return (On);
 }
 
 static void	new_value(t_variable **var, char *name, char *value)
 {
 	t_variable	*curr;
+	t_variable	*temp;
 
+	if (!*var)
+		return ;
 	curr = *var;
-	while (curr && ms_strncmp(curr->name, name, ms_strlen(curr->name)))
+	temp = NULL;
+	while (curr)
+	{
+		if (!ms_name_cmp(name,
+				curr->name, ms_strlen(curr->name)))
+		{
+			if (!temp)
+				temp = curr;
+			if (ms_strlen(curr->name) > ms_strlen(temp->name))
+				temp = curr;
+		}
 		curr = curr->next;
-	free (curr->value);
-	curr->value = ms_strdup(value);
+	}
+	if (temp->value)
+		free (temp->value);
+	if (*value)
+		temp->value = ms_strdup(value);
+	else
+		temp->value = ms_strdup(value);
 }
 
-void	export_variable(t_variable **variable, t_command *command)
+void	export_variable(t_minishell *set)
 {
 	t_command	*cmd;
 	char		name[64];
 	char		value[65535];
 	char		*update;
 
-	cmd = command;
+	cmd = set->cmd;
 	while (cmd)
 	{
 		update = cmd->name;
 		update = name_get(update, name);
 		update = value_get(update, value);
-		if (variable_check(variable, name) && ms_strchr(cmd->name, '='))
-			new_value(variable, name, value);
-		else
-			variable_next_last(variable, variable_push(name, value));
+		if (variable_search(set->var, name) && ms_strchr(cmd->name, '='))
+			new_value(&set->var, name, value);
+		else if (!variable_search(set->var, name))
+		{
+			if (valid_name(name))
+			{
+				if (!ms_strlen(value) && !ms_strchr(cmd->name, '='))
+					variable_next_last(&set->var, variable_push(name, NULL));
+				else
+					variable_next_last(&set->var, variable_push(name, value));
+			}
+			else
+				set->status = 1;
+		}
 		cmd = cmd->next;
 	}
 }

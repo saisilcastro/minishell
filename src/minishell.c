@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/12 20:11:05 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/13 11:29:07 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	shell_set(t_minishell *set)
 
 static int	shell_redirect(t_minishell *set)
 {
-	static char *redirect[] = {"<<", ">>", "<", ">", NULL};
+	static char	*redirect[] = {"<<", ">>", "<", ">", NULL};
 	int			i;
 
 	if (set->cmd->next)
@@ -40,9 +40,11 @@ static int	shell_redirect(t_minishell *set)
 		i = -1;
 		while (redirect[++i])
 		{
-			if (!ms_strncmp(set->cmd->name, redirect[i], ms_strlen(redirect[i])))
+			if (!ms_strncmp(set->cmd->name, redirect[i],
+					ms_strlen(redirect[i])))
 				return (i);
-			else if (!ms_strncmp(set->cmd->next->name, redirect[i], ms_strlen(redirect[i])))
+			else if (!ms_strncmp(set->cmd->next->name, redirect[i],
+					ms_strlen(redirect[i])))
 				return (i);
 		}
 	}

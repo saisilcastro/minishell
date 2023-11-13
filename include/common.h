@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:09:21 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/12 18:29:42 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/13 15:56:13 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ extern char		*ms_strchr(char *str, int c);
 extern t_status	ms_isdigit(char c);
 extern int		ms_strlen(const char *str);
 extern int		ms_strncmp(char *str1, char *str2, int n);
-int				ms_name_cmp(char *str1, char *str2, int n);
-void			ms_putstr_fd(char *s, int fd);
+extern int		ms_name_cmp(char *str1, char *str2, int n);
+extern void		ms_putstr_fd(char *s, int fd);
 extern void		join_path(char *path, char *file, char *buffer);
+extern char		*ms_itoa(int n);
 
 #endif

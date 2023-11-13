@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/12 18:32:41 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/13 15:56:46 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,32 @@ void	join_path(char *path, char *file, char *buffer)
 	while (*file)
 		*(buffer + ++i) = *file++;
 	*(buffer + ++i) = '\0';
+}
+
+char	*ms_itoa(int n)
+{
+	char	buffer[12];
+	int		index;
+	char	sinal;
+
+	if (n == 0)
+		return (ms_strdup("0"));
+	sinal = 0;
+	index = 12;
+	buffer[--index] = '\0';
+	if (n < 0)
+	{
+		buffer[--index] = (n % 10) * -1 + '0';
+		n /= 10;
+		n = n * -1;
+		sinal = '-';
+	}
+	while (n != 0)
+	{
+		buffer[--index] = (n % 10) + '0';
+		n /= 10;
+	}
+	if (sinal == '-')
+		buffer[--index] = sinal;
+	return (ms_strdup(&buffer[index]));
 }

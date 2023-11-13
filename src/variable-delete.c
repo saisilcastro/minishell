@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable-delete.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 12:42:43 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/02 12:26:47 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:18:56 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,29 @@
 
 void	variable_delete(t_variable **list, char *name)
 {
-	t_variable	*update;
+	t_variable	*curr;
+	t_variable	*next;
 
-	update = *list;
-	while (update)
+	curr = *list;
+	if (!curr->next->next)
 	{
-		if (ms_strcmp(update->name, name))
+		curr->next = NULL;
+		return ;
+	}
+	while (curr)
+	{
+		if (!ms_strncmp(curr->next->name, name, ms_strlen(name)))
 		{
-			update->value = "";
+			next = curr->next;
+			curr->next = curr->next->next;
+			if (next->name)
+				free(next->name);
+			if (next->value)
+				free(next->value);
+			free(next);
 			return ;
 		}
-		update = update->next;
+		curr = curr->next;
 	}
 }
 
