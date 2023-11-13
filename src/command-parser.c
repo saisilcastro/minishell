@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/10 15:46:06 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:37:45 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,16 @@ t_status	quotes_is_closed(char *command, char c,
 	return (Off);
 }
 
+int	att_index(char *command, char c)
+{
+	int	index;
+
+	index = 0;
+	while (command[index] != c)
+		index++;
+	return (index);
+}
+
 static int	catch_parsing(char *command, char *buffer, t_minishell *set)
 {
 	int	index;
@@ -62,17 +72,9 @@ static int	catch_parsing(char *command, char *buffer, t_minishell *set)
 				return (-1);
 			symbol_remaider(command + index, buffer, &index2, command[index]);
 			if (command[index] == '\'')
-			{
-				index++;
-				while (command[index] && command[index] != '\'')
-					index++;
-			}
+				index += att_index(command + (index + 1), '\'') + 1;
 			else
-			{
-				index++;
-				while (command[index] && command[index] != '\"')
-					index++;
-			}
+				index += att_index(command + (index + 1), '"') + 1;
 			if (!command[index])
 				break ;
 		}

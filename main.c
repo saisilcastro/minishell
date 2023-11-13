@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/08 12:55:24 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/10/25 15:30:17 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@ int	main(void)
 	shell_set(&hell);
 	shell_loop(&hell);
 	shell_pop(&hell);
-	return ((unsigned char)hell.status);
+	return (0);
 }

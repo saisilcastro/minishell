@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/10 15:32:51 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:02:10 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,30 @@ static t_status	valid_name(char *name)
 static void	new_value(t_variable **var, char *name, char *value)
 {
 	t_variable	*curr;
+	t_variable	*temp;
 
 	if (!*var)
 		return ;
 	curr = *var;
-	while (ms_strncmp(curr->name, name, ms_strlen(name)))
+	temp = NULL;
+	while (curr)
+	{
+		if (!ms_name_cmp(name,
+				curr->name, ms_strlen(curr->name)))
+		{
+			if (!temp)
+				temp = curr;
+			if (ms_strlen(curr->name) > ms_strlen(temp->name))
+				temp = curr;
+		}
 		curr = curr->next;
-	if (curr->value)
-		free (curr->value);
+	}
+	if (temp->value)
+		free (temp->value);
 	if (*value)
-		curr->value = ms_strdup(value);
+		temp->value = ms_strdup(value);
 	else
-		curr->value = ms_strdup(value);
+		temp->value = ms_strdup(value);
 }
 
 void	export_variable(t_variable **variable, t_command *command, t_minishell *set)

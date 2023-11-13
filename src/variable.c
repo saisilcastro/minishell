@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/09 16:46:09 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/13 12:44:15 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,10 @@ t_variable	*variable_search(t_variable *list, char *name)
 	t_variable	*update;
 
 	update = list;
+	printf("%s\n", name);
 	while (update)
 	{
-		if (ms_strcmp(update->name, name))
+		if (ms_strncmp(update->name, name, ms_strlen(name)))
 			return (update);
 		update = update->next;
 	}
