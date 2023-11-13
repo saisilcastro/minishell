@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+         #
+#    By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/10 22:09:56 by lde-cast         ###   ########.fr        #
+#    Updated: 2023/11/12 12:57:04 by mister-code      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 VPATH = src: ./src src: ./src/builtins src: ./src/redirect
 SRC_FOLDER = minishell.c \
+			 minishell-path.c \
 			 minishell-function.c \
 			 minishell-signal.c \
 			 minishell-io.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/10 22:58:53 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/12 20:11:05 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	shell_set(t_minishell *set)
 		return ;
 	set->cmd = NULL;
 	set->var = NULL;
+	set->path = NULL;
 	set->file = NULL;
 	set->status = 0;
 	//signal(SIGINT, control_c);
@@ -25,23 +26,26 @@ void	shell_set(t_minishell *set)
 	environment_push(set);
 	variable_next_first(&set->var, variable_push("test", "Olá"));
 	variable_next_first(&set->var, variable_push("test2", "Mundo!!"));
+	shell_path(set);
 	shell_function(set);
 }
 
 static int	shell_redirect(t_minishell *set)
 {
-	if (!ms_strncmp(set->cmd->name, "<<", 2)
-		|| (set->cmd->next && !ms_strncmp(set->cmd->name, "<<", 2)))
-		return (0);
-	else if (!ms_strncmp(set->cmd->name, ">>", 2)
-		|| (set->cmd->next && !ms_strncmp(set->cmd->name, ">>", 2)))
-		return (1);
-	else if (!ms_strncmp(set->cmd->name, "<", 1)
-		|| (set->cmd->next && !ms_strncmp(set->cmd->name, "<", 1)))
-		return (2);
-	else if (!ms_strncmp(set->cmd->name, ">", 1)
-		|| (set->cmd->next && !ms_strncmp(set->cmd->name, ">", 1)))
-		return (3);
+	static char *redirect[] = {"<<", ">>", "<", ">", NULL};
+	int			i;
+
+	if (set->cmd->next)
+	{
+		i = -1;
+		while (redirect[++i])
+		{
+			if (!ms_strncmp(set->cmd->name, redirect[i], ms_strlen(redirect[i])))
+				return (i);
+			else if (!ms_strncmp(set->cmd->next->name, redirect[i], ms_strlen(redirect[i])))
+				return (i);
+		}
+	}
 	return (-1);
 }
 

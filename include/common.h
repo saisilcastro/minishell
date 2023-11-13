@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:09:21 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/08 12:32:00 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/12 18:29:42 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ extern int		ms_strlen(const char *str);
 extern int		ms_strncmp(char *str1, char *str2, int n);
 int				ms_name_cmp(char *str1, char *str2, int n);
 void			ms_putstr_fd(char *s, int fd);
+extern void		join_path(char *path, char *file, char *buffer);
 
 #endif

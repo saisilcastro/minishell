@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 11:39:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/08 12:05:48 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:10:38 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ int	ms_strncmp(char *str1, char *str2, int n)
 	str3 = (unsigned char *)str1;
 	str4 = (unsigned char *)str2;
 	count = 0;
-	while ((count < n) && (str3[count] != '\0' || str4[count] != '\0'))
+	while ((count < n) && (str3[count] != '\0' && str4[count] != '\0'))
 	{
 		if (count < n && str3[count] != str4[count])
 			return (str3[count] - str4[count]);
 		count++;
 	}
+	if (str3[count] || str4[count])
+		return (str3[count] - str4[count]);
 	return (0);
 }
 

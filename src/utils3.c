@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/08 14:56:03 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/12 18:32:41 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,17 @@ int	ms_atoi(char *str)
 		str++;
 	}
 	return (number * mul);
+}
+
+void	join_path(char *path, char *file, char *buffer)
+{
+	int	i;
+
+	i = -1;
+	while (*path)
+		*(buffer + ++i) = *path++;
+	*(buffer + ++i) = '/';
+	while (*file)
+		*(buffer + ++i) = *file++;
+	*(buffer + ++i) = '\0';
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/02 12:18:42 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:11:24 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_variable	*variable_search(t_variable *list, char *name)
 	update = list;
 	while (update)
 	{
-		if (ms_strcmp(update->name, name))
+		if (!ms_strncmp(update->name, name, ms_strlen(name)))
 			return (update);
 		update = update->next;
 	}
