@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 12:35:32 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/13 12:36:02 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:54:04 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,14 @@ static void	update(t_command *list, char *value, int size, int position)
 	copy[index] = '\0';
 	free (list->name);
 	list->name = ms_strdup(copy);
+}
+
+static int	namelen(char *str)
+{
+	int	index;
+
+	index = 0;
+	while (str[index] != )
 }
 
 void	find_var(t_command *line, t_variable *var, int index,
