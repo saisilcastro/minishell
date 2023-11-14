@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 12:35:32 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/14 11:54:04 by lumedeir         ###   ########.fr       */
+/*   Created: 2023/11/13 15:18:03 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/11/14 12:24:39 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	update(t_command *list, char *value, int size, int position)
 	int		index2;
 
 	index = -1;
-	while (list->name[++index] && index < position)
+	while (list->name && list->name[++index] && index < position)
 		copy[index] = list->name[index];
 	index2 = index + size + 1;
 	while (value && *value)
@@ -65,7 +65,10 @@ static int	namelen(char *str)
 	int	index;
 
 	index = 0;
-	while (str[index] != )
+	while (!has_space(str[index]) && (ms_isalpha(str[index])
+			|| ms_isdigit(str[index]) || str[index] == 0x5F))
+		index++;
+	return (index - 1);
 }
 
 void	find_var(t_command *line, t_variable *var, int index,
@@ -76,12 +79,15 @@ void	find_var(t_command *line, t_variable *var, int index,
 
 	curr_var = var;
 	temp = NULL;
-	// if (line->name[index] == 0x3F)
-	// 	update(line, ms_atoi(set->status), ms_strlen(temp->name), index - 1);
+	if (line->name[index] == 0x3F)
+	{
+		update(line, ms_itoa(set->status), 1, index - 1);
+		return ;
+	}
 	while (curr_var)
 	{
 		if (!ms_name_cmp(line->name + index,
-				curr_var->name, ms_strlen(curr_var->name)))
+				curr_var->name, namelen(line->name + index)))
 		{
 			if (!temp)
 				temp = curr_var;

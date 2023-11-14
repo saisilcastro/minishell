@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/10 13:27:02 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/10 14:50:29 by lumedeir         ###   ########.fr       */
+/*   Created: 2023/11/13 15:19:28 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/11/14 14:51:07 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,20 @@ void	remove_quotes(t_command *list, t_minishell *set)
 			&& list->name[index] != '"')
 			index++;
 	}
+}
+
+t_status	quotes_is_closed(char *command, char c,
+	t_minishell *set, t_status msg)
+{
+	int	index;
+
+	index = 0;
+	while (command && command[++index])
+	{
+		if (command[index] == c)
+			return (On);
+	}
+	if (msg == On)
+		error_and_clear(set, "Unclosed quotes in the string.");
+	return (Off);
 }

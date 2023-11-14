@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:09:21 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/02 17:45:21 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:22:39 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ enum e_status{
 };
 
 extern char		has_space(char c);
+extern int		ms_atoi(char *str);
 extern int		ms_strcmp(char *one, char *two);
 extern t_status	ms_isalpha(char c);
 extern char		*ms_strdup(char *str);
@@ -29,7 +30,10 @@ extern char		*ms_strchr(char *str, int c);
 extern t_status	ms_isdigit(char c);
 extern int		ms_strlen(const char *str);
 extern int		ms_strncmp(char *str1, char *str2, int n);
-int				ms_name_cmp(char *str1, char *str2, int n);
-void			ms_putstr_fd(char *s, int fd);
+extern int		ms_name_cmp(char *str1, char *str2, int n);
+extern void		ms_putstr_fd(char *s, int fd);
+extern void		join_path(char *path, char *file, char *buffer);
+extern char		*ms_itoa(int n);
+extern t_status	has_special(char c);
 
 #endif

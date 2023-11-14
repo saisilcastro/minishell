@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/31 12:43:54 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:53:53 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,21 @@ void	command_next_last(t_command **list, t_command *set)
 	while (upd->next)
 		upd = upd->next;
 	upd->next = set;
+}
+
+int	command_size(t_command *list)
+{
+	t_command	*upd;
+	int			size;
+
+	size = 0;
+	upd = list;
+	while (upd)
+	{
+		size++;
+		upd = upd->next;
+	}
+	return (size);
 }
 
 void	command_pop(t_command **list)

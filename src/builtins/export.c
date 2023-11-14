@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/09 16:12:35 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:20:41 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,23 @@ static void	print_sorted_command(t_variable *variable)
 	upd = sorted;
 	while (upd)
 	{
-		if (upd->value == NULL)
-			printf("declare -x %s\n", upd->name);
-		else
+		if (ms_strlen(upd->value))
 			printf("declare -x %s=\"%s\"\n", upd->name, upd->value);
 		upd = upd->next;
 	}
 	variable_pop(sorted);
 }
 
-void	export(t_variable **variable, t_command *command, t_minishell *set)
+void	export(t_minishell *set)
 {
+	t_command	*command;
+	t_variable	*variable;
+
+	if (set->status != 0)
+		set->status = 0;
+	command = set->cmd;
+	variable = set->var;
 	if (command && !command->next)
-		print_sorted_command(*variable);
-	export_variable(variable, command->next, set);
+		print_sorted_command(variable);
+	export_variable(set);
 }

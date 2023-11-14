@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/13 12:37:28 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:35:58 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	find_signal(t_command *list, t_variable *var, t_command **cmd,
 	while (list->name && list->name[index])
 	{
 		if (list->name[index] == '\'')
-			index += att_index(list->name + (index + 1), '\'');
+			index += upd_index(list->name + (index + 1), '\'');
 		else if (list->name[index] == '\"')
 			do_expansion(list, &index, var, set);
 		if (list->name[index] && list->name[index] == '$'

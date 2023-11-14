@@ -6,13 +6,14 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 14:54:28 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/10/25 15:55:11 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:35:42 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	pwd(void)
+void	pwd(t_minishell *set)
 {
+	(void)set;
 	printf("%s\n", getcwd(NULL, 0));
 }

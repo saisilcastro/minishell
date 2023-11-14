@@ -6,31 +6,40 @@
 #    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/13 12:37:58 by lumedeir         ###   ########.fr        #
+#    Updated: 2023/11/14 14:20:12 by lumedeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-VPATH = src: ./src src: ./src/builtins
+VPATH = src: ./src src: ./src/builtins src: ./src/redirect src: ./src/parser src: ./src/utils
 SRC_FOLDER = minishell.c \
+			 minishell-path.c \
+			 minishell-function.c \
+			 minishell-signal.c \
+			 minishell-loop.c \
+			 redirect-minor.c \
+			 redirect-double-minor.c \
+			 redirect-major.c \
+			 redirect-double-major.c \
 			 variable.c \
 			 variable-next.c \
+			 variable-find.c \
+			 variable-delete.c \
 			 environment_push.c \
 			 command.c \
 			 command-parser.c \
+			 handle-quotes.c \
 			 expand.c \
-			 builtin.c \
 			 echo.c \
 			 cd.c \
 			 pwd.c \
 			 export.c \
 			 export-variable.c \
-			 variable-delete.c \
-			 variable-find.c \
-			 handle-quotes.c \
 			 unset.c \
 			 env.c \
+			 exit.c \
 			 error.c \
+			 utils3.c \
 			 utils2.c \
 			 utils.c
 SRC = $(SRC_FOLDER) \

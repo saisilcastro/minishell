@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 15:30:17 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/14 12:16:00 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+typedef enum{
+	APOSTROPHE = 239,
+	DOUBLE_QUOTE = 249
+}SPECIAL;
 
 int	main(void)
 {
@@ -19,5 +24,5 @@ int	main(void)
 	shell_set(&hell);
 	shell_loop(&hell);
 	shell_pop(&hell);
-	return (0);
+	return ((unsigned char)hell.status);
 }

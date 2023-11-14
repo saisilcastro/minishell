@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 12:44:15 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:11:24 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_variable	*variable_push(char *name, char *value)
 	variable_set(set);
 	set->name = ms_strdup(name);
 	set->value = ms_strdup(value);
-	set->next = NULL;
 	return (set);
 }
 
@@ -50,10 +49,9 @@ t_variable	*variable_search(t_variable *list, char *name)
 	t_variable	*update;
 
 	update = list;
-	printf("%s\n", name);
 	while (update)
 	{
-		if (ms_strncmp(update->name, name, ms_strlen(name)))
+		if (!ms_strncmp(update->name, name, ms_strlen(name)))
 			return (update);
 		update = update->next;
 	}

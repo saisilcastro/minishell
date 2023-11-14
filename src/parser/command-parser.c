@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 11:37:45 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/14 16:27:52 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,7 @@ static void	symbol_remaider(char *command, char *buffer, int *i, char c)
 	*i += 1;
 }
 
-t_status	quotes_is_closed(char *command, char c,
-	t_minishell *set, t_status msg)
-{
-	int	index;
-
-	index = 0;
-	while (command && command[++index])
-	{
-		if (command[index] == c)
-			return (On);
-	}
-	if (msg == On)
-		error_and_clear(set, "Unclosed quotes in the string.");
-	return (Off);
-}
-
-int	att_index(char *command, char c)
+int	upd_index(char *command, char c)
 {
 	int	index;
 
@@ -57,6 +41,30 @@ int	att_index(char *command, char c)
 	return (index);
 }
 
+static t_status	catch_special(char *command, char *buffer, int *i, int *index)
+{
+	*(buffer + *i) = command[0];
+	*index += 1;
+	if (has_special(command[1]))
+	{
+		if (!has_special(command[2]) && (command[0] == '>'
+				&& command[1] == '>')
+			|| (command[0] == '<' && command[1] == '<'))
+		{
+			*index += 1;
+			*i += 1;
+			*(buffer + *i) = command[1];
+			*i += 1;
+		}
+		else
+		{
+			error("error: syntax error unexpected");
+			return (Off);
+		}
+	}
+	return (On);
+}
+
 static int	catch_parsing(char *command, char *buffer, t_minishell *set)
 {
 	int	index;
@@ -64,23 +72,29 @@ static int	catch_parsing(char *command, char *buffer, t_minishell *set)
 
 	index = 0;
 	index2 = 0;
-	while (command && command[index] && !has_space(command[index]))
+	if (has_special(command[index]))
 	{
-		if (command[index] == '\'' || command[index] == '\"')
+		if (!catch_special(command + index, buffer, &index2, &index))
+			return (-1);
+	}
+	else
+	{
+		while (command && command[index] && !has_space(command[index])
+			&& !has_special(command[index]))
 		{
-			if (!quotes_is_closed(command + index, command[index], set, On))
-				return (-1);
-			symbol_remaider(command + index, buffer, &index2, command[index]);
-			if (command[index] == '\'')
-				index += att_index(command + (index + 1), '\'') + 1;
+			if (command[index] == '\'' || command[index] == '\"')
+			{
+				if (!quotes_is_closed(command + index, command[index], set, On))
+					return (-1);
+				symbol_remaider(command + index, buffer, &index2, command[index]);
+				index += upd_index(command + (index + 1), command[index]) + 1;
+				if (!command[index])
+					break ;
+			}
 			else
-				index += att_index(command + (index + 1), '"') + 1;
-			if (!command[index])
-				break ;
+				*(buffer + index2++) = command[index];
+			index++;
 		}
-		else
-			*(buffer + index2++) = command[index];
-		index++;
 	}
 	*(buffer + index2) = '\0';
 	return (index);
@@ -101,7 +115,10 @@ t_status	command_parser(t_minishell *set, char *command)
 			index++;
 		update = catch_parsing(command + index, buffer, set);
 		if (update == -1)
+		{
+			set->status = -1;
 			return (Off);
+		}
 		command_next_last(&set->cmd, command_push(buffer));
 		index += update;
 	}

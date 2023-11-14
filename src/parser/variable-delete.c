@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable-delete.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 12:42:43 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/10 12:11:51 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:18:56 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	variable_delete(t_variable **list, char *name)
 void	node_delete(t_command **cmd, char *name)
 {
 	t_command	*curr;
-	t_variable	*next;
 
 	curr = *cmd;
 	if (!curr->next->next)
