@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:03 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/14 12:24:39 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:49:58 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,33 +71,32 @@ static int	namelen(char *str)
 	return (index - 1);
 }
 
-void	find_var(t_command *line, t_variable *var, int index,
+void	find_var(t_command *line, t_variable *var, int i,
 		t_minishell *set)
 {
 	t_variable	*temp;
-	t_variable	*curr_var;
+	t_variable	*curr;
 
-	curr_var = var;
+	curr = var;
 	temp = NULL;
-	if (line->name[index] == 0x3F)
+	if (line->name[i] == 0x3F)
 	{
-		update(line, ms_itoa(set->status), 1, index - 1);
+		update(line, ms_itoa(set->status), 1, i - 1);
 		return ;
 	}
-	while (curr_var)
+	while (curr)
 	{
-		if (!ms_name_cmp(line->name + index,
-				curr_var->name, namelen(line->name + index)))
+		if (!ms_name_cmp(line->name + i, curr->name, namelen(line->name + i)))
 		{
 			if (!temp)
-				temp = curr_var;
-			if (ms_strlen(curr_var->name) > ms_strlen(temp->name))
-				temp = curr_var;
+				temp = curr;
+			if (ms_strlen(curr->name) > ms_strlen(temp->name))
+				temp = curr;
 		}
-		curr_var = curr_var->next;
+		curr = curr->next;
 	}
 	if (temp)
-		update(line, temp->value, ms_strlen(temp->name), index - 1);
+		update(line, temp->value, ms_strlen(temp->name), i - 1);
 	else
-		skip(line, index);
+		skip(line, i);
 }

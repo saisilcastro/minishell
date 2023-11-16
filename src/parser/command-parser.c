@@ -6,13 +6,55 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/14 16:27:52 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:36:49 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	symbol_remaider(char *command, char *buffer, int *i, char c)
+static t_status	catch_special(char *command, char *buffer, int *index)
+{
+	int	i;
+
+	i = 0;
+	*(buffer + i) = command[0];
+	*index += 1;
+	if (has_special(command[1]))
+	{
+		if (!has_special(command[2]) && (command[0] == '>'
+				&& command[1] == '>')
+			|| (command[0] == '<' && command[1] == '<'))
+		{
+			*index += 1;
+			i++;
+			*(buffer + i) = command[1];
+			i++;
+		}
+		else
+		{
+			error("error: syntax error unexpected");
+			return (Off);
+		}
+	}
+	return (On);
+}
+
+static int	catch_parsing(char *command, char *buffer, t_minishell *set)
+{
+	int	index;
+
+	index = 0;
+	if (has_special(command[index]))
+	{
+		if (!catch_special(command + index, buffer, &index))
+			return (-1);
+	}
+	else
+		index = handle_quotes(command, buffer, set);
+	return (index);
+}
+
+void	symbol_remaider(char *command, char *buffer, int *i, char c)
 {
 	int	index;
 
@@ -38,65 +80,6 @@ int	upd_index(char *command, char c)
 	index = 0;
 	while (command[index] != c)
 		index++;
-	return (index);
-}
-
-static t_status	catch_special(char *command, char *buffer, int *i, int *index)
-{
-	*(buffer + *i) = command[0];
-	*index += 1;
-	if (has_special(command[1]))
-	{
-		if (!has_special(command[2]) && (command[0] == '>'
-				&& command[1] == '>')
-			|| (command[0] == '<' && command[1] == '<'))
-		{
-			*index += 1;
-			*i += 1;
-			*(buffer + *i) = command[1];
-			*i += 1;
-		}
-		else
-		{
-			error("error: syntax error unexpected");
-			return (Off);
-		}
-	}
-	return (On);
-}
-
-static int	catch_parsing(char *command, char *buffer, t_minishell *set)
-{
-	int	index;
-	int	index2;
-
-	index = 0;
-	index2 = 0;
-	if (has_special(command[index]))
-	{
-		if (!catch_special(command + index, buffer, &index2, &index))
-			return (-1);
-	}
-	else
-	{
-		while (command && command[index] && !has_space(command[index])
-			&& !has_special(command[index]))
-		{
-			if (command[index] == '\'' || command[index] == '\"')
-			{
-				if (!quotes_is_closed(command + index, command[index], set, On))
-					return (-1);
-				symbol_remaider(command + index, buffer, &index2, command[index]);
-				index += upd_index(command + (index + 1), command[index]) + 1;
-				if (!command[index])
-					break ;
-			}
-			else
-				*(buffer + index2++) = command[index];
-			index++;
-		}
-	}
-	*(buffer + index2) = '\0';
 	return (index);
 }
 
