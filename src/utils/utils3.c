@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 15:56:46 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:25:48 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,11 @@ char	*ms_itoa(int n)
 	if (sinal == '-')
 		buffer[--index] = sinal;
 	return (ms_strdup(&buffer[index]));
+}
+
+t_status	has_special(char c)
+{
+	if (c == '<' || c == '>' || c == '|')
+		return (On);
+	return (Off);
 }

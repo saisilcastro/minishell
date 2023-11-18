@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 11:39:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/12 13:10:38 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/11/14 12:13:25 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ int	ms_name_cmp(char *str1, char *str2, int n)
 			return (str1[count] - str2[count]);
 		count++;
 	}
+	if (!str2 && count < n)
+		return (str1[count] - str2[count]);
 	if (!str1[count] && !str2[count])
 		return (0);
 	if (!str1)
 		return (0);
-	if (!str2)
-		return (str1[count] - str2[count]);
 	return (0);
 }
 

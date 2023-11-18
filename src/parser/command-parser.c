@@ -6,13 +6,58 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 16:23:18 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/17 20:44:17 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	symbol_remaider(char *command, char *buffer, int *i, char c)
+static t_status	catch_special(char *command, char *buffer, int *index)
+{
+	int	i;
+
+	i = 0;
+	*(buffer + i) = command[0];
+	*index += 1;
+	if (has_special(command[1]))
+	{
+		if (!has_special(command[2]) && (command[0] == '>'
+				&& command[1] == '>')
+			|| (command[0] == '<' && command[1] == '<'))
+		{
+			*index += 1;
+			i++;
+			*(buffer + i) = command[1];
+			i++;
+		}
+		else
+		{
+			error("error: syntax error unexpected");
+			return (Off);
+		}
+	}
+	*(buffer + ++i) = '\0';
+	return (On);
+}
+
+static int	catch_parsing(char *command, char *buffer, t_minishell *set)
+{
+	int	index;
+
+	index = 0;
+	if (has_special(command[index]))
+	{
+		if (!catch_special(command + index, buffer, &index))
+			return (-1);
+	}
+	else
+	{
+		index = handle_quotes(command, buffer, set);
+	}
+	return (index);
+}
+
+void	symbol_remaider(char *command, char *buffer, int *i, char c)
 {
 	int	index;
 
@@ -31,25 +76,6 @@ static void	symbol_remaider(char *command, char *buffer, int *i, char c)
 	*i += 1;
 }
 
-t_status	quotes_is_closed(char *command, char c,
-	t_minishell *set, t_status msg)
-{
-	int	index;
-
-	index = 0;
-	while (command && command[++index])
-	{
-		if (command[index] == c)
-			return (On);
-	}
-	if (msg == On)
-	{
-		error_and_clear(set, "Unclosed quotes in the string.");
-		set->status = -1;
-	}
-	return (Off);
-}
-
 int	upd_index(char *command, char c)
 {
 	int	index;
@@ -57,35 +83,6 @@ int	upd_index(char *command, char c)
 	index = 0;
 	while (command[index] != c)
 		index++;
-	return (index);
-}
-
-static int	catch_parsing(char *command, char *buffer, t_minishell *set)
-{
-	int	index;
-	int	index2;
-
-	index = 0;
-	index2 = 0;
-	while (command && command[index] && !has_space(command[index]))
-	{
-		if (command[index] == '\'' || command[index] == '\"')
-		{
-			if (!quotes_is_closed(command + index, command[index], set, On))
-				return (-1);
-			symbol_remaider(command + index, buffer, &index2, command[index]);
-			if (command[index] == '\'')
-				index += upd_index(command + (index + 1), '\'') + 1;
-			else
-				index += upd_index(command + (index + 1), '"') + 1;
-			if (!command[index])
-				break ;
-		}
-		else
-			*(buffer + index2++) = command[index];
-		index++;
-	}
-	*(buffer + index2) = '\0';
 	return (index);
 }
 
@@ -104,7 +101,10 @@ t_status	command_parser(t_minishell *set, char *command)
 			index++;
 		update = catch_parsing(command + index, buffer, set);
 		if (update == -1)
+		{
+			set->status = -1;
 			return (Off);
+		}
 		command_next_last(&set->cmd, command_push(buffer));
 		index += update;
 	}

@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 15:42:14 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/17 18:54:42 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 typedef struct s_minishell	t_minishell;
 struct s_minishell{
 	t_variable	*var;
+	//t_command	*pipe;
 	t_command	*cmd;
 	t_command	*path;
 	t_command	*file;
@@ -62,7 +63,6 @@ extern t_status	quotes_is_closed(char *command, char c,
 					t_minishell *set, t_status msg);
 extern void		error(char *error);
 extern void		error_and_clear(t_minishell *set, char *error);
-extern void		update_quotes(t_command *list, t_minishell *set, char c);
 extern void		remove_quotes(t_command *list, t_minishell *set);
 extern int		upd_index(char *command, char c);
 extern void		find_var(t_command *line, t_variable *var, int index,
@@ -72,6 +72,8 @@ extern void		shell_redirect_minor(t_minishell *set);
 extern void		shell_redirect_double_minor(t_minishell *set);
 extern void		shell_redirect_major(t_minishell *set);
 extern void		shell_redirect_double_major(t_minishell *set);
+extern void		symbol_remaider(char *command, char *buffer, int *i, char c);
+extern int		handle_quotes(char *command, char *buffer, t_minishell *set);
 
 extern void		echo(t_minishell *set);
 extern void		export(t_minishell *set);

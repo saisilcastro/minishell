@@ -6,12 +6,12 @@
 #    By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/13 15:43:36 by lde-cast         ###   ########.fr        #
+#    Updated: 2023/11/17 13:35:11 by lde-cast         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-VPATH = src: ./src src: ./src/builtins src: ./src/redirect
+VPATH = src: ./src src: ./src/builtins src: ./src/redirect src: ./src/parser src: ./src/utils
 SRC_FOLDER = minishell.c \
 			 minishell-path.c \
 			 minishell-function.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:22:39 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/10 17:05:42 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/14 16:30:18 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ void	echo_execute(t_minishell *set)
 	}
 	if (newline)
 		printf("\n");
+	set->status = 0;
 }

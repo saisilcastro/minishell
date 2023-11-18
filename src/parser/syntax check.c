@@ -1,23 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   syntax check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/17 18:36:12 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/11/14 14:25:58 by lumedeir          #+#    #+#             */
+/*   Updated: 2023/11/14 14:25:59 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
-
-int	main(void)
-{
-	t_minishell	hell;
-
-	shell_set(&hell);
-	shell_loop(&hell);
-	shell_pop(&hell);
-	return ((unsigned char)hell.status);
-}

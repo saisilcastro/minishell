@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable-find.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:03 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 16:08:56 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:49:58 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,8 @@ static void	update(t_command *list, char *value, int size, int position)
 	int		index;
 	int		index2;
 
-	printf("[%s]\n", value);
 	index = -1;
-	while (list->name[++index] && index < position)
+	while (list->name && list->name[++index] && index < position)
 		copy[index] = list->name[index];
 	index2 = index + size + 1;
 	while (value && *value)
@@ -61,34 +60,43 @@ static void	update(t_command *list, char *value, int size, int position)
 	list->name = ms_strdup(copy);
 }
 
-void	find_var(t_command *line, t_variable *var, int index,
+static int	namelen(char *str)
+{
+	int	index;
+
+	index = 0;
+	while (!has_space(str[index]) && (ms_isalpha(str[index])
+			|| ms_isdigit(str[index]) || str[index] == 0x5F))
+		index++;
+	return (index - 1);
+}
+
+void	find_var(t_command *line, t_variable *var, int i,
 		t_minishell *set)
 {
 	t_variable	*temp;
-	t_variable	*curr_var;
+	t_variable	*curr;
 
-	curr_var = var;
+	curr = var;
 	temp = NULL;
-	if (line->name[index] == 0x3F)
+	if (line->name[i] == 0x3F)
 	{
-		printf("##########%i\n", set->status);
-		update(line, ms_itoa(set->status), 1, index - 1);
+		update(line, ms_itoa(set->status), 1, i - 1);
 		return ;
 	}
-	while (curr_var)
+	while (curr)
 	{
-		if (!ms_name_cmp(line->name + index,
-				curr_var->name, ms_strlen(curr_var->name)))
+		if (!ms_name_cmp(line->name + i, curr->name, namelen(line->name + i)))
 		{
 			if (!temp)
-				temp = curr_var;
-			if (ms_strlen(curr_var->name) > ms_strlen(temp->name))
-				temp = curr_var;
+				temp = curr;
+			if (ms_strlen(curr->name) > ms_strlen(temp->name))
+				temp = curr;
 		}
-		curr_var = curr_var->next;
+		curr = curr->next;
 	}
 	if (temp)
-		update(line, temp->value, ms_strlen(temp->name), index - 1);
+		update(line, temp->value, ms_strlen(temp->name), i - 1);
 	else
-		skip(line, index);
+		skip(line, i);
 }

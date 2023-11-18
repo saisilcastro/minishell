@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export-variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/13 16:32:50 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:01:22 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*value_get(char *command, char *value)
 	return (command);
 }
 
-static t_status	valid_name(char *name)
+static t_status	valid_name(char *name, t_minishell *set)
 {
 	int	index;
 
@@ -44,12 +44,17 @@ static t_status	valid_name(char *name)
 		return (Off);
 	index = 0;
 	if (!ms_isalpha(name[0]) && name[0] != 0x5F)
+	{
+		set->status = -1;
+		error("export: syntax erro unexpected");
 		return (Off);
+	}
 	while (name[++index])
 	{
 		if (!ms_isalpha(name[index]) && !ms_isdigit(name[index])
 			&& name[index] != 0x5F)
 		{
+			set->status = -1;
 			error("export: not a valid identifier");
 			return (Off);
 		}
@@ -103,15 +108,13 @@ void	export_variable(t_minishell *set)
 			new_value(&set->var, name, value);
 		else if (!variable_search(set->var, name))
 		{
-			if (valid_name(name))
+			if (valid_name(name, set))
 			{
 				if (!ms_strlen(value) && !ms_strchr(cmd->name, '='))
 					variable_next_last(&set->var, variable_push(name, NULL));
 				else
 					variable_next_last(&set->var, variable_push(name, value));
 			}
-			else
-				set->status = 1;
 		}
 		cmd = cmd->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:09:21 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 15:56:13 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:22:39 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ extern int		ms_name_cmp(char *str1, char *str2, int n);
 extern void		ms_putstr_fd(char *s, int fd);
 extern void		join_path(char *path, char *file, char *buffer);
 extern char		*ms_itoa(int n);
+extern t_status	has_special(char c);
 
 #endif

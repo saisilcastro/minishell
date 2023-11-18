@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 11:29:07 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/17 19:06:52 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	shell_set(t_minishell *set)
 {
 	if (!set)
 		return ;
+	//set->pipe = NULL;
 	set->cmd = NULL;
 	set->var = NULL;
 	set->path = NULL;
