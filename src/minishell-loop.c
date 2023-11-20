@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/17 13:47:09 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:04:34 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	shell_loop(t_minishell *set)
 		add_history(command);
 		if (!command_parser(set, command))
 		{
-			command_pop(&set->cmd);
 			free (command);
 			continue ;
 		}

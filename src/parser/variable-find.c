@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:03 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/16 17:49:58 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:08:27 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,28 @@ static void	skip(t_command *list, int position)
 static void	update(t_command *list, char *value, int size, int position)
 {
 	char	copy[40000];
-	int		index;
+	int		i;
 	int		index2;
 
-	index = -1;
-	while (list->name && list->name[++index] && index < position)
-		copy[index] = list->name[index];
-	index2 = index + size + 1;
+	i = 0;
+	while (list->name && list->name[0] != '$' && list->name[i] && i < position)
+	{
+		copy[i] = list->name[i];
+		i++;
+	}
+	index2 = i + size + 1;
 	while (value && *value)
 	{
-		copy[index] = *value++;
-		index++;
+		copy[i] = *value++;
+		i++;
 	}
 	while (list->name[index2])
 	{
-		copy[index] = list->name[index2];
-		index++;
+		copy[i] = list->name[index2];
+		i++;
 		index2++;
 	}
-	copy[index] = '\0';
+	copy[i] = '\0';
 	free (list->name);
 	list->name = ms_strdup(copy);
 }
