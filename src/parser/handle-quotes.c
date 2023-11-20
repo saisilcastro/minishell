@@ -6,13 +6,13 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:19:28 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/16 17:35:11 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:21:08 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	update_quotes(t_command *list, t_minishell *set, char c)
+static void	update_quotes(t_command *list, t_minishell *set, char c)
 {
 	char	copy[40000];
 	int		index;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 11:29:07 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:47:03 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	shell_index(t_minishell *set)
 			return (8);
 		else if (!ms_strncmp(set->cmd->name, "env", 3))
 			return (9);
-		else if (!ms_strncmp(set->cmd->name, "exit", 5))
+		else if (!ms_strncmp(set->cmd->name, "exit", 4))
 			return (10);
 	}
 	return (i);

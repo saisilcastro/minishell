@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/16 17:36:49 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:20:37 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static t_status	catch_special(char *command, char *buffer, int *index)
 			*index += 1;
 			i++;
 			*(buffer + i) = command[1];
-			i++;
 		}
 		else
 		{
@@ -36,6 +35,8 @@ static t_status	catch_special(char *command, char *buffer, int *index)
 			return (Off);
 		}
 	}
+	i++;
+	*(buffer + i) = '\0';
 	return (On);
 }
 
@@ -99,7 +100,7 @@ t_status	command_parser(t_minishell *set, char *command)
 		update = catch_parsing(command + index, buffer, set);
 		if (update == -1)
 		{
-			set->status = -1;
+			set->status = 2;
 			return (Off);
 		}
 		command_next_last(&set->cmd, command_push(buffer));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect-major.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 17:14:38 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/20 13:56:02 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static void	file_in_execute(t_minishell *set)
 		printf("{%s}\n", cmd->name);
 		cmd = cmd->next;
 	}
-	printf("executing those\n");
 }
 
 void	shell_redirect_major(t_minishell *set)
