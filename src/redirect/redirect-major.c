@@ -6,20 +6,20 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/18 05:12:05 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/20 13:48:53 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	file_replacer(t_minishell *set)
+static void	file_replacer(char *path)
 {
 	int	fd;
 
 	fd = 0;
-	if (access(set->cmd->next->name, F_OK) != -1)
-		unlink(set->cmd->next->name);
-	fd = open(set->cmd->next->name, O_WRONLY | O_CREAT, 00700);
+	if (access(path, F_OK) != -1)
+		unlink(path);
+	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 00700);
 	lseek(fd, 0, SEEK_SET);
 	write(fd, "\0", 1);
 	close(fd);
@@ -57,10 +57,11 @@ static void	argument_get(t_command *last, char ***arg)
 	t_command	*upd;
 	int			i;
 
-	*arg = (char **)malloc((command_size(last) + 1) * sizeof(char *));
+	*arg = (char **)malloc((command_size(last) + 2) * sizeof(char *));
 	if (!*arg)
 		return ;
-	i = 0;
+	*(*arg + 0) = ms_strdup("fucker");
+	i = 1;
 	upd = last;
 	while (upd)
 	{
@@ -76,6 +77,7 @@ static void	file_in_execute(t_minishell *set)
 	char		path[4096];
 	char		**arg;
 	int			fd;
+	int			pid;
 
 	if (!set->cmd->next->next)
 	{
@@ -84,11 +86,16 @@ static void	file_in_execute(t_minishell *set)
 	}
 	if (search_path(set->path, set->cmd, path))
 	{
-		fd = open(set->cmd->next->next->name, O_WRONLY | O_CREAT, 0777);
-		argument_get(set->cmd->next->next->next, &arg);
-		dup2(fd, STDOUT_FILENO);
-		execve(path, arg, __environ);
-		close(fd);
+		pid = fork();
+		if (pid == 0)
+		{
+			fd = open(set->cmd->next->next->name,
+					O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			dup2(fd, STDOUT_FILENO);
+			argument_get(set->cmd->next->next->next, &arg);
+			execve(path, arg, __environ);
+			close(fd);
+		}
 	}
 }
 
@@ -97,7 +104,7 @@ void	shell_redirect_major(t_minishell *set)
 	if (set->cmd->next)
 	{
 		if (!ms_strncmp(set->cmd->name, ">", 1))
-			file_replacer(set);
+			file_replacer(set->cmd->next->name);
 		else if (!ms_strncmp(set->cmd->next->name, ">", 1))
 			file_in_execute(set);
 	}
