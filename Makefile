@@ -6,7 +6,7 @@
 #    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/14 14:20:12 by lumedeir         ###   ########.fr        #
+#    Updated: 2023/11/21 12:41:58 by lumedeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC_FOLDER = minishell.c \
 			 redirect-double-minor.c \
 			 redirect-major.c \
 			 redirect-double-major.c \
+			 redirect-utils.c \
 			 variable.c \
 			 variable-next.c \
 			 variable-find.c \

@@ -1,1 +1,0 @@
-/nfs/homes/lumedeir/projetos/Minishell/minishell

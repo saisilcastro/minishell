@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/20 14:06:57 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:11:05 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,68 +16,38 @@ static void	file_replacer(char *path)
 {
 	int	fd;
 
-	fd = 0;
-	if (access(path, F_OK) != -1)
-		unlink(path);
 	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 00700);
-	lseek(fd, 0, SEEK_SET);
+	if (fd == -1)
+		return ;
 	write(fd, "\0", 1);
 	close(fd);
 }
 
-static t_status	search_path(t_command *env, t_command *app, char *path)
+static void	fork_process(t_minishell *set, char *path)
 {
-	t_command	*upd;
-	int			i;
-	int			j;
+	int			pid;
+	char		**arg;
+	int			fd;
 
-	upd = env;
-	while (upd)
+	pid = fork();
+	if (pid == 0)
 	{
-		i = -1;
-		while (*(upd->name + ++i))
-			*(path + i) = *(upd->name + i);
-		*(path + i++) = '/';
-		j = -1;
-		while (*(app->name + ++j))
-			*(path + i++) = *(app->name + j);
-		*(path + i) = '\0';
-		if (!access(path, F_OK))
-			break ;
-		else
-			i = 0;
-		upd = upd->next;
+		fd = open(set->cmd->next->next->name,
+				O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		dup2(fd, STDOUT_FILENO);
+		argument_get(set->cmd->next->next->next, &arg);
+		if (execve(path, arg, __environ) == -1)
+		{
+			set->status = 127;
+			ms_putstr_fd("command not found", 2);
+		}
+		close(fd);
 	}
-	*(path + i) = '\0';
-	return (i);
-}
-
-static void	argument_get(t_command *last, char ***arg)
-{
-	t_command	*upd;
-	int			i;
-
-	*arg = (char **)malloc((command_size(last) + 2) * sizeof(char *));
-	if (!*arg)
-		return ;
-	*(*arg + 0) = ms_strdup("fucker");
-	i = 1;
-	upd = last;
-	while (upd)
-	{
-		*(*arg + i) = ms_strdup(upd->name);
-		upd = upd->next;
-		i++;
-	}
-	*(*arg + i) = NULL;
 }
 
 static void	file_in_execute(t_minishell *set)
 {
 	char		path[4096];
-	char		**arg;
-	int			fd;
-	int			pid;
 
 	if (!set->cmd->next->next)
 	{
@@ -85,18 +55,9 @@ static void	file_in_execute(t_minishell *set)
 		return ;
 	}
 	if (search_path(set->path, set->cmd, path))
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			fd = open(set->cmd->next->next->name,
-					O_WRONLY | O_CREAT | O_TRUNC, 0777);
-			dup2(fd, STDOUT_FILENO);
-			argument_get(set->cmd->next->next->next, &arg);
-			execve(path, arg, __environ);
-			close(fd);
-		}
-	}
+		fork_process(set, path);
+	else
+		fork_process(set, set->cmd->name);
 }
 
 void	shell_redirect_major(t_minishell *set)
