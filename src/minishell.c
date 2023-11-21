@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/17 19:06:52 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/20 22:31:52 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@ void	shell_set(t_minishell *set)
 {
 	if (!set)
 		return ;
-	//set->pipe = NULL;
 	set->cmd = NULL;
 	set->var = NULL;
 	set->path = NULL;
 	set->file = NULL;
 	set->status = 0;
-	//signal(SIGINT, control_c);
+	signal(SIGINT, shell_ctrl_c);
 	signal(SIGQUIT, shell_ctrl_backslash);
 	environment_push(set);
 	variable_next_first(&set->var, variable_push("test", "Olá"));
@@ -71,7 +70,7 @@ int	shell_index(t_minishell *set)
 			return (8);
 		else if (!ms_strncmp(set->cmd->name, "env", 3))
 			return (9);
-		else if (!ms_strncmp(set->cmd->name, "exit", 5))
+		else if (!ms_strncmp(set->cmd->name, "exit", 4))
 			return (10);
 	}
 	return (i);

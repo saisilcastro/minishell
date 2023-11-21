@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command-parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/17 20:44:17 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:20:37 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static t_status	catch_special(char *command, char *buffer, int *index)
 			*index += 1;
 			i++;
 			*(buffer + i) = command[1];
-			i++;
 		}
 		else
 		{
@@ -36,7 +35,8 @@ static t_status	catch_special(char *command, char *buffer, int *index)
 			return (Off);
 		}
 	}
-	*(buffer + ++i) = '\0';
+	i++;
+	*(buffer + i) = '\0';
 	return (On);
 }
 
@@ -51,9 +51,7 @@ static int	catch_parsing(char *command, char *buffer, t_minishell *set)
 			return (-1);
 	}
 	else
-	{
 		index = handle_quotes(command, buffer, set);
-	}
 	return (index);
 }
 
@@ -102,7 +100,7 @@ t_status	command_parser(t_minishell *set, char *command)
 		update = catch_parsing(command + index, buffer, set);
 		if (update == -1)
 		{
-			set->status = -1;
+			set->status = 2;
 			return (Off);
 		}
 		command_next_last(&set->cmd, command_push(buffer));

@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/20 13:48:53 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:59:43 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ static void	file_replacer(char *path)
 {
 	int	fd;
 
-	fd = 0;
-	if (access(path, F_OK) != -1)
-		unlink(path);
 	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 00700);
-	lseek(fd, 0, SEEK_SET);
+	if (fd == -1)
+		return ;
 	write(fd, "\0", 1);
 	close(fd);
 }

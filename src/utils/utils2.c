@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 11:39:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/14 12:13:25 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:07:45 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ int	ms_name_cmp(char *str1, char *str2, int n)
 	int	count;
 
 	count = 0;
-	while ((count < n) && (str1[count] != '\0' || str2[count] != '\0'))
+	while ((count <= n) && (str1[count] != '\0' || str2[count] != '\0'))
 	{
 		if (count < n && str1[count] != str2[count])
 			return (str1[count] - str2[count]);
 		count++;
 	}
-	if (!str2 && count < n)
+	if ((!str2[count] && count < n) || str2[count])
 		return (str1[count] - str2[count]);
 	if (!str1[count] && !str2[count])
 		return (0);
