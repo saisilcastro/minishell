@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/21 12:56:55 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:09:54 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ void	argument_get(t_command *last, char ***arg)
 	t_command	*upd;
 	int			i;
 
+	if (!command_size(last))
+	{
+		*arg = NULL;
+		return ;
+	}
 	*arg = (char **)malloc((command_size(last) + 2) * sizeof(char *));
 	if (!*arg)
 		return ;

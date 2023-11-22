@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/21 12:57:56 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:56:51 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ struct s_minishell{
 	t_command	*cmd;
 	t_command	*path;
 	t_command	*file;
+	t_status	run;
 	void		(*redirect[4])(t_minishell *set);
 	void		(*builtin[7])(t_minishell *set);
 	short		status;

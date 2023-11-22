@@ -6,7 +6,7 @@
 #    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/21 12:41:58 by lumedeir         ###   ########.fr        #
+#    Updated: 2023/11/22 15:46:20 by lumedeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,16 +54,22 @@ ifneq ($(OS), Windows_NT)
 	REMOVE = rm -rf $(1)
 endif
 
+# Color codes for terminal output
+PURPLE = \033[1;35m
+
 all: $(NAME)
 $(NAME): $(SRCOBJ)
-	$(CC) $^ $(LIB) -o $(NAME)
+	@$(CC) $^ $(LIB) -o $(NAME)
+	@echo "The Makefile of [$(PURPLE)MINISHELL\033[0m] has been compiled!🐚"
 ${OBJ}/%.o : %.c
-	$(call CREATE, ${OBJ})
-	$(CC) -c $< -o $@ $(INCLUDE) -g3
+	@$(call CREATE, ${OBJ})
+	@$(CC) -c $< -o $@ $(INCLUDE) -g3
 leak:
 	valgrind --leak-check=full -q ./$(NAME)
 clean:
-	$(call REMOVE, ${OBJ}/*.o)
+	@$(call REMOVE, ${OBJ}/*.o)
+	@rm -rf $(OBJ)
 fclean: clean
-	$(call REMOVE, ${NAME})
+	@$(call REMOVE, ${NAME})
+	@echo "✨ Cleaning complete! ✨"
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 14:06:43 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/21 15:57:43 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:13:00 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@ static void	update_oldpwd(t_variable **var, char *oldpwd)
 {
 	t_variable	*curr_var;
 
-	curr_var = *var;
-	while (curr_var->name && !ms_strncmp(curr_var->name, "OLDPWD", 6))
-		curr_var = curr_var->next;
-	if (ms_strncmp(curr_var->name, "OLDPWD", 6))
+	curr_var = variable_search(*var, "OLDPWD");
+	if (curr_var)
 	{
 		free(curr_var->value);
 		curr_var->value = ms_strdup(oldpwd);
