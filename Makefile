@@ -6,7 +6,7 @@
 #    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/22 15:46:20 by lumedeir         ###   ########.fr        #
+#    Updated: 2023/11/22 16:20:01 by lumedeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,10 +59,11 @@ PURPLE = \033[1;35m
 
 all: $(NAME)
 $(NAME): $(SRCOBJ)
+	@printf "\nThe Makefile of [$(PURPLE)MINISHELL\033[0m] has been compiled!🐚\n"
 	@$(CC) $^ $(LIB) -o $(NAME)
-	@echo "The Makefile of [$(PURPLE)MINISHELL\033[0m] has been compiled!🐚"
 ${OBJ}/%.o : %.c
 	@$(call CREATE, ${OBJ})
+	@printf "\rMinishell: building $@                      "
 	@$(CC) -c $< -o $@ $(INCLUDE) -g3
 leak:
 	valgrind --leak-check=full -q ./$(NAME)

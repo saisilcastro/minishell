@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:07:33 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/22 13:27:00 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/22 20:45:59 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 	if (pid == 0)
 	{
 		dup2(fd, STDOUT_FILENO);
-		argument_get(cmd, arg);
+		argument_get(cmd, arg, ">>");
 		if (execve(path, *arg, __environ) == -1)
 		{
 			close(fd);
@@ -48,7 +48,7 @@ static void	is_third_command(t_minishell *set)
 
 	if (!set->cmd->next->next)
 	{
-		fd = open(set->cmd->next->name, O_APPEND | O_CREAT | O_TRUNC, 00700);
+		fd = open(redirect_find(set->cmd, ">>")->name, O_APPEND | O_CREAT | O_TRUNC, 00700);
 		if (fd == -1)
 			return ;
 	}
@@ -58,10 +58,9 @@ static void	is_third_command(t_minishell *set)
 		if (fd == -1)
 			return ;
 		if (search_path(set->path, set->cmd->next->next, path))
-			set->status = command_execute(set->cmd->next->next->next,
-					&arg, path, fd);
+			set->status = command_execute(set->cmd, &arg, path, fd);
 		else
-			set->status = command_execute(set->cmd->next->next->next,
+			set->status = command_execute(set->cmd,
 					&arg, set->cmd->next->next->name, fd);
 	}
 	close(fd);
@@ -73,11 +72,11 @@ static void	first_execute(t_minishell *set, char *path)
 	char		**arg;
 	int			fd;
 
-	fd = open(set->cmd->next->next->name,
+	fd = open(redirect_find(set->cmd, ">>")->name,
 			O_WRONLY | O_APPEND | O_CREAT, 00700);
 	if (fd == -1)
 		return ;
-	set->status = command_execute(set->cmd->next->next->next, &arg, path, fd);
+	set->status = command_execute(set->cmd, &arg, path, fd);
 	close(fd);
 }
 
@@ -85,11 +84,6 @@ static void	first_command(t_minishell *set)
 {
 	char		path[4096];
 
-	if (!set->cmd->next->next)
-	{
-		printf("syntax error near unexpected token `newline'\n");
-		return ;
-	}
 	if (search_path(set->path, set->cmd, path))
 		first_execute(set, path);
 	else

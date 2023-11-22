@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/22 12:57:10 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/22 19:25:47 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,24 @@ static int	shell_redirect(t_minishell *set)
 {
 	static char	*redirect[] = {"<<", ">>", "<", ">", NULL};
 	int			i;
+	t_command	*curr;
 
-	if (set->cmd->next)
+	curr = set->cmd;
+	while (curr)
 	{
 		i = -1;
 		while (redirect[++i])
 		{
-			if (!ms_strncmp(set->cmd->name, redirect[i],
+			if (!ms_strncmp(curr->name, redirect[i],
 					ms_strlen(redirect[i])))
+			{
+				if (!curr->next)
+					printf("syntax error near unexpected token `newline'\n");
+				set->status = 2;
 				return (i);
-			else if (!ms_strncmp(set->cmd->next->name, redirect[i],
-					ms_strlen(redirect[i])))
-				return (i);
+			}
 		}
+		curr = curr->next;
 	}
 	return (-1);
 }
