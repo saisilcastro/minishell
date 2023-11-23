@@ -40,6 +40,7 @@ SRC_FOLDER = minishell.c \
 			 env.c \
 			 exit.c \
 			 error.c \
+			 utils4.c \
 			 utils3.c \
 			 utils2.c \
 			 utils.c
