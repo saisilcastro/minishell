@@ -6,7 +6,7 @@
 #    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/22 16:20:01 by lumedeir         ###   ########.fr        #
+#    Updated: 2023/11/23 20:45:44 by lumedeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC_FOLDER = minishell.c \
 			 redirect-major.c \
 			 redirect-double-major.c \
 			 redirect-utils.c \
+			 redirect-utils2.c \
 			 variable.c \
 			 variable-next.c \
 			 variable-find.c \
@@ -40,6 +41,7 @@ SRC_FOLDER = minishell.c \
 			 env.c \
 			 exit.c \
 			 error.c \
+			 utils4.c \
 			 utils3.c \
 			 utils2.c \
 			 utils.c
@@ -66,7 +68,7 @@ ${OBJ}/%.o : %.c
 	@printf "\rMinishell: building $@                      "
 	@$(CC) -c $< -o $@ $(INCLUDE) -g3
 leak:
-	valgrind --leak-check=full -q ./$(NAME)
+	valgrind --leak-check=full -q ./$(NAME) -fanalyzer e -fsanitize=address
 clean:
 	@$(call REMOVE, ${OBJ}/*.o)
 	@rm -rf $(OBJ)

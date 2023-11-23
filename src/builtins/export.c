@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 16:20:41 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:30:41 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static t_variable	*bubble_sort(t_variable *variable)
 	return (sorted);
 }
 
-static void	print_sorted_command(t_variable *variable)
+static void	print_sorted_command(t_minishell *set, t_variable *variable)
 {
 	t_variable	*sorted;
 	t_variable	*upd;
@@ -77,18 +77,19 @@ static void	print_sorted_command(t_variable *variable)
 		upd = upd->next;
 	}
 	variable_pop(sorted);
+	set->status = 0;
 }
 
-void	export(t_minishell *set)
+void	export(t_minishell *set, t_command *cmd)
 {
 	t_command	*command;
 	t_variable	*variable;
 
 	if (set->status != 0)
 		set->status = 0;
-	command = set->cmd;
+	command = cmd;
 	variable = set->var;
 	if (command && !command->next)
-		print_sorted_command(variable);
+		print_sorted_command(set, variable);
 	export_variable(set);
 }

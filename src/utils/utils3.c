@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/22 20:04:32 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/23 12:48:48 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,4 @@ t_status	has_special(char c)
 	if (c == '<' || c == '>' || c == '|')
 		return (On);
 	return (Off);
-}
-
-int	arr_size(t_command *cmd)
-{
-	t_command	*curr;
-	int			size;
-
-	curr = cmd;
-	size = 0;
-	while (curr)
-	{
-		size++;
-		curr = curr->next;
-	}
-	return (size);
 }

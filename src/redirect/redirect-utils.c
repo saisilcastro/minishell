@@ -6,13 +6,13 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/23 10:30:59 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:33:59 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_command	*redirect_find(t_command *cmd, char *redirect)
+t_command	*redirect_file(t_command *cmd, char *redirect)
 {
 	t_command	*curr;
 
@@ -58,7 +58,7 @@ static void	redirect_middle(t_command *cmd, char ***arg, char *redirect)
 	t_command	*curr;
 	int			i;
 
-	if (arr_size(cmd) == 3)
+	if (command_size(cmd) == 3)
 	{
 		*arg = NULL;
 		return ;
@@ -67,7 +67,7 @@ static void	redirect_middle(t_command *cmd, char ***arg, char *redirect)
 	*arg = (char **)malloc((count_args(cmd, redirect) + 2) * sizeof(char *));
 	if (!*arg)
 		return ;
-	*(*arg + 0) = ms_strdup("fucker");
+	*(*arg + 0) = ms_strdup(cmd->name);
 	i = 1;
 	while (curr)
 	{
@@ -88,7 +88,7 @@ static void	redirect_first(t_command *cmd, char ***arg, char *redirect)
 	int			size;
 	int			i;
 
-	if (arr_size(cmd) == 3)
+	if (command_size(cmd) == 3)
 	{
 		*arg = NULL;
 		return ;
@@ -99,12 +99,12 @@ static void	redirect_first(t_command *cmd, char ***arg, char *redirect)
 			* sizeof(char *));
 	if (!*arg)
 		return ;
-	*(*arg + 0) = ms_strdup("fucker");
+	*(*arg + 0) = ms_strdup(cmd->name);
 	i = 1;
 	curr = cmd->next->next->next;
 	while (curr)
 	{
-		*(*arg + i++) = ms_strdup(curr->name);
+		*(*arg + i++) = ms_strdup(curr->next->next->name);
 		curr = curr->next;
 	}
 	*(*arg + i) = NULL;

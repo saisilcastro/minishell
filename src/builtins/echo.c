@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:22:39 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/14 16:30:18 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:22:38 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	skip_newline(t_command **cmd, t_status *newline)
 	}
 }
 
-void	echo_execute(t_minishell *set)
+void	echo_execute(t_minishell *set, t_command *cmd)
 {
 	t_command	*upd;
 	t_status	newline;
@@ -43,9 +43,9 @@ void	echo_execute(t_minishell *set)
 
 	newline = On;
 	space = ' ';
-	if (!set->cmd)
+	if (!cmd)
 		return ;
-	upd = set->cmd->next;
+	upd = cmd->next;
 	skip_newline(&upd, &newline);
 	while (upd)
 	{	

@@ -6,12 +6,11 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:07:33 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 10:26:17 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:24:19 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <sys/wait.h>
 
 static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 {
@@ -42,13 +41,12 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 static void	is_third_command(t_minishell *set)
 {
 	int		fd;
-	int		pid;
 	char	path[4096];
 	char	**arg;
 
 	if (!set->cmd->next->next)
 	{
-		fd = open(redirect_find(set->cmd, ">>")->name,
+		fd = open(redirect_file(set->cmd, ">>")->name,
 				O_APPEND | O_CREAT | O_TRUNC, 00700);
 		if (fd == -1)
 			return ;
@@ -73,7 +71,7 @@ static void	first_execute(t_minishell *set, char *path)
 	char		**arg;
 	int			fd;
 
-	fd = open(redirect_find(set->cmd, ">>")->name,
+	fd = open(redirect_file(set->cmd, ">>")->name,
 			O_WRONLY | O_APPEND | O_CREAT, 00700);
 	if (fd == -1)
 		return ;

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/22 20:35:54 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:42:05 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 static void	is_third_command(t_minishell *set)
 {
 	int		fd;
-	int		pid;
 	char	path[4096];
 	char	**arg;
 
@@ -65,13 +64,10 @@ static void	is_third_command(t_minishell *set)
 
 static void	first_execute(t_minishell *set, char *path)
 {
-	int			pid;
 	char		**arg;
 	int			fd;
 
-	if (!redirect_find(set->cmd, ">"))
-		return ;
-	fd = open(redirect_find(set->cmd, ">")->name,
+	fd = open(redirect_file(set->cmd, ">")->name,
 			O_WRONLY | O_CREAT | O_TRUNC, 00700);
 	if (fd == -1)
 		return ;
@@ -83,7 +79,9 @@ static void	first_command(t_minishell *set)
 {
 	char		path[4096];
 
-	if (search_path(set->path, set->cmd, path))
+	if (shell_index(set, set->cmd, Off) >= 4)
+		bulting_execute(set, shell_index(set, set->cmd, Off), ">");
+	else if (search_path(set->path, set->cmd, path))
 		first_execute(set, path);
 	else
 		first_execute(set, set->cmd->name);
