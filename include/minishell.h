@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/22 20:33:48 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:29:23 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ extern void			remove_quotes(t_command *list, t_minishell *set);
 extern int			upd_index(char *command, char c);
 extern void			find_var(t_command *line, t_variable *var, int index,
 						t_minishell *set);
-extern int	arr_size(t_command *cmd);
+extern int			arr_size(t_command *cmd);
+extern int			count_args(t_command *cmd, char *redirect);
 
 extern void			shell_redirect_minor(t_minishell *set);
 extern void			shell_redirect_double_minor(t_minishell *set);

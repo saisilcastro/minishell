@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:07:33 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/22 20:45:59 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:26:17 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static void	is_third_command(t_minishell *set)
 
 	if (!set->cmd->next->next)
 	{
-		fd = open(redirect_find(set->cmd, ">>")->name, O_APPEND | O_CREAT | O_TRUNC, 00700);
+		fd = open(redirect_find(set->cmd, ">>")->name,
+				O_APPEND | O_CREAT | O_TRUNC, 00700);
 		if (fd == -1)
 			return ;
 	}
@@ -96,7 +97,7 @@ void	shell_redirect_double_major(t_minishell *set)
 	{
 		if (!ms_strncmp(set->cmd->name, ">>", 2))
 			is_third_command(set);
-		else if (!ms_strncmp(set->cmd->next->name, ">>", 2))
+		else
 			first_command(set);
 	}
 }

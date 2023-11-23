@@ -6,31 +6,11 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/22 20:34:08 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/23 10:30:59 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-static int	buffer_size(t_command *cmd, char *redirect)
-{
-	int			size;
-	t_command	*curr;
-
-	size = 0;
-	curr = cmd->next;
-	while (curr)
-	{
-		if (!ms_strncmp(curr->name, redirect, ms_strlen(redirect)))
-		{
-			curr = curr->next->next;
-			continue ;
-		}
-		size++;
-		curr = curr->next;
-	}
-	return (size);
-}
 
 t_command	*redirect_find(t_command *cmd, char *redirect)
 {
@@ -84,7 +64,7 @@ static void	redirect_middle(t_command *cmd, char ***arg, char *redirect)
 		return ;
 	}
 	curr = cmd->next;
-	*arg = (char **)malloc((buffer_size(cmd, redirect) + 2) * sizeof(char *));
+	*arg = (char **)malloc((count_args(cmd, redirect) + 2) * sizeof(char *));
 	if (!*arg)
 		return ;
 	*(*arg + 0) = ms_strdup("fucker");
@@ -115,7 +95,7 @@ static void	redirect_first(t_command *cmd, char ***arg, char *redirect)
 	}
 	curr = cmd->next->next->next;
 	size = 0;
-	*arg = (char **)malloc((buffer_size(cmd->next->next, redirect) + 2)
+	*arg = (char **)malloc((count_args(cmd->next->next, redirect) + 2)
 			* sizeof(char *));
 	if (!*arg)
 		return ;
