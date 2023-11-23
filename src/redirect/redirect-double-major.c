@@ -6,106 +6,98 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:07:33 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/20 22:06:09 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/23 13:08:59 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+#include <sys/wait.h>
 
-static void	file_replacer(char *path)
+static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 {
-	int	fd;
+	int		pid;
 
-	fd = open(path, O_APPEND | O_CREAT | O_TRUNC, 00700);
-	if (fd == -1)
-		return ;
-	write(fd, "\0", 1);
-	close(fd);
+	if (access(path, F_OK) == -1)
+	{
+		ms_putstr_fd(path, 2);
+		ms_putstr_fd(": command not found\n", 2);
+		return (127);
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		dup2(fd, STDOUT_FILENO);
+		argument_get(cmd, arg, ">>");
+		if (execve(path, *arg, __environ) == -1)
+		{
+			close(fd);
+			ms_putstr_fd(path, 2);
+			ms_putstr_fd(": command not found\n", 2);
+			return (127);
+		}
+	}
+	return (0);
 }
 
-static t_status	search_path(t_command *env, t_command *app, char *path)
+static void	is_third_command(t_minishell *set)
 {
-	t_command	*upd;
-	int			i;
-	int			j;
-
-	upd = env;
-	while (upd)
-	{
-		i = -1;
-		while (*(upd->name + ++i))
-			*(path + i) = *(upd->name + i);
-		*(path + i++) = '/';
-		j = -1;
-		while (*(app->name + ++j))
-			*(path + i++) = *(app->name + j);
-		*(path + i) = '\0';
-		if (!access(path, F_OK))
-			break ;
-		else
-			i = 0;
-		upd = upd->next;
-	}
-	*(path + i) = '\0';
-	return (i);
-}
-
-static void	argument_get(t_command *last, char ***arg)
-{
-	t_command	*upd;
-	int			i;
-
-	if (command_size(last) == 0)
-	{
-		*arg = NULL;
-		return ;
-	}
-	*arg = (char **)malloc((command_size(last) + 2) * sizeof(char *));
-	if (!*arg)
-		return ;
-	*(*arg + 0) = ms_strdup("fucker");
-	i = 1;
-	upd = last;
-	while (upd)
-	{
-		*(*arg + i) = ms_strdup(upd->name);
-		upd = upd->next;
-		i++;
-	}
-	*(*arg + i) = NULL;
-}
-
-static void	file_in_execute(t_minishell *set)
-{
-	char		path[4096];
-	char		**arg;
-	int			fd;
-	int			pid;
+	int		fd;
+	int		pid;
+	char	path[4096];
+	char	**arg;
 
 	if (!set->cmd->next->next)
 	{
-		printf("syntax error near unexpected token `newline'\n");
-		return ;
+		fd = open(redirect_file(set->cmd, ">>")->name,
+				O_APPEND | O_CREAT | O_TRUNC, 00700);
+		if (fd == -1)
+			return ;
 	}
-	if (search_path(set->path, set->cmd, path))
+	else
 	{
-		pid = fork();
-		if (pid == 0)
-		{
-			fd = open(set->cmd->next->next->name,
-					O_WRONLY | O_APPEND | O_CREAT, 00700);
-			dup2(fd, STDOUT_FILENO);
-			argument_get(set->cmd->next->next->next, &arg);
-			execve(path, arg, __environ);
-			close(fd);
-		}
+		fd = open(set->cmd->next->name, O_WRONLY | O_APPEND | O_CREAT, 00700);
+		if (fd == -1)
+			return ;
+		if (search_path(set->path, set->cmd->next->next, path))
+			set->status = command_execute(set->cmd, &arg, path, fd);
+		else
+			set->status = command_execute(set->cmd,
+					&arg, set->cmd->next->next->name, fd);
 	}
+	close(fd);
+}
+
+static void	first_execute(t_minishell *set, char *path)
+{
+	int			pid;
+	char		**arg;
+	int			fd;
+
+	fd = open(redirect_file(set->cmd, ">>")->name,
+			O_WRONLY | O_APPEND | O_CREAT, 00700);
+	if (fd == -1)
+		return ;
+	set->status = command_execute(set->cmd, &arg, path, fd);
+	close(fd);
+}
+
+static void	first_command(t_minishell *set)
+{
+	char		path[4096];
+
+	if (search_path(set->path, set->cmd, path))
+		first_execute(set, path);
+	else
+		first_execute(set, set->cmd->name);
 }
 
 void	shell_redirect_double_major(t_minishell *set)
 {
-	if (!ms_strncmp(set->cmd->name, ">>", 2))
-		file_replacer(set->cmd->next->name);
-	if (!ms_strncmp(set->cmd->next->name, ">>", 2))
-		file_in_execute(set);
+	if (set->cmd->next)
+	{
+		if (!ms_strncmp(set->cmd->name, ">>", 2))
+			is_third_command(set);
+		else
+			first_command(set);
+	}
 }

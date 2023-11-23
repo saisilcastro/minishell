@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/20 22:31:52 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:52:02 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	shell_set(t_minishell *set)
 	set->path = NULL;
 	set->file = NULL;
 	set->status = 0;
+	set->run = On;
 	signal(SIGINT, shell_ctrl_c);
 	signal(SIGQUIT, shell_ctrl_backslash);
 	environment_push(set);
@@ -34,19 +35,27 @@ static int	shell_redirect(t_minishell *set)
 {
 	static char	*redirect[] = {"<<", ">>", "<", ">", NULL};
 	int			i;
+	t_command	*curr;
 
-	if (set->cmd->next)
+	curr = set->cmd;
+	while (curr)
 	{
 		i = -1;
 		while (redirect[++i])
 		{
-			if (!ms_strncmp(set->cmd->name, redirect[i],
+			if (!ms_strncmp(curr->name, redirect[i],
 					ms_strlen(redirect[i])))
+			{
+				if (!curr->next)
+				{
+					printf("syntax error near unexpected token `newline'\n");
+					set->status = 2;
+					return (-2);
+				}
 				return (i);
-			else if (!ms_strncmp(set->cmd->next->name, redirect[i],
-					ms_strlen(redirect[i])))
-				return (i);
+			}
 		}
+		curr = curr->next;
 	}
 	return (-1);
 }

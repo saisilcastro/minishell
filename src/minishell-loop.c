@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/20 14:04:34 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:57:34 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ static void	shell_execute(t_minishell *set)
 void	shell_loop(t_minishell *set)
 {
 	char		*command;
-	t_status	run;
 
-	run = On;
-	while (run)
+	while (set->run)
 	{
 		command = readline(PURPLE">minishell: " WHITE);
 		if (!*command)
