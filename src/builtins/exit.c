@@ -6,13 +6,13 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:09:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 19:24:49 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:15:51 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	exit_fn(t_minishell *set, t_command *cmd)
+void	exit_fn(t_minishell *set, t_command *cmd, int fd)
 {
 	char	*command;
 

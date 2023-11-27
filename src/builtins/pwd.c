@@ -6,16 +6,17 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 14:54:28 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/23 19:29:50 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:23:17 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	pwd(t_minishell *set, t_command *cmd)
+void	pwd(t_minishell *set, t_command *cmd, int fd)
 {
 	(void)set;
 	(void)cmd;
-	printf("%s\n", getcwd(NULL, 0));
+	ms_putstr_fd(getcwd(NULL, 0), fd);
+	ms_putstr_fd("\n", fd);
 	set->status = 0;
 }

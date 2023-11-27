@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 20:24:29 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:29:23 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ struct s_minishell{
 	t_command	*file;
 	t_status	run;
 	void		(*redirect[4])(t_minishell *set);
-	void		(*builtin[7])(t_minishell *set, t_command *cmd);
+	void		(*builtin[7])(t_minishell *set, t_command *cmd, int fd);
 	short		status;
 };
 
@@ -56,7 +56,7 @@ extern void			shell_ctrl_c(int sig);
 extern void			shell_ctrl_backslash(int sig);
 
 extern void			environment_push(t_minishell *set);
-extern void			export_variable(t_minishell *set);
+extern void			export_variable(t_minishell *set, t_command *cmd);
 extern void			expansion(t_command **list,
 						t_variable *var, t_minishell *set);
 extern void			node_delete(t_command **cmd, char *name);
@@ -84,13 +84,13 @@ extern void			symbol_remaider(char *command,
 extern int			handle_quotes(char *command,
 						char *buffer, t_minishell *set);
 
-extern void			echo(t_minishell *set, t_command *cmd);
-extern void			export(t_minishell *set, t_command *cmd);
-extern void			cd(t_minishell *set, t_command *cmd);
-extern void			pwd(t_minishell *set, t_command *cmd);
-extern void			env(t_minishell *set, t_command *cmd);
-extern void			unset(t_minishell *set, t_command *cmd);
-extern void			echo_execute(t_minishell *set, t_command *cmd);
-extern void			exit_fn(t_minishell *set, t_command *cmd);
+extern void			echo(t_minishell *set, t_command *cmd, int fd);
+extern void			export(t_minishell *set, t_command *cmd, int fd);
+extern void			cd(t_minishell *set, t_command *cmd, int fd);
+extern void			pwd(t_minishell *set, t_command *cmd, int fd);
+extern void			env(t_minishell *set, t_command *cmd, int fd);
+extern void			unset(t_minishell *set, t_command *cmd, int fd);
+extern void			echo_execute(t_minishell *set, t_command *cmd, int fd);
+extern void			exit_fn(t_minishell *set, t_command *cmd, int fd);
 
 #endif

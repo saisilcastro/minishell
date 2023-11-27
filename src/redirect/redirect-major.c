@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 20:42:05 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 11:00:13 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 {
 	int		pid;
 
-	if (access(path, F_OK) == -1)
+	if (access(path, F_OK) < 0)
 	{
 		ms_putstr_fd(path, 2);
 		ms_putstr_fd(": command not found\n", 2);
@@ -25,8 +25,8 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 	pid = fork();
 	if (pid == 0)
 	{
-		dup2(fd, STDOUT_FILENO);
 		argument_get(cmd, arg, ">");
+		dup2(fd, STDOUT_FILENO);
 		if (execve(path, *arg, __environ) == -1)
 		{
 			close(fd);
@@ -35,6 +35,8 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 			return (127);
 		}
 	}
+	else
+		waitpid(pid, NULL, 0);
 	return (0);
 }
 

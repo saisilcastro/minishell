@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:22:39 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/23 19:22:38 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:17:24 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,28 @@ void	skip_newline(t_command **cmd, t_status *newline)
 	}
 }
 
-void	echo_execute(t_minishell *set, t_command *cmd)
+void	echo_execute(t_minishell *set, t_command *cmd, int fd)
 {
 	t_command	*upd;
 	t_status	newline;
-	char		space;
 
 	newline = On;
-	space = ' ';
 	if (!cmd)
 		return ;
 	upd = cmd->next;
 	skip_newline(&upd, &newline);
 	while (upd)
 	{	
+		ms_putstr_fd(upd->name, fd);
+		ms_putstr_fd(" ", fd);
 		if (upd->next == NULL)
-			space = '\0';
-		printf("%s%c", upd->name, space);
+		{
+			ms_putstr_fd("\0", fd);
+			break ;
+		}
 		upd = upd->next;
 	}
 	if (newline)
-		printf("\n");
+		ms_putstr_fd("\n", fd);
 	set->status = 0;
 }

@@ -6,17 +6,18 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/23 19:34:14 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:23:55 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	unset(t_minishell *set, t_command *cmd)
+void	unset(t_minishell *set, t_command *cmd, int fd)
 {
 	t_variable	*var;
 	t_command	*curr_cmd;
 
+	(void)fd;
 	curr_cmd = cmd;
 	while (curr_cmd)
 	{
