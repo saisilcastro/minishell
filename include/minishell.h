@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 13:03:32 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:37:37 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -37,25 +38,25 @@ struct s_minishell{
 	t_command	*file;
 	t_status	run;
 	void		(*redirect[4])(t_minishell *set);
-	void		(*builtin[7])(t_minishell *set);
+	void		(*builtin[7])(t_minishell *set, t_command *cmd, int fd);
 	short		status;
 };
 
 extern void			shell_set(t_minishell *set);
 extern void			shell_function(t_minishell *set);
-extern int			shell_index(t_minishell *set);
+extern int			shell_index(t_minishell *set,
+						t_command *cmd, t_status prority);
 extern void			shell_path(t_minishell *set);
 extern void			shell_command(t_minishell *set);
 extern void			shell_parse(t_minishell *set, char *command);
 extern t_status		shell_io(t_minishell *set);
 extern void			shell_loop(t_minishell *set);
 extern void			shell_pop(t_minishell *set);
-
 extern void			shell_ctrl_c(int sig);
 extern void			shell_ctrl_backslash(int sig);
 
 extern void			environment_push(t_minishell *set);
-extern void			export_variable(t_minishell *set);
+extern void			export_variable(t_minishell *set, t_command *cmd);
 extern void			expansion(t_command **list,
 						t_variable *var, t_minishell *set);
 extern void			node_delete(t_command **cmd, char *name);
@@ -68,7 +69,6 @@ extern void			remove_quotes(t_command *list, t_minishell *set);
 extern int			upd_index(char *command, char c);
 extern void			find_var(t_command *line, t_variable *var, int index,
 						t_minishell *set);
-extern int			command_size(t_command *cmd);
 extern int			count_args(t_command *cmd, char *redirect);
 
 extern void			shell_redirect_minor(t_minishell *set);
@@ -77,17 +77,25 @@ extern void			shell_redirect_major(t_minishell *set);
 extern void			shell_redirect_double_major(t_minishell *set);
 extern t_status		search_path(t_command *env, t_command *app, char *path);
 extern t_command	*redirect_file(t_command *cmd, char *redirect);
-extern void			argument_get(t_command *last, char ***arg, char *redirect);
-extern void			symbol_remaider(char *command, char *buffer, int *i, char c);
-extern int			handle_quotes(char *command, char *buffer, t_minishell *set);
+extern void			redirect_argument_get(t_command *l, char ***arg, char *r);
+extern int			pipe_argument_max(t_command *pipe);
+extern void			pipe_argument_get(t_command *cmd, char ***arg);
+extern void			builtin_execute(t_minishell *set, int i, char *r);
+extern void			symbol_remaider(char *command,
+						char *buffer, int *i, char c);
+extern int			handle_quotes(char *command,
+						char *buffer, t_minishell *set);
 
-extern void			echo(t_minishell *set);
-extern void			export(t_minishell *set);
-extern void			cd(t_minishell *set);
-extern void			pwd(t_minishell *set);
-extern void			env(t_minishell *set);
-extern void			unset(t_minishell *set);
-extern void			echo_execute(t_minishell *set);
-extern void			exit_fn(t_minishell *set);
+extern void			echo(t_minishell *set, t_command *cmd, int fd);
+extern void			export(t_minishell *set, t_command *cmd, int fd);
+extern void			cd(t_minishell *set, t_command *cmd, int fd);
+extern void			pwd(t_minishell *set, t_command *cmd, int fd);
+extern void			env(t_minishell *set, t_command *cmd, int fd);
+extern void			unset(t_minishell *set, t_command *cmd, int fd);
+extern void			echo_execute(t_minishell *set, t_command *cmd, int fd);
+extern void			exit_fn(t_minishell *set, t_command *cmd, int fd);
+
+extern void			pipe_extract(t_minishell *set, t_command **pipe);
+extern void			pipe_execute(t_minishell *set);
 
 #endif

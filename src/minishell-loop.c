@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell-loop.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/22 12:57:34 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 11:58:53 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ static void	shell_execute(t_minishell *set)
 
 	if (!set)
 		return ;
-	i = shell_index(set);
+	i = shell_index(set, set->cmd, On);
 	if (i >= 0 && i <= 3)
 		set->redirect[i](set);
 	else if (i >= 4)
-		set->builtin[i - 4](set);
+		set->builtin[i - 4](set, set->cmd, 1);
+	else
+		pipe_execute(set);
 }
 
 void	shell_loop(t_minishell *set)

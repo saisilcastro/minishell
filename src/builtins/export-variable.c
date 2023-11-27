@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/16 18:01:22 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:31:31 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,31 +91,31 @@ static void	new_value(t_variable **var, char *name, char *value)
 		temp->value = ms_strdup(value);
 }
 
-void	export_variable(t_minishell *set)
+void	export_variable(t_minishell *set, t_command *cmd)
 {
-	t_command	*cmd;
+	t_command	*upd;
 	char		name[64];
 	char		value[65535];
 	char		*update;
 
-	cmd = set->cmd;
-	while (cmd)
+	upd = cmd;
+	while (upd)
 	{
-		update = cmd->name;
+		update = upd->name;
 		update = name_get(update, name);
 		update = value_get(update, value);
-		if (variable_search(set->var, name) && ms_strchr(cmd->name, '='))
+		if (variable_search(set->var, name) && ms_strchr(upd->name, '='))
 			new_value(&set->var, name, value);
 		else if (!variable_search(set->var, name))
 		{
 			if (valid_name(name, set))
 			{
-				if (!ms_strlen(value) && !ms_strchr(cmd->name, '='))
+				if (!ms_strlen(value) && !ms_strchr(upd->name, '='))
 					variable_next_last(&set->var, variable_push(name, NULL));
 				else
 					variable_next_last(&set->var, variable_push(name, value));
 			}
 		}
-		cmd = cmd->next;
+		upd = upd->next;
 	}
 }

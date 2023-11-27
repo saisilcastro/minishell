@@ -3,27 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/10 16:38:28 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:23:55 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	unset(t_minishell *set)
+void	unset(t_minishell *set, t_command *cmd, int fd)
 {
 	t_variable	*var;
-	t_command	*cmd;
+	t_command	*curr_cmd;
 
-	cmd = set->cmd;
-	while (cmd)
+	(void)fd;
+	curr_cmd = cmd;
+	while (curr_cmd)
 	{
 		var = set->var;
 		while (var)
 		{
-			if (!ms_strcmp(var->name, cmd->name))
+			if (!ms_strcmp(var->name, curr_cmd->name))
 			{
 				if (var->value)
 					free(var->value);
@@ -32,6 +33,7 @@ void	unset(t_minishell *set)
 			}
 			var = var->next;
 		}
-		cmd = cmd->next;
+		curr_cmd = curr_cmd->next;
 	}
+	set->status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 14:06:43 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/22 11:13:00 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:12:34 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,25 @@ static void	update_oldpwd(t_variable **var, char *oldpwd)
 	}
 }
 
-void	cd(t_minishell *set)
+void	cd(t_minishell *set, t_command *cmd, int fd)
 {
 	char	*temp;
 
-	if (set->cmd->next->next)
+	if (cmd->next->next)
 	{
-		ms_putstr_fd("cd: too many arguments\n", 2);
+		ms_putstr_fd("cd: too many arguments\n", fd);
 		set->status = 1;
 		return ;
 	}
 	temp = ms_strdup(getcwd(NULL, 0));
-	if (chdir(set->cmd->next->name) != 0)
+	if (chdir(cmd->next->name) != 0)
 	{
-		ms_putstr_fd("cd: No such file or directory\n", 2);
+		ms_putstr_fd("cd: No such file or directory\n", fd);
 		set->status = 1;
 		free(temp);
 		return ;
 	}
 	update_oldpwd(&set->var, temp);
-	set->status = 0;
 	free(temp);
+	set->status = 0;
 }

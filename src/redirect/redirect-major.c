@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 13:08:17 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:50:23 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 {
 	int		pid;
 
-	if (access(path, F_OK) == -1)
+	if (access(path, F_OK) < 0)
 	{
 		ms_putstr_fd(path, 2);
 		ms_putstr_fd(": command not found\n", 2);
@@ -25,8 +25,8 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 	pid = fork();
 	if (pid == 0)
 	{
+		redirect_argument_get(cmd, arg, ">");
 		dup2(fd, STDOUT_FILENO);
-		argument_get(cmd, arg, ">");
 		if (execve(path, *arg, __environ) == -1)
 		{
 			close(fd);
@@ -35,13 +35,14 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 			return (127);
 		}
 	}
+	else
+		waitpid(pid, NULL, 0);
 	return (0);
 }
 
 static void	is_third_command(t_minishell *set)
 {
 	int		fd;
-	int		pid;
 	char	path[4096];
 	char	**arg;
 
@@ -65,12 +66,9 @@ static void	is_third_command(t_minishell *set)
 
 static void	first_execute(t_minishell *set, char *path)
 {
-	int			pid;
 	char		**arg;
 	int			fd;
 
-	if (!redirect_file(set->cmd, ">"))
-		return ;
 	fd = open(redirect_file(set->cmd, ">")->name,
 			O_WRONLY | O_CREAT | O_TRUNC, 00700);
 	if (fd == -1)
@@ -83,7 +81,9 @@ static void	first_command(t_minishell *set)
 {
 	char		path[4096];
 
-	if (search_path(set->path, set->cmd, path))
+	if (shell_index(set, set->cmd, Off) >= 4)
+		builtin_execute(set, shell_index(set, set->cmd, Off), ">");
+	else if (search_path(set->path, set->cmd, path))
 		first_execute(set, path);
 	else
 		first_execute(set, set->cmd->name);

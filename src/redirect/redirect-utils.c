@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/23 13:03:18 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:50:23 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	redirect_middle(t_command *cmd, char ***arg, char *redirect)
 	*arg = (char **)malloc((count_args(cmd, redirect) + 2) * sizeof(char *));
 	if (!*arg)
 		return ;
-	*(*arg + 0) = ms_strdup("fucker");
+	*(*arg + 0) = ms_strdup(cmd->name);
 	i = 1;
 	while (curr)
 	{
@@ -99,18 +99,18 @@ static void	redirect_first(t_command *cmd, char ***arg, char *redirect)
 			* sizeof(char *));
 	if (!*arg)
 		return ;
-	*(*arg + 0) = ms_strdup("fucker");
+	*(*arg + 0) = ms_strdup(cmd->name);
 	i = 1;
 	curr = cmd->next->next->next;
 	while (curr)
 	{
-		*(*arg + i++) = ms_strdup(curr->name);
+		*(*arg + i++) = ms_strdup(curr->next->next->name);
 		curr = curr->next;
 	}
 	*(*arg + i) = NULL;
 }
 
-void	argument_get(t_command *cmd, char ***arg, char *redirect)
+void	redirect_argument_get(t_command *cmd, char ***arg, char *redirect)
 {
 	if (!ms_strncmp(cmd->name, redirect, ms_strlen(redirect)))
 		redirect_first(cmd, arg, redirect);

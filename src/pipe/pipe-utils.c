@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pipe-utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/29 18:23:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/27 11:29:00 by lde-cast         ###   ########.fr       */
+/*   Created: 2023/11/27 14:04:49 by lde-cast          #+#    #+#             */
+/*   Updated: 2023/11/27 14:37:58 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	shell_call(void);
-
-int	main(void)
+int	pipe_argument_max(t_command *pipe)
 {
-	return (shell_call());
-}
+	int		max;
+	char	*cmd;
 
-int	shell_call(void)
-{
-	t_minishell	hell;
-
-	shell_set(&hell);
-	shell_loop(&hell);
-	shell_pop(&hell);
-	return ((unsigned char)hell.status);
+	max = 0;
+	cmd = pipe->name;
+	while (cmd && *cmd)
+	{
+		if (has_space(*cmd))
+		{
+			max++;
+			while (cmd && *cmd && has_space(*cmd))
+				cmd++;
+			if (!*cmd)
+				break ;
+		}
+		cmd++;
+	}
+	return (max);
 }

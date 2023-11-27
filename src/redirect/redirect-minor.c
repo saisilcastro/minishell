@@ -6,12 +6,11 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 18:07:18 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:50:23 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <sys/wait.h>
 
 static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 {
@@ -19,19 +18,19 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 
 	if (access(path, F_OK) < 0)
 	{
-		ms_putstr_fd(cmd->name, 2);
+		ms_putstr_fd(path, 2);
 		ms_putstr_fd(": command not found\n", 2);
 		return (127);
 	}
 	pid = fork();
 	if (pid == 0)
 	{
-		argument_get(cmd, arg, "<");
+		redirect_argument_get(cmd, arg, "<");
 		dup2(fd, STDIN_FILENO);
 		if (execve(path, *arg, __environ) == -1)
 		{
 			close(fd);
-			ms_putstr_fd(cmd->name, 2);
+			ms_putstr_fd(path, 2);
 			ms_putstr_fd(": command not found\n", 2);
 			return (127);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 16:52:02 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/23 13:35:34 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,26 +60,26 @@ static int	shell_redirect(t_minishell *set)
 	return (-1);
 }
 
-int	shell_index(t_minishell *set)
+int	shell_index(t_minishell *set, t_command *cmd, t_status priority)
 {
 	int	i;
 
 	i = shell_redirect(set);
-	if (i == -1)
+	if (i == -1 || priority == Off)
 	{
-		if (!ms_strncmp(set->cmd->name, "echo", 4))
+		if (!ms_strncmp(cmd->name, "echo", 4))
 			return (4);
-		else if (!ms_strncmp(set->cmd->name, "cd", 2))
+		else if (!ms_strncmp(cmd->name, "cd", 2))
 			return (5);
-		else if (!ms_strncmp(set->cmd->name, "pwd", 3))
+		else if (!ms_strncmp(cmd->name, "pwd", 3))
 			return (6);
-		else if (!ms_strncmp(set->cmd->name, "export", 6))
+		else if (!ms_strncmp(cmd->name, "export", 6))
 			return (7);
-		else if (!ms_strncmp(set->cmd->name, "unset", 5))
+		else if (!ms_strncmp(cmd->name, "unset", 5))
 			return (8);
-		else if (!ms_strncmp(set->cmd->name, "env", 3))
+		else if (!ms_strncmp(cmd->name, "env", 3))
 			return (9);
-		else if (!ms_strncmp(set->cmd->name, "exit", 4))
+		else if (!ms_strncmp(cmd->name, "exit", 4))
 			return (10);
 	}
 	return (i);

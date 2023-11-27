@@ -3,22 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 16:17:29 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/10 16:38:55 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:15:34 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	env(t_minishell *set)
+void	env(t_minishell *set, t_command *cmd, int fd)
 {
 	extern char	**__environ;
 	int			i;
 
-	(void)set;
+	(void)cmd;
 	i = -1;
 	while (*(__environ + ++i))
-		printf("%s\n", *(__environ + i));
+	{
+		ms_putstr_fd(*(__environ + i), fd);
+		ms_putstr_fd("\n", fd);
+	}
+	set->status = 0;
 }

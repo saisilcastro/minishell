@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 16:20:41 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/27 10:28:50 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static t_variable	*bubble_sort(t_variable *variable)
 	return (sorted);
 }
 
-static void	print_sorted_command(t_variable *variable)
+static void	print_sorted_command(t_minishell *set, t_variable *variable, int fd)
 {
 	t_variable	*sorted;
 	t_variable	*upd;
@@ -73,22 +73,29 @@ static void	print_sorted_command(t_variable *variable)
 	while (upd)
 	{
 		if (ms_strlen(upd->value))
-			printf("declare -x %s=\"%s\"\n", upd->name, upd->value);
+		{
+			ms_putstr_fd("declare -x ", fd);
+			ms_putstr_fd(upd->name, fd);
+			ms_putstr_fd("=\"", fd);
+			ms_putstr_fd(upd->value, fd);
+			ms_putstr_fd("\"\n", fd);
+		}
 		upd = upd->next;
 	}
 	variable_pop(sorted);
+	set->status = 0;
 }
 
-void	export(t_minishell *set)
+void	export(t_minishell *set, t_command *cmd, int fd)
 {
 	t_command	*command;
 	t_variable	*variable;
 
 	if (set->status != 0)
 		set->status = 0;
-	command = set->cmd;
+	command = cmd;
 	variable = set->var;
 	if (command && !command->next)
-		print_sorted_command(variable);
-	export_variable(set);
+		print_sorted_command(set, variable, fd);
+	export_variable(set, cmd);
 }

@@ -6,18 +6,17 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:07:33 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 13:08:59 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:50:23 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include <sys/wait.h>
 
 static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 {
 	int		pid;
 
-	if (access(path, F_OK) == -1)
+	if (access(path, F_OK) < 0)
 	{
 		ms_putstr_fd(path, 2);
 		ms_putstr_fd(": command not found\n", 2);
@@ -27,7 +26,7 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 	if (pid == 0)
 	{
 		dup2(fd, STDOUT_FILENO);
-		argument_get(cmd, arg, ">>");
+		redirect_argument_get(cmd, arg, ">>");
 		if (execve(path, *arg, __environ) == -1)
 		{
 			close(fd);
@@ -42,7 +41,6 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 static void	is_third_command(t_minishell *set)
 {
 	int		fd;
-	int		pid;
 	char	path[4096];
 	char	**arg;
 
@@ -58,6 +56,8 @@ static void	is_third_command(t_minishell *set)
 		fd = open(set->cmd->next->name, O_WRONLY | O_APPEND | O_CREAT, 00700);
 		if (fd == -1)
 			return ;
+		if (shell_index(set, set->cmd, Off) >= 4)
+			builtin_execute(set, shell_index(set, set->cmd, Off), ">>");
 		if (search_path(set->path, set->cmd->next->next, path))
 			set->status = command_execute(set->cmd, &arg, path, fd);
 		else
