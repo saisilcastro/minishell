@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/23 20:33:59 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:56:08 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static void	redirect_first(t_command *cmd, char ***arg, char *redirect)
 	*(*arg + i) = NULL;
 }
 
-void	argument_get(t_command *cmd, char ***arg, char *redirect)
+void	redirect_argument_get(t_command *cmd, char ***arg, char *redirect)
 {
 	if (!ms_strncmp(cmd->name, redirect, ms_strlen(redirect)))
 		redirect_first(cmd, arg, redirect);

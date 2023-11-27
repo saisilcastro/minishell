@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:06:27 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/27 11:00:13 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:56:08 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 	pid = fork();
 	if (pid == 0)
 	{
-		argument_get(cmd, arg, ">");
+		redirect_argument_get(cmd, arg, ">");
 		dup2(fd, STDOUT_FILENO);
 		if (execve(path, *arg, __environ) == -1)
 		{
@@ -40,62 +40,36 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 	return (0);
 }
 
-static void	is_third_command(t_minishell *set)
-{
-	int		fd;
-	char	path[4096];
-	char	**arg;
-
-	fd = open(set->cmd->next->name, O_WRONLY | O_CREAT | O_TRUNC, 00700);
-	if (fd == -1)
-		return ;
-	if (!set->cmd->next->next)
-		write(fd, "\0", 1);
-	else
-	{
-		if (search_path(set->path, set->cmd->next->next, path))
-		{
-			set->status = command_execute(set->cmd, &arg, path, fd);
-		}
-		else
-			set->status = command_execute(set->cmd,
-					&arg, set->cmd->next->next->name, fd);
-	}
-	close(fd);
-}
-
-static void	first_execute(t_minishell *set, char *path)
+static void	redirect_execute(t_minishell *set, t_command *cmd, int fd)
 {
 	char		**arg;
-	int			fd;
-
-	fd = open(redirect_file(set->cmd, ">")->name,
-			O_WRONLY | O_CREAT | O_TRUNC, 00700);
-	if (fd == -1)
-		return ;
-	set->status = command_execute(set->cmd, &arg, path, fd);
-	close(fd);
-}
-
-static void	first_command(t_minishell *set)
-{
 	char		path[4096];
 
-	if (shell_index(set, set->cmd, Off) >= 4)
-		bulting_execute(set, shell_index(set, set->cmd, Off), ">");
-	else if (search_path(set->path, set->cmd, path))
-		first_execute(set, path);
+	if (shell_index(set, cmd, Off) >= 4)
+	{
+		if (!open_fd(&fd, ">", redirect_file(set->cmd, ">")->name, set))
+			return ;
+		builtin_execute(set, shell_index(set, cmd, Off), ">", fd);
+	}
+	else if ((search_path(set->path, cmd, path) && !access(path, F_OK)))
+		set->status = command_execute(cmd, &arg, path, fd);
 	else
-		first_execute(set, set->cmd->name);
+		set->status = command_execute(cmd, &arg, cmd->name, fd);
 }
 
 void	shell_redirect_major(t_minishell *set)
 {
+	t_command	*file;
+	int			fd;
+
+	file = redirect_file(set->cmd, ">");
+	if (!file || !open_fd(&fd, ">", file->name, set))
+		return ;
 	if (set->cmd->next)
 	{
 		if (!ms_strncmp(set->cmd->name, ">", 1))
-			is_third_command(set);
+			redirect_execute(set, file->next, fd);
 		else
-			first_command(set);
+			redirect_execute(set, set->cmd, fd);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/27 10:59:53 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:47:37 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	command_execute(t_command *cmd, char ***arg, char *path, int fd)
 	pid = fork();
 	if (pid == 0)
 	{
-		argument_get(cmd, arg, "<");
+		redirect_argument_get(cmd, arg, "<");
 		dup2(fd, STDIN_FILENO);
 		if (execve(path, *arg, __environ) == -1)
 		{
@@ -44,9 +44,10 @@ static void	redirect_execute(t_minishell	*set, t_command *cmd, int fd)
 {
 	char		**arg;
 	char		path[4096];
-	int			pid;
 
-	if ((search_path(set->path, cmd, path) && !access(path, F_OK)))
+	if (shell_index(set, set->cmd, Off) >= 4)
+		builtin_execute(set, shell_index(set, set->cmd, Off), "<", 1);
+	else if ((search_path(set->path, cmd, path) && !access(path, F_OK)))
 		set->status = command_execute(cmd, &arg, path, fd);
 	else
 		set->status = command_execute(cmd, &arg, cmd->name, fd);
@@ -64,6 +65,7 @@ void	shell_redirect_minor(t_minishell *set)
 		ms_putstr_fd("minishell: ", 2);
 		ms_putstr_fd(file->name, 2);
 		ms_putstr_fd(": no such file or directory\n", 2);
+		return ;
 	}
 	if (!ms_strncmp(set->cmd->name, "<", 1))
 		redirect_execute(set, file->next, fd);

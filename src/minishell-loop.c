@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/27 10:25:29 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:42:52 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	shell_execute(t_minishell *set)
 
 void	shell_loop(t_minishell *set)
 {
-	char		*command;
+	char	*command;
 
 	while (set->run)
 	{

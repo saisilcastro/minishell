@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/22 16:43:24 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:53:59 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static t_status	catch_special(char *command, char *buffer, int *index)
 	*index += 1;
 	if (has_special(command[1]))
 	{
-		if (!has_special(command[2]) && (command[0] == '>'
-				&& command[1] == '>')
-			|| (command[0] == '<' && command[1] == '<'))
+		if (!has_special(command[2]) && ((command[0] == '>'
+					&& command[1] == '>')
+				|| (command[0] == '<' && command[1] == '<')))
 		{
 			*index += 1;
 			i++;

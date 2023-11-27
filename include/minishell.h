@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/27 10:29:23 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/27 13:56:08 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,13 @@ extern void			shell_redirect_major(t_minishell *set);
 extern void			shell_redirect_double_major(t_minishell *set);
 extern t_status		search_path(t_command *env, t_command *app, char *path);
 extern t_command	*redirect_file(t_command *cmd, char *redirect);
-extern void			argument_get(t_command *last, char ***arg, char *redirect);
-extern void			bulting_execute(t_minishell *set, int bulting, char *redirect);
+extern void			redirect_argument_get(t_command *last, char ***arg, char *redirect);
+extern void			builtin_execute(t_minishell *set, int i, char *r, int fd);
 extern void			symbol_remaider(char *command,
 						char *buffer, int *i, char c);
 extern int			handle_quotes(char *command,
 						char *buffer, t_minishell *set);
+t_status			open_fd(int *fd, char *red, char *name, t_minishell *set);
 
 extern void			echo(t_minishell *set, t_command *cmd, int fd);
 extern void			export(t_minishell *set, t_command *cmd, int fd);
