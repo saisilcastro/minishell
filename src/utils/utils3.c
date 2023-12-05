@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 12:48:48 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/05 11:08:17 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,17 @@ char	*ms_itoa(int n)
 t_status	has_special(char c)
 {
 	if (c == '<' || c == '>' || c == '|')
+		return (On);
+	return (Off);
+}
+
+t_status	has_redirect(t_command *cmd)
+{
+	if (!cmd)
+		return (Off);
+	if (!ms_strncmp(cmd->name, "<", 1) || !ms_strncmp(cmd->name,
+			">", 1) || !ms_strncmp(cmd->name, "<<", 2)
+		|| !ms_strncmp(cmd->name, ">>", 2))
 		return (On);
 	return (Off);
 }

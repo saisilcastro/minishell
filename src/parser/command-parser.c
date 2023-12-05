@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/27 14:53:59 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:38:23 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static t_status	catch_special(char *command, char *buffer, int *index)
 		}
 		else
 		{
-			error("error: syntax error unexpected");
+			error("error: syntax error unexpected", NULL);
 			return (Off);
 		}
 	}

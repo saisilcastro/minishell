@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 13:35:34 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/05 11:33:16 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	shell_set(t_minishell *set)
 	set->file = NULL;
 	set->status = 0;
 	set->run = On;
+	set->fd_in = -3;
+	set->fd_out = -3;
 	signal(SIGINT, shell_ctrl_c);
 	signal(SIGQUIT, shell_ctrl_backslash);
 	environment_push(set);
@@ -31,7 +33,7 @@ void	shell_set(t_minishell *set)
 	shell_function(set);
 }
 
-static int	shell_redirect(t_minishell *set)
+static int	shell_redirect_index(t_minishell *set)
 {
 	static char	*redirect[] = {"<<", ">>", "<", ">", NULL};
 	int			i;
@@ -52,7 +54,7 @@ static int	shell_redirect(t_minishell *set)
 					set->status = 2;
 					return (-2);
 				}
-				return (i);
+				return (0);
 			}
 		}
 		curr = curr->next;
@@ -64,7 +66,7 @@ int	shell_index(t_minishell *set, t_command *cmd, t_status priority)
 {
 	int	i;
 
-	i = shell_redirect(set);
+	i = shell_redirect_index(set);
 	if (i == -1 || priority == Off)
 	{
 		if (!ms_strncmp(cmd->name, "echo", 4))

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/27 10:31:31 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:38:02 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static t_status	valid_name(char *name, t_minishell *set)
 	if (!ms_isalpha(name[0]) && name[0] != 0x5F)
 	{
 		set->status = -1;
-		error("export: syntax erro unexpected");
+		error("export: syntax erro unexpected", NULL);
 		return (Off);
 	}
 	while (name[++index])
@@ -55,7 +55,7 @@ static t_status	valid_name(char *name, t_minishell *set)
 			&& name[index] != 0x5F)
 		{
 			set->status = -1;
-			error("export: not a valid identifier");
+			error("export: not a valid identifier", NULL);
 			return (Off);
 		}
 	}

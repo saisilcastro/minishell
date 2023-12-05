@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/13 15:35:58 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:38:37 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	expansion(t_command **list, t_variable *var, t_minishell *set)
 			&& current->next && current->next->name[0] == '$')
 		{
 			node_delete(list, current->next->name);
-			error("export: not a valid identifier");
+			error("export: not a valid identifier", NULL);
 			continue ;
 		}
 		else

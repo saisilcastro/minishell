@@ -6,7 +6,7 @@
 #    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/11/23 20:45:44 by lumedeir         ###   ########.fr        #
+#    Updated: 2023/12/05 16:41:47 by lumedeir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,9 @@ SRC_FOLDER = minishell.c \
 			 minishell-function.c \
 			 minishell-signal.c \
 			 minishell-loop.c \
-			 redirect-minor.c \
-			 redirect-double-minor.c \
-			 redirect-major.c \
-			 redirect-double-major.c \
+			 redirect.c \
+			 heredoc.c \
+			 handle_files.c \
 			 redirect-utils.c \
 			 redirect-utils2.c \
 			 variable.c \

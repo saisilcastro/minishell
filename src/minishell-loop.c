@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/27 14:42:52 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/05 12:37:19 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static void	shell_execute(t_minishell *set)
 	if (!set)
 		return ;
 	i = shell_index(set, set->cmd, On);
-	if (i >= 0 && i <= 3)
-		set->redirect[i](set);
+	if (i == 0)
+		set->redirect(set, set->cmd);
 	else if (i >= 4)
 		set->builtin[i - 4](set, set->cmd, 1);
 }

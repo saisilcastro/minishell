@@ -6,38 +6,66 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 10:27:20 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/27 12:38:56 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:12:10 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	count_args(t_command *cmd, char *redirect)
+int	count_args(t_command *cmd)
 {
-	int			size;
 	t_command	*curr;
+	int			count;
 
-	size = 0;
-	if (!ms_strncmp(cmd->name, redirect, ms_strlen(redirect)))
-	{
-		curr = cmd->next->next->next;
-		while (curr)
-		{
-			size++;
-			curr = curr->next;
-		}
-		return (size);
-	}
-	curr = cmd->next;
+	curr = cmd;
+	count = 0;
 	while (curr)
 	{
-		if (!ms_strncmp(curr->name, redirect, ms_strlen(redirect)))
+		if (has_redirect(curr))
 		{
 			curr = curr->next->next;
-			continue ;
+			while (curr && !has_redirect(curr))
+			{
+				count++;
+				curr = curr->next;
+			}	
 		}
-		size++;
-		curr = curr->next;
+		else if (curr)
+		{
+			curr = curr->next;
+			count++;
+		}
 	}
-	return (size);
+	return (count);
+}
+
+t_command	*has_command(t_command *cmd)
+{
+	t_command	*curr;
+
+	if (!has_redirect(cmd))
+		return (cmd);
+	curr = cmd;
+	while (curr)
+	{
+		if (has_redirect(curr))
+		{
+			curr = curr->next->next;
+			if (!has_redirect(curr))
+				return (curr);
+		}
+		else
+			curr = curr->next;
+	}
+	return (NULL);
+}
+
+void	free_arr(char **arg)
+{
+	int	index;
+
+	index = -1;
+	while (arg[++index])
+		free(arg[index]);
+	free(arg);
 }

@@ -6,25 +6,11 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/27 13:56:08 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:42:23 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-t_command	*redirect_file(t_command *cmd, char *redirect)
-{
-	t_command	*curr;
-
-	curr = cmd;
-	while (curr)
-	{
-		if (!ms_strncmp(curr->name, redirect, ms_strlen(redirect)))
-			return (curr->next);
-		curr = curr->next;
-	}
-	return (NULL);
-}
 
 t_status	search_path(t_command *env, t_command *app, char *path)
 {
@@ -53,67 +39,29 @@ t_status	search_path(t_command *env, t_command *app, char *path)
 	return (i);
 }
 
-static void	redirect_middle(t_command *cmd, char ***arg, char *redirect)
+void	redirect_argument_get(t_command *cmd, char ***arg)
 {
 	t_command	*curr;
 	int			i;
 
-	if (command_size(cmd) == 3)
-	{
-		*arg = NULL;
-		return ;
-	}
-	curr = cmd->next;
-	*arg = (char **)malloc((count_args(cmd, redirect) + 2) * sizeof(char *));
-	if (!*arg)
-		return ;
-	*(*arg + 0) = ms_strdup(cmd->name);
-	i = 1;
+	i = 0;
+	curr = cmd;
 	while (curr)
 	{
-		if (!ms_strncmp(curr->name, redirect, ms_strlen(redirect)))
+		if (has_redirect(curr))
 		{
 			curr = curr->next->next;
-			continue ;
+			while (curr && !has_redirect(curr))
+			{		
+				*(*arg + i++) = ms_strdup(curr->name);
+				curr = curr->next;
+			}
 		}
-		*(*arg + i++) = ms_strdup(curr->name);
-		curr = curr->next;
+		else if (curr)
+		{
+			*(*arg + i++) = ms_strdup(curr->name);
+			curr = curr->next;
+		}
 	}
 	*(*arg + i) = NULL;
-}
-
-static void	redirect_first(t_command *cmd, char ***arg, char *redirect)
-{
-	t_command	*curr;
-	int			size;
-	int			i;
-
-	if (command_size(cmd) == 3)
-	{
-		*arg = NULL;
-		return ;
-	}
-	curr = cmd->next->next->next;
-	size = 0;
-	*arg = (char **)malloc((count_args(cmd->next->next, redirect) + 2)
-			* sizeof(char *));
-	if (!*arg)
-		return ;
-	*(*arg + 0) = ms_strdup(cmd->name);
-	i = 1;
-	curr = cmd->next->next->next;
-	while (curr)
-	{
-		*(*arg + i++) = ms_strdup(curr->next->next->name);
-		curr = curr->next;
-	}
-	*(*arg + i) = NULL;
-}
-
-void	redirect_argument_get(t_command *cmd, char ***arg, char *redirect)
-{
-	if (!ms_strncmp(cmd->name, redirect, ms_strlen(redirect)))
-		redirect_first(cmd, arg, redirect);
-	else
-		redirect_middle(cmd, arg, redirect);
 }
