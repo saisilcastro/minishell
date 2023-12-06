@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/05 17:01:57 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:11:03 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ struct s_minishell{
 	t_command	*path;
 	t_command	*file;
 	t_status	run;
+	t_status	flag;
+	char		*name;
 	int			fd_in;
 	int			fd_out;
 	void		(*redirect)(t_minishell *set, t_command *cmd);
@@ -95,6 +97,7 @@ extern void			heredoc(t_minishell *set, t_command *cmd, char *eof);
 extern int			count_redirects(t_command *cmd, char *redirect);
 extern t_status		has_redirect(t_command *cmd);
 extern t_status		valid_redirect(t_command *cmd);
+extern t_status		heredoc_is_last(t_command *cmd);
 
 //                      builtins
 extern void			echo(t_minishell *set, t_command *cmd, int fd);

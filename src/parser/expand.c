@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/11/29 11:38:37 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/06 11:35:04 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static void	find_signal(t_command *list, t_variable *var, t_command **cmd,
 void	expansion(t_command **list, t_variable *var, t_minishell *set)
 {
 	t_command	*current;
-	int			count;
 
 	if (!*list)
 		return ;
@@ -75,7 +74,6 @@ void	expansion(t_command **list, t_variable *var, t_minishell *set)
 		}
 		else
 		{
-			count = value_position(current->name);
 			if (current->name && ms_strchr(current->name, '$'))
 				find_signal(current, var, list, set);
 			if (ms_strchr(current->name, '\'') || ms_strchr(current->name, '"'))

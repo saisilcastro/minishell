@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 11:17:24 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/05 16:39:15 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/06 15:53:13 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,23 @@ t_status	valid_redirect(t_command *cmd)
 		curr = curr->next;
 	}
 	return (On);
+}
+
+t_status	heredoc_is_last(t_command *cmd)
+{
+	t_command	*curr;
+	int			count;
+
+	curr = cmd;
+	count = count_redirects(cmd, "<<") + count_redirects(cmd, "<");
+	while (count > 1)
+	{
+		if (!ms_strncmp(curr->name, "<<", 2)
+			|| !ms_strncmp(curr->name, "<", 1))
+			count--;
+		curr = curr->next;
+	}
+	if (!ms_strncmp(curr->name, "<<", 2))
+		return (On);
+	return (Off);
 }

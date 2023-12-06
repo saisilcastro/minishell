@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/05 11:33:16 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:11:38 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	shell_set(t_minishell *set)
 	set->path = NULL;
 	set->file = NULL;
 	set->status = 0;
+	set->name = NULL;
+	set->flag = Off;
 	set->run = On;
 	set->fd_in = -3;
 	set->fd_out = -3;

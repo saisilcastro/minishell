@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/05 16:42:03 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:08:37 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,5 @@ void	shell_redirect(t_minishell *set, t_command *cmd)
 	if (command)
 		redirect_execute(set, cmd, command);
 	close_fds(set);
+	set->flag = Off;
 }
