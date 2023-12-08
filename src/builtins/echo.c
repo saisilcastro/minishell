@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 23:22:39 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/27 15:23:04 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/08 11:03:34 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	echo_execute(t_minishell *set, t_command *cmd, int fd)
 	while (upd)
 	{	
 		ms_putstr_fd(upd->name, fd);
-		ms_putstr_fd(" ", fd);
+		if (upd->next)
+			ms_putstr_fd(" ", fd);
 		if (upd->next == NULL)
 		{
 			ms_putstr_fd("\0", fd);

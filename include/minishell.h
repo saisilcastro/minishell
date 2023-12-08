@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/06 16:11:03 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/07 15:48:35 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ extern void			export_variable(t_minishell *set, t_command *cmd);
 extern void			expansion(t_command **list, t_variable *v, t_minishell *s);
 extern void			remove_quotes(t_command *list, t_minishell *set);
 extern void			symbol_remaider(char *cmd, char *buffer, int *i, char c);
-extern void			find_var(t_command *line, t_variable *var, int index,
+extern void			find_variable(t_command *line, t_variable *var, int index,
 						t_minishell *set);
 extern int			handle_quotes(char *cmd, char *buffer, t_minishell *set);
 extern t_status		command_parser(t_minishell *set, char *command);
@@ -79,6 +79,7 @@ extern t_command	*has_command(t_command *cmd);
 
 //                     utils
 extern void			free_arr(char **arg);
+extern char			*get_name(char *line);
 extern void			error_and_clear(t_minishell *set, char *error);
 extern int			upd_index(char *command, char c);
 extern int			count_args(t_command *cmd);

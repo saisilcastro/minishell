@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/06 11:35:04 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:31:57 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	do_expansion(t_command *list, int *index,
 				|| ms_isalpha(list->name[*index + 1])
 				|| list->name[*index + 1] == 0x3F))
 		{
-			find_var(list, var, (*index + 1), set);
+			find_variable(list, var, (*index + 1), set);
 			*index = 0;
 			break ;
 		}
@@ -33,26 +33,30 @@ static void	do_expansion(t_command *list, int *index,
 static void	find_signal(t_command *list, t_variable *var, t_command **cmd,
 	t_minishell *set)
 {
-	int	index;
+	int	i;
 
-	index = 0;
-	while (list->name && list->name[index])
+	i = 0;
+	while (list->name && list->name[i])
 	{
-		if (list->name[index] == '\'')
-			index += upd_index(list->name + (index + 1), '\'');
-		else if (list->name[index] == '\"')
-			do_expansion(list, &index, var, set);
-		if (list->name[index] && list->name[index] == '$'
-			&& (list->name[index + 1] == 0x5F
-				|| ms_isalpha(list->name[index + 1])
-				|| list->name[index + 1] == '?'))
+		if (list->name[i] == '\'' && list->name[i + 1])
+			i += upd_index(list->name + (i + 1), '\'');
+		else if (list->name[i] == '\"' && list->name[i + 1])
+			do_expansion(list, &i, var, set);
+		if (list->name[i] && list->name[i + 1]
+			&& list->name[i] == '$'
+			&& (list->name[i + 1] == 0x5F
+				|| ms_isalpha(list->name[i + 1])
+				|| list->name[i + 1] == '?'))
 		{
-			find_var(list, var, (index + 1), set);
-			index = 0;
+			find_variable(list, var, (i + 1), set);
+			i = 0;
 		}
-		if (list->name[index] && list->name[index]
-			!= '\'' && list->name[index] != '"')
-			index++;
+		if ((list->name[i] == '"' || list->name[i] == '\'')
+			&& !list->name[i + 1])
+			i++;
+		else if (list->name[i] && list->name[i]
+			!= '\'' && list->name[i] != '"')
+			i++;
 	}
 }
 

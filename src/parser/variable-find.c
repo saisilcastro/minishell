@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:03 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/20 15:08:27 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/08 11:53:36 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	namelen(char *str)
 	return (index - 1);
 }
 
-void	find_var(t_command *line, t_variable *var, int i,
+void	find_variable(t_command *line, t_variable *var, int i,
 		t_minishell *set)
 {
 	t_variable	*temp;
@@ -89,7 +89,7 @@ void	find_var(t_command *line, t_variable *var, int i,
 	}
 	while (curr)
 	{
-		if (!ms_name_cmp(line->name + i, curr->name, namelen(line->name + i)))
+		if (!ms_name_cmp(line->name + i, curr->name, ms_strlen(curr->name)))
 		{
 			if (!temp)
 				temp = curr;

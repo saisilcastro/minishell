@@ -6,20 +6,20 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:19:28 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/17 13:21:08 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/08 11:44:12 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	update_quotes(t_command *list, t_minishell *set, char c)
+static void	update_quotes(t_command *list, t_minishell *set, char c, int p)
 {
 	char	copy[40000];
 	int		index;
 	int		index2;
 
 	index = -1;
-	while (list->name[++index] && list->name[index] != c)
+	while (list->name[++index] && index < p)
 		copy[index] = list->name[index];
 	index2 = index;
 	while (list->name[++index2] && list->name[index2] != c)
@@ -48,17 +48,17 @@ void	remove_quotes(t_command *list, t_minishell *set)
 	{
 		if (list->name[index] && list->name[index] == '\'')
 		{
+			update_quotes(list, set, '\'', index);
 			index++;
 			while (list->name[index + 1] && list->name[index + 1] != '\'')
 				index++;
-			update_quotes(list, set, '\'');
 		}
 		else if (list->name[index] && list->name[index] == '"')
 		{
+			update_quotes(list, set, '"', index);
 			index++;
 			while (list->name[index + 1] && list->name[index + 1] != '"')
 				index++;
-			update_quotes(list, set, '"');
 		}
 		if (list->name[index] && list->name[index] != '\''
 			&& list->name[index] != '"')

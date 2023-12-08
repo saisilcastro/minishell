@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/29 11:38:23 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/08 12:25:08 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ int	upd_index(char *command, char c)
 	int	index;
 
 	index = 0;
-	while (command[index] != c)
+	if (!command)
+		return (0);
+	while (command[index] && command[index] != c)
 		index++;
 	return (index);
 }

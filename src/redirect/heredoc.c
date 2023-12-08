@@ -6,13 +6,13 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:45 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/06 15:37:05 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/08 10:57:54 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static t_variable	*find_variable(t_minishell *set, char *line)
+static t_variable	*find_var(t_minishell *set, char *line)
 {
 	t_variable	*curr;
 	t_variable	*temp;
@@ -35,51 +35,60 @@ static t_variable	*find_variable(t_minishell *set, char *line)
 	return (NULL);
 }
 
-static char	*update_value(char *line, char *name, char *value)
+static char	*upd_value(char **line, char *name, char *value)
 {
-	char	buffer[8000000];
-	int		index;
+	char	buffer[65535];
+	int		i;
 	int		index2;
 
-	index = -1;
-	if (!line || !name)
+	if (!*line || !name)
 		return (NULL);
-	while (line && line[++index] != '$')
-		buffer[index] = line[index];
-	index2 = index + ms_strlen(name);
+	i = -1;
+	while (*line && *(*line + ++i) && *(*line + i) != '$')
+		buffer[i] = *(*line + i);
+	index2 = i + ms_strlen(name) + 1;
 	while (value && *value)
 	{
-		buffer[index] = *value++;
-		index++;
+		buffer[i] = *value++;
+		i++;
 	}
-	while (line && line[index2])
+	while (*line && *(*line + index2))
 	{
-		buffer[index] = line[index2++];
+		buffer[i] = *(*line + index2);
+		i++;
 		index2++;
 	}
-	buffer[index] = '\0';
-	free(line);
+	buffer[i] = '\0';
+	free(*line);
 	return (ms_strdup(buffer));
 }
 
-static void	heredoc_expansion(t_minishell *set, char *line)
+static void	heredoc_expansion(t_minishell *set, char **line)
 {
 	int			index;
-	t_variable	*curr;
+	char		*temp;
 
 	index = 0;
-	while (line && line[index])
+	while (*line && *(*line + index))
 	{
-		while (line[index] && line[index] != '$')
+		while (*(*line + index) && *(*line + index) != '$')
 			index++;
-		if (line[index] == '$' && find_variable(set, line + index + 1))
+		if (*(*line + index) && *(*line + index) == '$' && *(*line + index + 1))
 		{
-			curr = find_variable(set, line + index + 1);
-			line = update_value(line, curr->name, curr->value);
+			if (find_var(set, *line + index + 1))
+				*line = upd_value(line, find_var(set, *line + index + 1)->name,
+						find_var(set, *line + index + 1)->value);
+			else if (*(*line + index) == '$' && *(*line + index + 1)
+				&& !find_var(set, *line + index + 1))
+			{
+				temp = get_name(*line + index + 1);
+				*line = upd_value(line, temp, NULL);
+				free(temp);
+			}
 			index = 0;
-			break ;
 		}
-		index++;
+		if (*(*line + index))
+			index++;
 	}
 }
 
@@ -101,7 +110,7 @@ void	heredoc(t_minishell *set, t_command *cmd, char *eof)
 		}
 		add_history(line);
 		if (line && ms_strchr(line, '$'))
-			heredoc_expansion(set, line);
+			heredoc_expansion(set, &line);
 		ms_putstr_fd(line, fd[1]);
 		ms_putstr_fd("\n", fd[1]);
 		if (line && *line)

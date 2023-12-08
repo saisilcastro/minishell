@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/05 16:42:23 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/08 10:57:59 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,16 @@ void	redirect_argument_get(t_command *cmd, char ***arg)
 		}
 	}
 	*(*arg + i) = NULL;
+}
+
+char	*get_name(char *line)
+{
+	char	name[5000];
+	int		index;
+
+	index = -1;
+	while (line && line[++index] && line[index] != ' ')
+		name[index] = line[index];
+	name[index] = '\0';
+	return (ms_strdup(name));
 }

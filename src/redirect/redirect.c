@@ -6,13 +6,13 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/06 16:08:37 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/07 15:28:00 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	command_execute(t_command *cmd, char *path, int fd_in, int fd_out)
+static int	command_exec(t_command *cmd, char *path, int fd_in, int fd_out)
 {
 	int			pid;
 	char		**arg;
@@ -47,7 +47,7 @@ static void	redirect_execute(t_minishell *set, t_command *list, t_command *cmd)
 	if (shell_index(set, cmd, Off) >= 4)
 		builtin_execute(set, list, shell_index(set, cmd, Off), cmd->name);
 	else if ((search_path(set->path, cmd, path) && !access(path, F_OK)))
-		set->status = command_execute(list, path, set->fd_in, set->fd_out);
+		set->status = command_exec(list, path, set->fd_in, set->fd_out);
 	else
 	{
 		if (access(path, F_OK) < 0)
@@ -56,7 +56,7 @@ static void	redirect_execute(t_minishell *set, t_command *list, t_command *cmd)
 			set->status = 127;
 			return ;
 		}	
-		set->status = command_execute(list, cmd->name, set->fd_in, set->fd_out);
+		set->status = command_exec(list, cmd->name, set->fd_in, set->fd_out);
 	}
 }
 
