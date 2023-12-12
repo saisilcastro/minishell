@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/07 15:28:00 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 15:34:15 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ void	shell_redirect(t_minishell *set, t_command *cmd)
 	t_command	*command;
 
 	if (!valid_redirect(cmd))
+	{
+		set->status = 2;
 		return ;
+	}
 	if (count_redirects(cmd, "<<") + count_redirects(cmd, "<") > 0)
 		if (!get_infile(set, cmd))
 			return (close_fds(set));

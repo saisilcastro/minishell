@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/08 12:31:57 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:14:25 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,12 @@ static void	find_signal(t_command *list, t_variable *var, t_command **cmd,
 			i += upd_index(list->name + (i + 1), '\'');
 		else if (list->name[i] == '\"' && list->name[i + 1])
 			do_expansion(list, &i, var, set);
-		if (list->name[i] && list->name[i + 1]
-			&& list->name[i] == '$'
-			&& (list->name[i + 1] == 0x5F
-				|| ms_isalpha(list->name[i + 1])
-				|| list->name[i + 1] == '?'))
+		if (list->name[i] && list->name[i + 1] && list->name[i] == '$' && (ms_isalpha(
+				list->name[i + 1]) || list->name[i + 1] == '_' || list->name[i + 1] == '?'))
 		{
 			find_variable(list, var, (i + 1), set);
 			i = 0;
+			continue ;
 		}
 		if ((list->name[i] == '"' || list->name[i] == '\'')
 			&& !list->name[i + 1])
@@ -66,23 +64,16 @@ void	expansion(t_command **list, t_variable *var, t_minishell *set)
 
 	if (!*list)
 		return ;
-	current = (*list)->next;
+	current = *list;
 	while (current)
 	{
-		if (!ms_strncmp((*list)->name, "export", 6)
-			&& current->next && current->next->name[0] == '$')
+		if (current->name && ms_strchr(current->name, '$'))
+			find_signal(current, var, list, set);
+		if (ms_strchr(current->name, '\'') || ms_strchr(current->name, '"'))
 		{
-			node_delete(list, current->next->name);
-			error("export: not a valid identifier", NULL);
-			continue ;
+			current->flag_quotes = On;
+			remove_quotes(current, set);
 		}
-		else
-		{
-			if (current->name && ms_strchr(current->name, '$'))
-				find_signal(current, var, list, set);
-			if (ms_strchr(current->name, '\'') || ms_strchr(current->name, '"'))
-				remove_quotes(current, set);
-			current = current->next;
-		}
+		current = current->next;
 	}
 }

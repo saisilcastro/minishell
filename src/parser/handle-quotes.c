@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:19:28 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/08 11:44:12 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 11:03:03 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,30 @@ static void	update_quotes(t_command *list, t_minishell *set, char c, int p)
 
 void	remove_quotes(t_command *list, t_minishell *set)
 {
-	int	index;
+	int	i;
+	int	temp;
 
-	index = 0;
-	if (!list->name || !*list->name)
-		return ;
-	while (list->name && list->name[index])
+	i = 0;
+	while (list->name && list->name[i])
 	{
-		if (list->name[index] && list->name[index] == '\'')
+		if (list->name[i] && list->name[i] == '\'')
 		{
-			update_quotes(list, set, '\'', index);
-			index++;
-			while (list->name[index + 1] && list->name[index + 1] != '\'')
-				index++;
+			temp = i;
+			i++;
+			while (list->name[i + 1] && list->name[i + 1] != '\'')
+				i++;
+			update_quotes(list, set, '\'', temp);
 		}
-		else if (list->name[index] && list->name[index] == '"')
+		else if (list->name[i] && list->name[i] == '"')
 		{
-			update_quotes(list, set, '"', index);
-			index++;
-			while (list->name[index + 1] && list->name[index + 1] != '"')
-				index++;
+			temp = i;
+			i++;
+			while (list->name[i + 1] && list->name[i + 1] != '"')
+				i++;
+			update_quotes(list, set, '"', temp);
 		}
-		if (list->name[index] && list->name[index] != '\''
-			&& list->name[index] != '"')
-			index++;
+		if (list->name[i] && list->name[i] != '\'' && list->name[i] != '"')
+			i++;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:38:59 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/06 16:12:29 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 11:16:43 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ t_status	get_infile(t_minishell *set, t_command *cmd)
 	count_in = count_redirects(cmd, "<<") + count_redirects(cmd, "<");
 	while (curr && count_in)
 	{
-		if (!ms_strncmp(curr->name, "<<", 2) || !ms_strncmp(curr->name, "<", 1))
+		if (!curr->flag_quotes && (!ms_strncmp(curr->name, "<<", 2)
+				|| !ms_strncmp(curr->name, "<", 1)))
 		{
 			if (set->fd_in >= 0)
 				close_fds(set);
@@ -68,10 +69,7 @@ t_status	get_infile(t_minishell *set, t_command *cmd)
 		curr = curr->next;
 	}
 	if (set->flag)
-	{
-		error(": No such file or directory", set->name);
-		return (Off);
-	}
+		return (error(": No such file or directory", set->name), Off);
 	return (On);
 }
 
@@ -84,7 +82,8 @@ t_status	get_outfile(t_minishell *set, t_command *cmd)
 	count_out = count_redirects(cmd, ">>") + count_redirects(cmd, ">");
 	while (curr && count_out)
 	{
-		if (!ms_strncmp(curr->name, ">>", 2) || !ms_strncmp(curr->name, ">", 1))
+		if (!curr->flag_quotes && (!ms_strncmp(curr->name, ">>", 2)
+				|| !ms_strncmp(curr->name, ">", 1)))
 		{
 			if (set->fd_out >= 0)
 			{

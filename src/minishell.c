@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/06 16:11:38 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 11:06:46 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ static int	shell_redirect_index(t_minishell *set)
 		i = -1;
 		while (redirect[++i])
 		{
-			if (!ms_strncmp(curr->name, redirect[i],
-					ms_strlen(redirect[i])))
+			if (!ms_strncmp(curr->name, redirect[i], ms_strlen(redirect[i])))
 			{
 				if (!curr->next)
 				{
@@ -56,7 +55,8 @@ static int	shell_redirect_index(t_minishell *set)
 					set->status = 2;
 					return (-2);
 				}
-				return (0);
+				if (curr->flag_quotes == Off)
+					return (0);
 			}
 		}
 		curr = curr->next;

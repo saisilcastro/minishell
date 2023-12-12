@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 11:39:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/08 12:09:45 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 14:35:40 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int	ms_name_cmp(char *str1, char *str2, int n)
 		return (0);
 	if (str1[count] && str1[count] == ' ')
 		return (0);
-	if (str1[count] && str1[count] == '\'' || str1[count] == '"')
+	if (str1[count] && str1[count] == '\'' || str1[count] == '"'
+		|| str1[count] == '$' || str1[count] == '=')
 		return (0);
 	return (1);
 }

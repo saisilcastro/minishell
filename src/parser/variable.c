@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/06 11:36:07 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 15:17:29 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_variable	*variable_push(char *name, char *value)
 	return (set);
 }
 
-t_variable	*variable_search(t_variable *list, char *name)
+t_variable	*var_search(t_variable *list, char *name)
 {
 	t_variable	*update;
 

@@ -6,16 +6,23 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/29 11:38:02 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 15:34:30 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char	*name_get(char *command, char *name)
+static char	*name_get(t_minishell *set, char *command, char *name)
 {
 	int	i;
 
+	if (*command && *command == '=')
+	{
+		set->status = 1;
+		error(": not a valid identifier", command);
+		*(name + 0) = '\0';
+		return (command);
+	}
 	i = 0;
 	while (*command && *command != '=')
 		*(name + i++) = *command++;
@@ -36,26 +43,28 @@ static char	*value_get(char *command, char *value)
 	return (command);
 }
 
-static t_status	valid_name(char *name, t_minishell *set)
+t_status	valid_name(char *name, t_minishell *set)
 {
 	int	index;
 
-	if (!name || !*name)
-		return (Off);
-	index = 0;
-	if (!ms_isalpha(name[0]) && name[0] != 0x5F)
+	index = -1;
+	if (!ms_isalpha(name[0]) && name[0] != '_'
+		&& !ms_isdigit(name[0]) && name[0] != '/' && name[0] != '=')
 	{
-		set->status = -1;
-		error("export: syntax erro unexpected", NULL);
+		if (name[0] == '-')
+			error(": invalid option", name);
+		else
+			error(": syntax erro unexpected", name);
+		set->status = 2;
 		return (Off);
 	}
-	while (name[++index])
+	while (name && name[++index])
 	{
-		if (!ms_isalpha(name[index]) && !ms_isdigit(name[index])
-			&& name[index] != 0x5F)
+		if (ms_isdigit(name[index]) || name[index] == '/' || name[index] == '='
+			|| (!ms_isalpha(name[index]) && name[index] != '_'))
 		{
-			set->status = -1;
-			error("export: not a valid identifier", NULL);
+			error(": not a valid identifier", name);
+			set->status = 1;
 			return (Off);
 		}
 	}
@@ -98,15 +107,15 @@ void	export_variable(t_minishell *set, t_command *cmd)
 	char		value[65535];
 	char		*update;
 
-	upd = cmd;
+	upd = cmd->next;
 	while (upd)
 	{
 		update = upd->name;
-		update = name_get(update, name);
+		update = name_get(set, update, name);
 		update = value_get(update, value);
-		if (variable_search(set->var, name) && ms_strchr(upd->name, '='))
+		if (name[0] && var_search(set->var, name) && ms_strchr(upd->name, '='))
 			new_value(&set->var, name, value);
-		else if (!variable_search(set->var, name))
+		else if (name[0] && !var_search(set->var, name))
 		{
 			if (valid_name(name, set))
 			{

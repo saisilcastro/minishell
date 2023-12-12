@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/05 12:37:19 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 11:21:24 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ static void	shell_execute(t_minishell *set)
 		set->redirect(set, set->cmd);
 	else if (i >= 4)
 		set->builtin[i - 4](set, set->cmd, 1);
+	else
+	{
+		error(" : command not found", set->cmd->name);
+		set->status = 127;
+	}
 }
 
 void	shell_loop(t_minishell *set)

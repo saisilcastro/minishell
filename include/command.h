@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 12:47:56 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/13 11:52:28 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/12 11:14:48 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef struct s_command	t_command;
 struct s_command
 {
 	char		*name;
+	t_status	flag_quotes;
 	t_command	*next;
 };
 

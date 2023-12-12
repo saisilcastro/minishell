@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/07 15:48:35 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/12 11:45:40 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ extern void			symbol_remaider(char *cmd, char *buffer, int *i, char c);
 extern void			find_variable(t_command *line, t_variable *var, int index,
 						t_minishell *set);
 extern int			handle_quotes(char *cmd, char *buffer, t_minishell *set);
+extern t_status		valid_name(char *name, t_minishell *set);
 extern t_status		command_parser(t_minishell *set, char *command);
 extern t_status		quotes_is_closed(char *command, char c,
 						t_minishell *set, t_status msg);

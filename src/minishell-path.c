@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell-path.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:16:51 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/13 11:45:07 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/12 15:17:29 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	shell_path(t_minishell *set)
 	char		buffer[65535];
 	int			i;
 
-	var = variable_search(set->var, "PATH");
+	var = var_search(set->var, "PATH");
 	if (var)
 	{
 		i = -1;

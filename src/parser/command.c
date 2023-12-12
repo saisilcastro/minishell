@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/13 11:53:53 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/12 11:00:03 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_command	*command_push(char *name)
 	if (!set)
 		return (NULL);
 	set->name = ms_strdup(name);
+	set->flag_quotes = Off;
 	set->next = NULL;
 	return (set);
 }
