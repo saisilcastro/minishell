@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/12 16:14:25 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 10:56:34 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ static void	find_signal(t_command *list, t_variable *var, t_command **cmd,
 			i += upd_index(list->name + (i + 1), '\'');
 		else if (list->name[i] == '\"' && list->name[i + 1])
 			do_expansion(list, &i, var, set);
-		if (list->name[i] && list->name[i + 1] && list->name[i] == '$' && (ms_isalpha(
-				list->name[i + 1]) || list->name[i + 1] == '_' || list->name[i + 1] == '?'))
+		if (list->name[i] && list->name[i + 1] && list->name[i] == '$'
+			&& (ms_isalpha(list->name[i + 1])
+				|| list->name[i + 1] == '_' || list->name[i + 1] == '?'))
 		{
 			find_variable(list, var, (i + 1), set);
 			i = 0;

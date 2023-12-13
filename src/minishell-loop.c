@@ -6,29 +6,30 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/12 11:21:24 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:00:04 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	shell_execute(t_minishell *set)
+static void	shell(t_minishell *set)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	int		fd[2];
+	char	**arg;
 
 	if (!set)
 		return ;
-	i = shell_index(set, set->cmd, On);
+	i = shell_index(set, &set->cmd, On);
+	if (i == -1 && !set->cmd)
+		return ;
 	if (i == 0)
 		set->redirect(set, set->cmd);
 	else if (i >= 4)
 		set->builtin[i - 4](set, set->cmd, 1);
 	else
-	{
-		error(" : command not found", set->cmd->name);
-		set->status = 127;
-	}
+		shell_run(set);
 }
 
 void	shell_loop(t_minishell *set)
@@ -49,7 +50,7 @@ void	shell_loop(t_minishell *set)
 			free (command);
 			continue ;
 		}
-		shell_execute(set);
+		shell(set);
 		if (command && *command)
 			free(command);
 		command_pop(&set->cmd);

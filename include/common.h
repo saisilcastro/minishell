@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:09:21 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/23 10:28:30 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 15:16:51 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ extern int		ms_strlen(const char *str);
 extern int		ms_strncmp(char *str1, char *str2, int n);
 extern int		ms_name_cmp(char *str1, char *str2, int n);
 extern void		ms_putstr_fd(char *s, int fd);
-extern void		join_path(char *path, char *file, char *buffer);
 extern char		*ms_itoa(int n);
 extern t_status	has_special(char c);
 

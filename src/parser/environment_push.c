@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 12:05:32 by mister-code       #+#    #+#             */
-/*   Updated: 2023/11/01 11:29:21 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 11:00:04 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ void	environment_push(t_minishell *set)
 		command = *(__environ + i);
 		command = name_get(command, name);
 		command = value_get(command, value);
-		variable_next_last(&set->var, variable_push(name, value));
+		var_next_last(&set->var, variable_push(name, value, On));
 	}
 }

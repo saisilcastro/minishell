@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/12 15:34:15 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:49:32 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static void	redirect_execute(t_minishell *set, t_command *list, t_command *cmd)
 {
 	char		path[4096];
 
-	if (shell_index(set, cmd, Off) >= 4)
-		builtin_execute(set, list, shell_index(set, cmd, Off), cmd->name);
+	if (shell_index(set, &cmd, Off) >= 4)
+		builtin_execute(set, list, shell_index(set, &cmd, Off), cmd->name);
 	else if ((search_path(set->path, cmd, path) && !access(path, F_OK)))
 		set->status = command_exec(list, path, set->fd_in, set->fd_out);
 	else

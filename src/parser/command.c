@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/12 11:00:03 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:48:06 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,19 @@ void	command_pop(t_command **list)
 			free((*list)->name);
 		free(*list);
 		*list = next;
+	}
+}
+
+void	command_pop_first(t_command **head)
+{
+	t_command	*next;
+
+	if (head && *head)
+	{
+		next = (*head)->next;
+		if ((*head)->name)
+			free((*head)->name);
+		free(*head);
+		*head = next;
 	}
 }

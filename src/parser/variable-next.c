@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable-next.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 12:18:28 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/10/25 15:31:36 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/13 11:00:04 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	variable_next_first(t_variable **head, t_variable *set)
 	*head = set;
 }
 
-void	variable_next_last(t_variable **head, t_variable *set)
+void	var_next_last(t_variable **head, t_variable *set)
 {
 	t_variable	*update;
 

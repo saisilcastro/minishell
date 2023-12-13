@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/12 11:45:40 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:47:54 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <variable.h>
 # include <common.h>
+# include <variable.h>
 # include <command.h>
 # include <signal.h>
 # define CYAN "\033[0;36m"
@@ -47,7 +47,7 @@ struct s_minishell{
 //                    shell
 extern void			shell_set(t_minishell *set);
 extern void			shell_function(t_minishell *set);
-extern int			shell_index(t_minishell *set, t_command *cmd, t_status p);
+extern int			shell_index(t_minishell *set, t_command **cmd, t_status p);
 extern void			shell_path(t_minishell *set);
 extern void			shell_command(t_minishell *set);
 extern void			shell_parse(t_minishell *set, char *command);
@@ -55,7 +55,7 @@ extern void			shell_loop(t_minishell *set);
 extern void			shell_pop(t_minishell *set);
 extern void			shell_ctrl_c(int sig);
 extern void			shell_ctrl_backslash(int sig);
-extern t_status		shell_io(t_minishell *set);
+extern void			shell_run(t_minishell *set);
 
 //                   parser and expansion
 extern void			environment_push(t_minishell *set);

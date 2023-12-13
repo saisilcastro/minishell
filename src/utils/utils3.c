@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/05 11:08:17 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 15:16:46 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,6 @@ int	ms_atoi(char *str)
 		str++;
 	}
 	return (number * mul);
-}
-
-void	join_path(char *path, char *file, char *buffer)
-{
-	int	i;
-
-	i = -1;
-	while (*path)
-		*(buffer + ++i) = *path++;
-	*(buffer + ++i) = '/';
-	while (*file)
-		*(buffer + ++i) = *file++;
-	*(buffer + ++i) = '\0';
 }
 
 char	*ms_itoa(int n)
@@ -88,9 +75,10 @@ t_status	has_redirect(t_command *cmd)
 {
 	if (!cmd)
 		return (Off);
-	if (!ms_strncmp(cmd->name, "<", 1) || !ms_strncmp(cmd->name,
-			">", 1) || !ms_strncmp(cmd->name, "<<", 2)
-		|| !ms_strncmp(cmd->name, ">>", 2))
+	if (!cmd->flag_quotes && (!ms_strncmp(cmd->name, "<", 1)
+			|| !ms_strncmp(cmd->name, ">", 1)
+			|| !ms_strncmp(cmd->name, "<<", 2)
+			|| !ms_strncmp(cmd->name, ">>", 2)))
 		return (On);
 	return (Off);
 }

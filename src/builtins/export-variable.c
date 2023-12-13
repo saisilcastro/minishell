@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/12 15:34:30 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 11:00:04 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,9 @@ void	export_variable(t_minishell *set, t_command *cmd)
 			if (valid_name(name, set))
 			{
 				if (!ms_strlen(value) && !ms_strchr(upd->name, '='))
-					variable_next_last(&set->var, variable_push(name, NULL));
+					var_next_last(&set->var, variable_push(name, NULL, Off));
 				else
-					variable_next_last(&set->var, variable_push(name, value));
+					var_next_last(&set->var, variable_push(name, value, Off));
 			}
 		}
 		upd = upd->next;

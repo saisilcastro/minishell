@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/12 11:06:46 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:13:19 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	shell_set(t_minishell *set)
 	signal(SIGINT, shell_ctrl_c);
 	signal(SIGQUIT, shell_ctrl_backslash);
 	environment_push(set);
-	variable_next_first(&set->var, variable_push("test", "Olá"));
-	variable_next_first(&set->var, variable_push("test2", "Mundo!!"));
+	variable_next_first(&set->var, variable_push("test", "Olá", Off));
+	variable_next_first(&set->var, variable_push("test2", "Mundo!!", Off));
 	shell_path(set);
 	shell_function(set);
 }
@@ -64,26 +64,30 @@ static int	shell_redirect_index(t_minishell *set)
 	return (-1);
 }
 
-int	shell_index(t_minishell *set, t_command *cmd, t_status priority)
+int	shell_index(t_minishell *set, t_command **cmd, t_status priority)
 {
 	int	i;
 
-	i = shell_redirect_index(set);
-	if (i == -1 || priority == Off)
+	while (cmd && *cmd && !(*cmd)->name[0])
+			command_pop_first(cmd);
+	i = 0;
+	if (*cmd)
+		i = shell_redirect_index(set);
+	if (*cmd && (i == -1 || priority == Off))
 	{
-		if (!ms_strncmp(cmd->name, "echo", 4))
+		if (!ms_strncmp((*cmd)->name, "echo", 4))
 			return (4);
-		else if (!ms_strncmp(cmd->name, "cd", 2))
+		else if (!ms_strncmp((*cmd)->name, "cd", 2))
 			return (5);
-		else if (!ms_strncmp(cmd->name, "pwd", 3))
+		else if (!ms_strncmp((*cmd)->name, "pwd", 3))
 			return (6);
-		else if (!ms_strncmp(cmd->name, "export", 6))
+		else if (!ms_strncmp((*cmd)->name, "export", 6))
 			return (7);
-		else if (!ms_strncmp(cmd->name, "unset", 5))
+		else if (!ms_strncmp((*cmd)->name, "unset", 5))
 			return (8);
-		else if (!ms_strncmp(cmd->name, "env", 3))
+		else if (!ms_strncmp((*cmd)->name, "env", 3))
 			return (9);
-		else if (!ms_strncmp(cmd->name, "exit", 4))
+		else if (!ms_strncmp((*cmd)->name, "exit", 4))
 			return (10);
 	}
 	return (i);

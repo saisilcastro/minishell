@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 12:47:56 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/12 11:14:48 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:46:12 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ extern t_command	*command_push(char *name);
 extern void			command_next_last(t_command **list, t_command *set);
 extern int			command_size(t_command *list);
 extern void			command_pop(t_command **list);
+extern void			command_pop_first(t_command **head);
 
 #endif

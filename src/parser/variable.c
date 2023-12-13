@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/12 15:17:29 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/13 10:57:56 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	variable_set(t_variable *set)
 	set->next = NULL;
 }
 
-t_variable	*variable_push(char *name, char *value)
+t_variable	*variable_push(char *name, char *value, t_status env)
 {
 	t_variable	*set;
 
@@ -27,6 +27,7 @@ t_variable	*variable_push(char *name, char *value)
 	variable_set(set);
 	set->name = ms_strdup(name);
 	set->value = ms_strdup(value);
+	set->env = env;
 	return (set);
 }
 
