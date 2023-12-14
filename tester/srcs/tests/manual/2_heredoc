@@ -1,0 +1,50 @@
+cat <<HEREDOC
+oi
+HEREDOC
+
+cat <<HERE <<DOC
+oi
+HERE
+time
+DOC
+
+cat <<HERE | ls
+oi
+HERE
+
+cat <<HERE
+$USER
+oi
+HERE
+
+cat <minishell.h <<HERE <missing | ls
+HERE
+
+cat <minishell.h <<HERE | cat
+HERE
+
+cat <minishell.h <<HERE <missing <<DOC | echo oi
+HERE
+DOC
+
+cat << $
+oi
+$
+
+<< echo oi
+echo
+
+echo "<< < > >>" << < > >>
+echo "<< < > >>" << < > >>
+echo <"<< < > >>"<">"\" << < > >>
+echo << "testando" "asdfasdf"
+echo << E OF | tr a b >> "file"
+<< "oioi" "oi"
+oi "oi <<" oi tchau "ben 10"
+a <<b c
+argel <<ben10 cat
+aa <<bb cc >>dd
+aa <<bb cc >>dd > e <Makefile
+
+cat <<EOF
+$ echo $PWD $USER $ $/

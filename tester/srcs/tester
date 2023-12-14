@@ -1,0 +1,175 @@
+#!/bin/bash
+
+VAL="valgrind --suppressions=utils/supp.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children-skip='*/bin/*,*/sbin/*' --trace-children=yes"
+# MINISHELL_PATH="$VAL ./../minishell"
+MINISHELL_PATH="./../minishell"
+
+# echo $MINISHELL_PATH
+# exit
+
+# Run a specific test if the file name was specified
+if [[ $1 ]]; then
+	test_lists=(
+		$1
+	)
+else
+	test_lists=(
+		"./srcs/tests/1_simple_commands"
+		"./srcs/tests/2_arguments"
+		"./srcs/tests/3_echo"
+		"./srcs/tests/4_exit"
+		"./srcs/tests/5_exit_code"
+		"./srcs/tests/7_double_quotes"
+		"./srcs/tests/8_single_quotes"
+		"./srcs/tests/9_export"
+		"./srcs/tests/10_unset"
+		"./srcs/tests/11_cd"
+		"./srcs/tests/12_pwd"
+		"./srcs/tests/13_relative_path"
+		"./srcs/tests/14_environment_path"
+		"./srcs/tests/15_redirection"
+		"./srcs/tests/16_pipes"
+		"./srcs/tests/17_go_crazy"
+		"./srcs/tests/18_environment_variable"
+		"./srcs/tests/19_syntax"
+		"./srcs/tests/extra/20_mand"
+	)
+fi
+
+if [[ $1 == "wildcards"  || $1 == "bonus" ]]; then
+	MINISHELL_PATH="../minishell_bonus"
+fi
+
+BOLD="\e[1m"
+YELLOW="\033[0;33m"
+GREY="\033[38;5;244m"
+PURPLE="\033[0;35m"
+BLUE="\033[0;36m"
+RED="\e[0;31m"
+END="\033[0m"
+
+chmod 000 ./files/invalid_permission
+mkdir ./srcs/tmp
+mkdir ./srcs/tmp/outfiles
+mkdir ./srcs/tmp/mini_outfiles
+mkdir ./srcs/tmp/bash_outfiles
+
+printf $GREEN
+echo "                                                                                              ";
+echo "                                   ACAPELA TESTER                                             ";
+echo "                                                                                              ";
+
+PROMPT=$(echo -e "\nexit\n" | $MINISHELL_PATH | head -n 1 | sed "s/\x1B\[[0-9;]\{1,\}[A-Za-z]//g" )
+
+# Helper commands:
+REMOVE_COLORS="sed s/\x1B\[[0-9;]\{1,\}[A-Za-z]//g"
+REMOVE_EXIT="grep -v ^exit$"
+
+for testfile in ${test_lists[*]}; do
+
+	printf $RED
+	echo ———————————— $testfile
+
+	while read teste; do
+		((i++))
+
+		rm -rf ./srcs/tmp/outfiles/*
+		rm -rf ./srcs/tmp/mini_outfiles/*
+		MINI_OUTPUT=$(echo -e "$teste" | $MINISHELL_PATH 2> /dev/null | $REMOVE_COLORS | grep -vF "$PROMPT" | $REMOVE_EXIT )
+		MINI_OUTFILES=$(cp ./srcs/tmp/outfiles/* ./srcs/tmp/mini_outfiles &>/dev/null)
+		MINI_EXIT_CODE=$(echo -e "$MINISHELL_PATH\n$teste\necho \$?\nexit\n" | bash 2> /dev/null | $REMOVE_COLORS | grep -vF "$PROMPT" | $REMOVE_EXIT | tail -n 1)
+		MINI_ERROR_MSG=$(trap "" PIPE && echo "$teste" | $MINISHELL_PATH 2>&1 > /dev/null | grep -o '[^:]*$' )
+
+		rm -rf ./srcs/tmp/outfiles/*
+		rm -rf ./srcs/tmp/bash_outfiles/*
+		BASH_OUTPUT=$(echo -e "$teste" | bash 2> /dev/null)
+		BASH_EXIT_CODE=$(echo $?)
+		BASH_OUTFILES=$(cp ./srcs/tmp/outfiles/* ./srcs/tmp/bash_outfiles &>/dev/null)
+		BASH_ERROR_MSG=$(trap "" PIPE && echo "$teste" | bash 2>&1 > /dev/null | grep -o '[^:]*$' | head -n1)
+
+		OUTFILES_DIFF=$(diff --brief ./srcs/tmp/mini_outfiles ./srcs/tmp/bash_outfiles)
+
+		printf $YELLOW
+		printf "Test %3s: " $i
+		if [[ "$MINI_OUTPUT" == "$BASH_OUTPUT" && "$MINI_EXIT_CODE" == "$BASH_EXIT_CODE" && -z "$OUTFILES_DIFF" ]]; then
+			printf ✅
+			((ok++))
+			if [ "$MINI_ERROR_MSG" != "$BASH_ERROR_MSG" ]; then
+				printf "⚠️ "
+			fi
+		else
+			printf ❌ 
+		fi
+			printf "$GREY $teste \n$END"
+			if [ "$OUTFILES_DIFF" ]; then
+				echo "$OUTFILES_DIFF" 
+				echo mini outfiles: 
+				cat ./srcs/tmp/mini_outfiles/* 
+				echo bash outfiles: 
+				cat ./srcs/tmp/bash_outfiles/* 
+			fi
+			if [ "$MINI_OUTPUT" != "$BASH_OUTPUT" ]; then
+				echo mini output = \($MINI_OUTPUT\) 
+				echo bash output = \($BASH_OUTPUT\) 
+			fi
+			if [ "$MINI_EXIT_CODE" != "$BASH_EXIT_CODE" ]; then
+				echo mini exit code = $MINI_EXIT_CODE 
+				echo bash exit code = $BASH_EXIT_CODE 
+			fi
+			if [ "$MINI_ERROR_MSG" != "$BASH_ERROR_MSG" ]; then
+				echo mini error = \($MINI_ERROR_MSG\) 
+				echo bash error = \($BASH_ERROR_MSG\) 
+			fi
+
+		# else
+		# 	printf ❌ >>resultado
+		# 	printf "$GREY $teste \n$END" >>resultado
+		# 	if [ "$OUTFILES_DIFF" ]; then
+		# 		echo "$OUTFILES_DIFF" >>resultado
+		# 		echo mini outfiles: >>resultado
+		# 		cat ./srcs/tmp/mini_outfiles/* >>resultado
+		# 		echo bash outfiles: >>resultado
+		# 		cat ./srcs/tmp/bash_outfiles/* >>resultado
+		# 	fi
+		# 	if [ "$MINI_OUTPUT" != "$BASH_OUTPUT" ]; then
+		# 		echo mini output = \($MINI_OUTPUT\) >>resultado
+		# 		echo bash output = \($BASH_OUTPUT\) >>resultado
+		# 	fi
+		# 	if [ "$MINI_EXIT_CODE" != "$BASH_EXIT_CODE" ]; then
+		# 		echo mini exit code = $MINI_EXIT_CODE >>resultado
+		# 		echo bash exit code = $BASH_EXIT_CODE >>resultado
+		# 	fi
+		# 	if [ "$MINI_ERROR_MSG" != "$BASH_ERROR_MSG" ]; then
+		# 		echo mini error = \($MINI_ERROR_MSG\) >>resultado
+		# 		echo bash error = \($BASH_ERROR_MSG\) >>resultado
+		# 	fi
+		# fi
+		
+	done < $testfile
+done
+
+chmod 666 ./files/invalid_permission
+rm -rf ./srcs/tmp/outfiles
+rm -rf ./srcs/tmp/mini_outfiles
+rm -rf ./srcs/tmp/bash_outfiles
+
+printf $PURPLE
+printf $BOLD
+echo   $ok/$i
+printf $END
+
+find . -maxdepth 1 -type f ! -name "Makefile" ! -name "resultado" -delete
+rm -rfd phoenixpaste
+
+if [[ "$ok" == "$i" ]]; then
+	echo "🎊 🎊 🎊"
+	echo "😎 😎 😎"
+	echo "🎉 🎉 🎉"
+	exit 0
+else
+	echo "😭 😭 😭"
+	exit 1
+fi
+
+bash tests/extra/21_welton.sh
+

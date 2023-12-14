@@ -1,0 +1,11 @@
+echo $USER
+echo "'$USER'"
+"'$USER'"
+echo '"$USER"'
+'"$USER"'
+$NOECZISTE echo oi
+echo $NO_ECZISTE
+echo $HOME""""''''""
+echo t""'e'''''""""s""''ta'n''do'"'' "$USER''""
+echo t""'e''$PWD'''"$USER"""s""''ta'n''do'"'' "$USER''""
+echo t""'e''$PWDjflkdsajkldsjfakl-- __ __ '''"$USER"""s""''ta'n''do'"'' "$USER''""

@@ -1,14 +1,52 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
+#    Updated: 2023/12/14 17:05:41 by lde-cast         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = minishell
-VPATH = src: ./src src: ./src/builtins
+VPATH = src: ./src src: ./src/builtins src: ./src/redirect src: ./src/parser src: ./src/utils src: ./src/pipe
 SRC_FOLDER = minishell.c \
-			 minishell-command.c \
+			 minishell-path.c \
+			 minishell-function.c \
+			 minishell-signal.c \
+			 minishell-loop.c \
+			 minishell-execution.c \
+			 redirect.c \
+			 heredoc.c \
+			 handle_files.c \
+			 pipe.c \
+			 pipe-process.c \
+			 redirect-utils.c \
+			 redirect-utils2.c \
 			 variable.c \
 			 variable-next.c \
+			 variable-find.c \
+			 variable-delete.c \
+			 environment_push.c \
 			 command.c \
 			 command-parser.c \
+			 handle-quotes.c \
+			 expand.c \
 			 echo.c \
+			 cd.c \
+			 pwd.c \
 			 export.c \
-			 common.c
+			 export-variable.c \
+			 unset.c \
+			 env.c \
+			 exit.c \
+			 error.c \
+			 utils4.c \
+			 utils3.c \
+			 utils2.c \
+			 utils.c
 SRC = $(SRC_FOLDER) \
 	  main.c
 INCLUDE = -I./include
@@ -20,16 +58,23 @@ ifneq ($(OS), Windows_NT)
 	REMOVE = rm -rf $(1)
 endif
 
+# Color codes for terminal output
+PURPLE = \033[1;35m
+
 all: $(NAME)
 $(NAME): $(SRCOBJ)
-	$(CC) $^ $(LIB) -o $(NAME)
+	@printf "\nThe Makefile of [$(PURPLE)MINISHELL\033[0m] has been compiled!🐚\n"
+	@$(CC) $^ $(LIB) -o $(NAME)
 ${OBJ}/%.o : %.c
-	$(call CREATE, ${OBJ})
-	$(CC) -c $< -o $@ $(INCLUDE) -g3
+	@$(call CREATE, ${OBJ})
+	@printf "\rMinishell: building $@                      "
+	@$(CC) -c $< -o $@ $(INCLUDE) -g3
 leak:
-	valgrind --leak-check=full -q ./$(NAME)
+	valgrind --leak-check=full -q ./$(NAME) -fanalyzer e -fsanitize=address
 clean:
-	$(call REMOVE, ${OBJ}/*.o)
+	@$(call REMOVE, ${OBJ}/*.o)
+	@rm -rf $(OBJ)
 fclean: clean
-	$(call REMOVE, ${NAME})
+	@$(call REMOVE, ${NAME})
+	@echo "✨ Cleaning complete! ✨"
 re: fclean all
