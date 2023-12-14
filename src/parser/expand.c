@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/13 10:56:34 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/14 12:47:37 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	find_signal(t_command *list, t_variable *var, t_command **cmd,
 	while (list->name && list->name[i])
 	{
 		if (list->name[i] == '\'' && list->name[i + 1])
-			i += upd_index(list->name + (i + 1), '\'');
+			i += (upd_index(list->name + (i + 1), '\'') + 2);
 		else if (list->name[i] == '\"' && list->name[i + 1])
 			do_expansion(list, &i, var, set);
 		if (list->name[i] && list->name[i + 1] && list->name[i] == '$'

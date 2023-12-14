@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/13 17:13:19 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/14 11:52:53 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	shell_index(t_minishell *set, t_command **cmd, t_status priority)
 	int	i;
 
 	while (cmd && *cmd && !(*cmd)->name[0])
-			command_pop_first(cmd);
+		command_pop_first(cmd);
 	i = 0;
 	if (*cmd)
 		i = shell_redirect_index(set);

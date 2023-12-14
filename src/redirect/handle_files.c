@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:38:59 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/12 11:16:43 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/14 13:03:40 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_status	open_fds(t_minishell *set, char *redirect, char *name)
 		if (set->fd_in < 0)
 		{
 			set->name = name;
+			set->status = 1;
 			return (Off);
 		}
 		return (On);
@@ -41,6 +42,7 @@ t_status	open_fds(t_minishell *set, char *redirect, char *name)
 	if (set->fd_out < 0)
 	{
 		error(": No such file or directory", name);
+		set->status = 1;
 		return (Off);
 	}
 	return (On);
