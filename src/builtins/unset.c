@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/12 15:55:38 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 10:44:02 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_status	check_name(t_minishell *set, t_command *curr_cmd)
 		&& curr_cmd->name[0] != '_')
 	{
 		set->status = 1;
-		error(" not a valid identifier", curr_cmd->name);
+		error(" not a valid identifier", curr_cmd->name, 2);
 		return (Off);
 	}
 	return (On);

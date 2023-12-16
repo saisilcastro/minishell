@@ -6,19 +6,33 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/13 16:49:32 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:47:24 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	command_exec(t_command *cmd, char *path, int fd_in, int fd_out)
+static void	does_child(t_minishell *set)
+{
+	if (set->fd_in >= 0)
+		dup2(set->fd_in, STDIN_FILENO);
+	if (set->fd_out_p >= 0)
+	{
+		dup2(set->fd_out_p, STDOUT_FILENO);
+		close(set->fd_out_p);
+	}
+	else if (set->fd_out >= 0)
+		dup2(set->fd_out, STDOUT_FILENO);
+	close_fds(set);
+}
+
+static int	command_exec(t_minishell *set, t_command *cmd, char *path)
 {
 	int			pid;
 	char		**arg;
 
 	arg = NULL;
-	if (count_args(cmd) > 1)
+	if (count_args(cmd) >= 1)
 	{
 		arg = (char **)malloc((count_args(cmd) + 1) * sizeof(char *));
 		if (!arg)
@@ -28,15 +42,15 @@ static int	command_exec(t_command *cmd, char *path, int fd_in, int fd_out)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (fd_in >= 0)
-			dup2(fd_in, STDIN_FILENO);
-		if (fd_out >= 0)
-			dup2(fd_out, STDOUT_FILENO);
+		does_child(set);
 		if (execve(path, arg, __environ) == -1)
 			return (127);
 	}
 	else
 		waitpid(pid, NULL, 0);
+	free_arr(arg);
+	if (set->fd_out_p >= 0)
+		close(set->fd_out_p);
 	return (0);
 }
 
@@ -47,16 +61,16 @@ static void	redirect_execute(t_minishell *set, t_command *list, t_command *cmd)
 	if (shell_index(set, &cmd, Off) >= 4)
 		builtin_execute(set, list, shell_index(set, &cmd, Off), cmd->name);
 	else if ((search_path(set->path, cmd, path) && !access(path, F_OK)))
-		set->status = command_exec(list, path, set->fd_in, set->fd_out);
+		set->status = command_exec(set, list, path);
 	else
 	{
 		if (access(path, F_OK) < 0)
 		{
-			error(": command not found\n", path);
+			error(": command not found\n", path, 2);
 			set->status = 127;
 			return ;
 		}	
-		set->status = command_exec(list, cmd->name, set->fd_in, set->fd_out);
+		set->status = command_exec(set, list, cmd->name);
 	}
 }
 

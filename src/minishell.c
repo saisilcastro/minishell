@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/14 11:52:53 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 18:34:40 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,17 @@ void	shell_set(t_minishell *set)
 	set->cmd = NULL;
 	set->var = NULL;
 	set->path = NULL;
-	set->file = NULL;
+	set->pipe = NULL;
 	set->status = 0;
 	set->name = NULL;
 	set->flag = Off;
 	set->run = On;
 	set->fd_in = -3;
 	set->fd_out = -3;
+	set->fd_in_p = -3;
+	set->fd_out_p = -3;
+	set->fd_std[0] = dup(STDIN_FILENO);
+	set->fd_std[1] = dup(STDOUT_FILENO);
 	signal(SIGINT, shell_ctrl_c);
 	signal(SIGQUIT, shell_ctrl_backslash);
 	environment_push(set);
@@ -35,13 +39,27 @@ void	shell_set(t_minishell *set)
 	shell_function(set);
 }
 
-static int	shell_redirect_index(t_minishell *set)
+static int	shell_special_index(t_minishell *set, t_command *cmd)
 {
 	static char	*redirect[] = {"<<", ">>", "<", ">", NULL};
 	int			i;
 	t_command	*curr;
 
-	curr = set->cmd;
+	curr = cmd;
+	while (curr)
+	{
+		if (!ms_strncmp(curr->name, "|", 1))
+		{
+			if (!curr->next)
+				return (printf
+					("syntax error near unexpected token `newline'\n"),
+					set->status = 2, -2);
+			if (curr->flag_quotes == Off)
+				return (1);
+		}
+		curr = curr->next;
+	}
+	curr = cmd;
 	while (curr)
 	{
 		i = -1;
@@ -50,11 +68,9 @@ static int	shell_redirect_index(t_minishell *set)
 			if (!ms_strncmp(curr->name, redirect[i], ms_strlen(redirect[i])))
 			{
 				if (!curr->next)
-				{
-					printf("syntax error near unexpected token `newline'\n");
-					set->status = 2;
-					return (-2);
-				}
+					return (printf
+						("syntax error near unexpected token `newline'\n"),
+						set->status = 2, -2);
 				if (curr->flag_quotes == Off)
 					return (0);
 			}
@@ -72,7 +88,7 @@ int	shell_index(t_minishell *set, t_command **cmd, t_status priority)
 		command_pop_first(cmd);
 	i = 0;
 	if (*cmd)
-		i = shell_redirect_index(set);
+		i = shell_special_index(set, *cmd);
 	if (*cmd && (i == -1 || priority == Off))
 	{
 		if (!ms_strncmp((*cmd)->name, "echo", 4))
@@ -100,7 +116,7 @@ void	shell_pop(t_minishell *set)
 	variable_pop(set->var);
 	if (set->cmd)
 		command_pop(&set->cmd);
-	if (set->file)
-		command_pop(&set->file);
+	if (set->pipe)
+		command_pop(&set->pipe);
 	rl_clear_history();
 }

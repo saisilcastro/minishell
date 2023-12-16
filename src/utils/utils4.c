@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 10:27:20 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/13 16:08:35 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:47:14 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	free_arr(char **arg)
 {
 	int	index;
 
+	if (!arg || !*arg)
+		return ;
 	index = -1;
 	while (arg[++index])
 		free(arg[index]);

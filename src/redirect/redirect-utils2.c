@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 11:17:24 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/14 15:56:35 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 10:42:49 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_status	valid_redirect(t_command *cmd)
 		{
 			if (!curr->next || has_special(curr->next->name[0]))
 			{
-				error("syntax error near unexpected", NULL);
+				error("syntax error near unexpected", NULL, 2);
 				return (Off);
 			}
 		}

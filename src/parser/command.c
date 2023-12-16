@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/13 16:48:06 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:02:56 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,16 @@ void	command_pop_first(t_command **head)
 			free((*head)->name);
 		free(*head);
 		*head = next;
+	}
+}
+
+void command_show(t_command *cmd, int fd)
+{
+	t_command *upd = cmd;
+	while(upd)
+	{
+		ms_putstr_fd(upd->name, fd);
+		ms_putstr_fd("\n", fd);
+		upd = upd->next;
 	}
 }

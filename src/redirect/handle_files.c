@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:38:59 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/14 13:03:40 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 18:48:43 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	close_fds(t_minishell *set)
 {
 	if (set->fd_in >= 0 && close(set->fd_in) == -1)
-		ms_putstr_fd("close fd infile", 2);
+		return ;
 	if (set->fd_out >= 0 && close(set->fd_out) == -1)
-		ms_putstr_fd("close fd outfile", 2);
-	set->fd_in = -3;
+		return ;
 	set->fd_out = -3;
+	set->fd_in = -3;
 }
 
 t_status	open_fds(t_minishell *set, char *redirect, char *name)
@@ -41,7 +41,7 @@ t_status	open_fds(t_minishell *set, char *redirect, char *name)
 		set->fd_out = open(name, O_WRONLY | O_CREAT | O_TRUNC, 00700);
 	if (set->fd_out < 0)
 	{
-		error(": No such file or directory", name);
+		error(": No such file or directory", name, 2);
 		set->status = 1;
 		return (Off);
 	}
@@ -71,7 +71,7 @@ t_status	get_infile(t_minishell *set, t_command *cmd)
 		curr = curr->next;
 	}
 	if (set->flag)
-		return (error(": No such file or directory", set->name), Off);
+		return (error(": No such file or directory", set->name, 2), Off);
 	return (On);
 }
 

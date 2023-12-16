@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:45 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/14 16:13:13 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:55:09 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	heredoc(t_minishell *set, t_command *cmd, char *eof)
 			heredoc_expansion(set, &line);
 		ms_putstr_fd(line, fd[1]);
 		ms_putstr_fd("\n", fd[1]);
-		if (line && *line)
+		if (line || !*line)
 			free(line);
 	}
 	close(fd[1]);

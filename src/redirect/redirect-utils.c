@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/13 15:14:17 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:55:17 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_status	search_path(t_command *env, t_command *app, char *path)
 	int			j;
 
 	upd = env;
+	i = -1;
 	while (upd)
 	{
 		i = -1;
@@ -37,6 +38,16 @@ t_status	search_path(t_command *env, t_command *app, char *path)
 	}
 	*(path + i) = '\0';
 	return (i);
+}
+
+static void	does_redirect(t_command *curr, char ***arg, int *i)
+{
+	curr = curr->next->next;
+	while (curr && !has_redirect(curr))
+	{		
+		*(*arg + *i++) = ms_strdup(curr->name);
+		curr = curr->next;
+	}
 }
 
 void	redirect_argument_get(t_command *cmd, char ***arg)

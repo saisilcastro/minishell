@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/13 11:00:04 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 10:43:47 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*name_get(t_minishell *set, char *command, char *name)
 	if (*command && *command == '=')
 	{
 		set->status = 1;
-		error(": not a valid identifier", command);
+		error(": not a valid identifier", command, 2);
 		*(name + 0) = '\0';
 		return (command);
 	}
@@ -52,9 +52,9 @@ t_status	valid_name(char *name, t_minishell *set)
 		&& !ms_isdigit(name[0]) && name[0] != '/' && name[0] != '=')
 	{
 		if (name[0] == '-')
-			error(": invalid option", name);
+			error(": invalid option", name, 2);
 		else
-			error(": syntax erro unexpected", name);
+			error(": syntax erro unexpected", name, 2);
 		set->status = 2;
 		return (Off);
 	}
@@ -63,7 +63,7 @@ t_status	valid_name(char *name, t_minishell *set)
 		if (ms_isdigit(name[index]) || name[index] == '/' || name[index] == '='
 			|| (!ms_isalpha(name[index]) && name[index] != '_'))
 		{
-			error(": not a valid identifier", name);
+			error(": not a valid identifier", name, 2);
 			set->status = 1;
 			return (Off);
 		}

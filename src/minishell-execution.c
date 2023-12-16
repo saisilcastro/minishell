@@ -6,13 +6,13 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 12:54:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/13 15:47:41 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/15 10:39:26 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	argument_get(t_command *cmd, char ***arg)
+void	argument_get(t_command *cmd, char ***arg)
 {
 	t_command	*curr;
 	int			i;
@@ -67,7 +67,7 @@ void	shell_run(t_minishell *set)
 	{
 		if (!shell_execute(path, arg, &fd[1], 1))
 		{	
-			error(" : command not found", set->cmd->name);
+			error(" : command not found", set->cmd->name, 2);
 			set->status = 127;
 		}
 	}
@@ -76,7 +76,7 @@ void	shell_run(t_minishell *set)
 		if (access(set->cmd->name, F_OK)
 			|| !shell_execute(set->cmd->name, arg, &fd[1], 1))
 		{
-			error(": command not found", set->cmd->name);
+			error(": command not found", set->cmd->name, 2);
 			set->status = 127;
 		}	
 	}

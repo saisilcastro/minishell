@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell-function.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 12:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/05 11:20:12 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/14 15:08:19 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	shell_function(t_minishell *set)
 {
-	set->redirect = shell_redirect;
+	set->special[0] = shell_redirect;
+	set->special[1] = shell_pipe;
 	set->builtin[0] = echo_execute;
 	set->builtin[1] = cd;
 	set->builtin[2] = pwd;
