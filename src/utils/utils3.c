@@ -6,34 +6,37 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/13 15:16:46 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 19:42:42 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ms_atoi(char *str)
+long long	ms_atol(char *nptr)
 {
-	int	number;
-	int	mul;
+	long				i;
+	long				sign;
+	unsigned long int	res;
 
-	number = 0;
-	mul = 1;
-	while (*str && has_space(*str))
-		str++;
-	if (*str == '+' || *str == '-')
+	i = 0;
+	sign = 1;
+	res = 0;
+	while (has_space(nptr[i]))
+		i++;
+	if (nptr[i] == '-')
 	{
-		if (*str == '-')
-			mul = -1;
-		str++;
+		sign = -1;
+		i++;
 	}
-	while (*str && ms_isdigit(*str))
+	else if (nptr[i] == '+')
+		i++;
+	while (ms_isdigit(nptr[i]))
 	{
-		number *= 10;
-		number += (*str - 48);
-		str++;
+		res *= 10;
+		res = res + (nptr[i] - '0');
+		i++;
 	}
-	return (number * mul);
+	return (res * sign);
 }
 
 char	*ms_itoa(int n)

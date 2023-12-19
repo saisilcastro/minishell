@@ -6,13 +6,13 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 13:15:07 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/15 20:16:13 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:23:47 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	pipe_execute(t_minishell *set, int pid, char *path, int *fd)
+static void	pipe_execute(t_minishell *set, char *path, int *fd)
 {
 	char	**arg;
 
@@ -49,18 +49,12 @@ static t_status	pipe_redirect_builtin_exec(t_minishell *set, int *fd)
 			shell_redirect(set, set->pipe);
 		}
 		else
-		{
-			dup2(fd[1], STDOUT_FILENO);
+			set->builtin[i - 4](set, set->pipe, fd[1]);
+		if (fd[1] >= 0)
 			close(fd[1]);
-			set->builtin[i - 4](set, set->pipe, 1);
-		}
-		close(set->fd_out_p);
 		set->fd_in_p = fd[0];
 		return (On);
 	}
-	close(fd[1]);
-	set->fd_in_p = fd[0];
-	set->status = 127;
 	return (Off);
 }
 
@@ -68,7 +62,6 @@ t_status	pipe_begin(t_minishell *set)
 {
 	char	path[65535];
 	int		fd[2];
-	int		pid;
 
 	if (pipe(fd) < 0)
 		return (Off);
@@ -81,12 +74,11 @@ t_status	pipe_begin(t_minishell *set)
 		set->fd_in_p = fd[0];
 		return (set->status = 127, Off);
 	}
-	pid = fork();
-	if (pid == 0)
-		pipe_execute(set, pid, path, fd);
-	else
-		waitpid(pid, NULL, 0);
-	close(fd[1]);
+	pid_next_first(&set->pid, pid_push(fork()));
+	if (set->pid->id == 0)
+		pipe_execute(set, path, fd);
+	if (fd[1] >= 0)
+		close(fd[1]);
 	set->fd_in_p = fd[0];
 	return (On);
 }

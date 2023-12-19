@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/15 10:43:04 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 20:22:19 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_status	command_parser(t_minishell *set, char *command)
 			set->status = 2;
 			return (Off);
 		}
-		command_next_last(&set->cmd, command_push(buffer));
+		command_next_last(&set->cmd, command_push(buffer, Off));
 		index += update;
 	}
 	expansion(&set->cmd, set->var, set);

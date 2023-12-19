@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 12:29:41 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/15 10:45:23 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 20:56:12 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	error(char *error, char *str, int fd)
 {
 	ms_putstr_fd("minishell: " WHITE, fd);
 	if (str)
-		ms_putstr_fd(str,fd);
+		ms_putstr_fd(str, fd);
 	ms_putstr_fd(error, fd);
 	write(fd, "\n", 1);
 }

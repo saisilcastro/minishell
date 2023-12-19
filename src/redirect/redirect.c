@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/15 19:47:24 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 16:15:11 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,20 @@
 static void	does_child(t_minishell *set)
 {
 	if (set->fd_in >= 0)
+	{
 		dup2(set->fd_in, STDIN_FILENO);
-	if (set->fd_out_p >= 0)
+		close(set->fd_in);
+	}
+	if (set->fd_out >= 0)
+	{
+		dup2(set->fd_out, STDOUT_FILENO);
+		close(set->fd_out);
+	}
+	else if (set->fd_out_p >= 0)
 	{
 		dup2(set->fd_out_p, STDOUT_FILENO);
 		close(set->fd_out_p);
 	}
-	else if (set->fd_out >= 0)
-		dup2(set->fd_out, STDOUT_FILENO);
-	close_fds(set);
 }
 
 static int	command_exec(t_minishell *set, t_command *cmd, char *path)

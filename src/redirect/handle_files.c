@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:38:59 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/15 18:48:43 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:26:18 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ void	close_fds(t_minishell *set)
 		return ;
 	set->fd_out = -3;
 	set->fd_in = -3;
+}
+
+void	fd_reset(t_minishell *set)
+{
+	set->fd_in = -3;
+	set->fd_out = -3;
+	set->fd_in_p = -3;
+	set->fd_out_p = -3;
 }
 
 t_status	open_fds(t_minishell *set, char *redirect, char *name)
@@ -36,9 +44,9 @@ t_status	open_fds(t_minishell *set, char *redirect, char *name)
 		return (On);
 	}
 	if (!ms_strncmp(redirect, ">>", 2))
-		set->fd_out = open(name, O_WRONLY | O_APPEND | O_CREAT, 00700);
+		set->fd_out = open(name, O_WRONLY | O_APPEND | O_CREAT, 0777);
 	else if (!ms_strncmp(redirect, ">", 1))
-		set->fd_out = open(name, O_WRONLY | O_CREAT | O_TRUNC, 00700);
+		set->fd_out = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (set->fd_out < 0)
 	{
 		error(": No such file or directory", name, 2);

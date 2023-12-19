@@ -6,13 +6,22 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 13:15:21 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/15 15:52:43 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:23:33 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	pipe_execute(t_minishell *set, int pid, char *path, int *fd)
+static void	print_buffer(int fd)
+{
+	char	buffer[65535];
+	int		byte;
+
+	byte = read(fd, buffer, 65535);
+	ms_putstr_fd(buffer, 2);
+}
+
+static void	pipe_execute(t_minishell *set, char *path, int *fd)
 {
 	char	**arg;
 
@@ -36,6 +45,32 @@ static void	pipe_execute(t_minishell *set, int pid, char *path, int *fd)
 	}
 }
 
+static t_status	pipe_redirect_builtin_exec(t_minishell *set, int *fd)
+{
+	int	i;
+	int	j;
+
+	i = shell_index(set, &set->pipe, On);
+	j = shell_index(set, &set->pipe, Off);
+	if (i == 0 || j >= 4)
+	{
+		if (i == 0)
+		{
+			set->fd_in = set->fd_in_p;
+			set->fd_out_p = fd[1];
+			shell_redirect(set, set->pipe);
+			close(set->fd_in);
+		}
+		else
+			set->builtin[i - 4](set, set->pipe, fd[1]);
+		if (fd[1] >= 0)
+			close(fd[1]);
+		set->fd_in_p = fd[0];
+		return (On);
+	}
+	return (Off);
+}
+
 t_status	pipe_between(t_minishell *set)
 {
 	char	path[65535];
@@ -44,6 +79,8 @@ t_status	pipe_between(t_minishell *set)
 
 	if (pipe(fd) < 0)
 		return (Off);
+	if (pipe_redirect_builtin_exec(set, fd))
+		return (On);
 	search_path(set->path, set->pipe, path);
 	if (access(path, F_OK) && access(set->pipe->name, F_OK))
 	{
@@ -51,11 +88,9 @@ t_status	pipe_between(t_minishell *set)
 		set->fd_in_p = fd[0];
 		return (set->status = 127, Off);
 	}
-	pid = fork();
-	if (pid == 0)
-		pipe_execute(set, pid, path, fd);
-	else
-		waitpid(pid, NULL, 0);
+	pid_next_first(&set->pid, pid_push(fork()));
+	if (set->pid->id == 0)
+		pipe_execute(set, path, fd);
 	close(set->fd_in_p);
 	close(fd[1]);
 	set->fd_in_p = fd[0];

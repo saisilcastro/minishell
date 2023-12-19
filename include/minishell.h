@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/13 16:47:54 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 20:56:30 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,33 @@
 # define WHITE "\033[0;37m"
 # define PURPLE "\033[1;35m"
 
+typedef struct s_pid		t_pid;
+struct s_pid{
+	int			id;
+	t_pid		*next;
+};
+
+extern t_pid		*pid_push(int id);
+extern void			pid_next_first(t_pid **list, t_pid *pid);
+extern void			pid_next_last(t_pid **list, t_pid *set);
+extern t_pid		*pid_last(t_pid *list);
+extern void			pid_pop(t_pid **list);
+
 typedef struct s_minishell	t_minishell;
 struct s_minishell{
 	t_variable	*var;
 	t_command	*cmd;
 	t_command	*path;
-	t_command	*file;
+	t_command	*pipe;
 	t_status	run;
 	t_status	flag;
+	t_pid		*pid;
 	char		*name;
 	int			fd_in;
 	int			fd_out;
-	void		(*redirect)(t_minishell *set, t_command *cmd);
+	int			fd_in_p;
+	int			fd_out_p;
+	void		(*special[2])(t_minishell *set, t_command *cmd);
 	void		(*builtin[7])(t_minishell *set, t_command *cmd, int fd);
 	short		status;
 };
@@ -72,6 +87,7 @@ extern t_status		quotes_is_closed(char *command, char c,
 						t_minishell *set, t_status msg);
 
 //                     execute
+extern void			argument_get(t_command *cmd, char ***arg);
 extern void			redirect_argument_get(t_command *l, char ***arg);
 extern void			builtin_execute(t_minishell *set, t_command *cmd,
 						int builtin, char *name_cmd);
@@ -84,14 +100,22 @@ extern char			*get_name(char *line);
 extern void			error_and_clear(t_minishell *set, char *error);
 extern int			upd_index(char *command, char c);
 extern int			count_args(t_command *cmd);
-extern void			error(char *error, char *str);
+extern void			error(char *error, char *str, int fd);
 extern void			node_delete(t_command **cmd, char *name);
+
+//						pipe functions
+
+extern void			shell_pipe(t_minishell *set, t_command *cmd);
+extern t_status		pipe_begin(t_minishell *set);
+extern t_status		pipe_between(t_minishell *set);
+extern t_status		pipe_end(t_minishell *set);
 
 //                     handle files
 extern void			close_fds(t_minishell *set);
 extern t_status		open_fds(t_minishell *set, char *redirect, char *name);
 extern t_status		get_infile(t_minishell *set, t_command *cmd);
 extern t_status		get_outfile(t_minishell *set, t_command *cmd);
+extern void			fd_reset(t_minishell *set);
 
 //                     redirects
 extern void			shell_redirect(t_minishell *set, t_command *cmd);

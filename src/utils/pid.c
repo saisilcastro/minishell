@@ -1,33 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   pid.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 20:23:46 by lumedeir         ###   ########.fr       */
+/*   Created: 2023/12/18 14:50:16 by lumedeir          #+#    #+#             */
+/*   Updated: 2023/12/18 15:46:25 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_command	*command_push(char *name, t_status flag)
+t_pid	*pid_push(int id)
 {
-	t_command	*set;
+	t_pid	*set;
 
-	set = (t_command *)malloc(sizeof(t_command));
+	set = (t_pid *)malloc(sizeof(t_pid));
 	if (!set)
 		return (NULL);
-	set->name = ms_strdup(name);
-	set->flag_quotes = flag;
+	set->id = id;
 	set->next = NULL;
 	return (set);
 }
 
-void	command_next_last(t_command **list, t_command *set)
+void	pid_next_first(t_pid **list, t_pid *set)
 {
-	t_command	*upd;
+	if (!set)
+		return ;
+	set->next = *list;
+	*list = set;
+}
+
+void	pid_next_last(t_pid **list, t_pid *set)
+{
+	t_pid	*upd;
 
 	if (!*list)
 	{
@@ -40,45 +47,24 @@ void	command_next_last(t_command **list, t_command *set)
 	upd->next = set;
 }
 
-int	command_size(t_command *list)
+t_pid	*pid_last(t_pid *list)
 {
-	t_command	*upd;
-	int			size;
+	t_pid	*last;
 
-	size = 0;
-	upd = list;
-	while (upd)
-	{
-		size++;
-		upd = upd->next;
-	}
-	return (size);
+	last = list;
+	while (last->next)
+		last = last->next;
+	return (last);
 }
 
-void	command_pop(t_command **list)
+void	pid_pop(t_pid **list)
 {
-	t_command	*next;
+	t_pid	*next;
 
 	while (*list)
 	{
 		next = (*list)->next;
-		if ((*list)->name)
-			free((*list)->name);
 		free(*list);
 		*list = next;
-	}
-}
-
-void	command_pop_first(t_command **head)
-{
-	t_command	*next;
-
-	if (head && *head)
-	{
-		next = (*head)->next;
-		if ((*head)->name)
-			free((*head)->name);
-		free(*head);
-		*head = next;
 	}
 }

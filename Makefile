@@ -1,17 +1,5 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/11/01 11:26:16 by lumedeir          #+#    #+#              #
-#    Updated: 2023/12/13 13:12:46 by lumedeir         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = minishell
-VPATH = src: ./src src: ./src/builtins src: ./src/redirect src: ./src/parser src: ./src/utils
+VPATH = src: ./src src: ./src/builtins src: ./src/redirect src: ./src/parser src: ./src/utils src: ./src/pipe
 SRC_FOLDER = minishell.c \
 			 minishell-path.c \
 			 minishell-function.c \
@@ -21,6 +9,10 @@ SRC_FOLDER = minishell.c \
 			 redirect.c \
 			 heredoc.c \
 			 handle_files.c \
+			 pipe.c \
+			 pipe-begin.c \
+			 pipe-between.c \
+			 pipe-end.c \
 			 redirect-utils.c \
 			 redirect-utils2.c \
 			 variable.c \
@@ -41,6 +33,7 @@ SRC_FOLDER = minishell.c \
 			 env.c \
 			 exit.c \
 			 error.c \
+			 pid.c \
 			 utils4.c \
 			 utils3.c \
 			 utils2.c \

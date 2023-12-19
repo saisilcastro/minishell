@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 11:17:24 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/15 10:42:49 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 20:24:27 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static void	create_new_list(t_command *original,
 		redirect_argument_get(original, &arg);
 	}
 	if (!arg)
-		command_next_last(new, command_push(command));
+		command_next_last(new, command_push(command, Off));
 	else
 		while (arg[++i])
-			command_next_last(new, command_push(arg[i]));
+			command_next_last(new, command_push(arg[i], Off));
 	if (arg)
 		free_arr(arg);
 }
@@ -77,7 +77,8 @@ t_status	valid_redirect(t_command *cmd)
 			|| !ms_strncmp(curr->name, "<", 1)
 			|| !ms_strncmp(curr->name, "<", 1))
 		{
-			if (!curr->next || has_special(curr->next->name[0]))
+			if (!curr->next || (has_special(curr->next->name[0])
+					&& curr->next->flag_quotes))
 			{
 				error("syntax error near unexpected", NULL, 2);
 				return (Off);

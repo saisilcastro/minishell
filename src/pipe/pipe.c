@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:12:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/15 18:49:57 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 20:45:21 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,23 @@ static void	pipe_argument(t_minishell *set, t_command **cmd)
 			break ;
 		}
 		next = (*cmd)->next;
-		command_next_last(&set->pipe, command_push((*cmd)->name));
+		command_next_last(&set->pipe,
+			command_push((*cmd)->name, (*cmd)->flag_quotes));
 		command_pop_first(cmd);
 		*cmd = next;
 	}	
+}
+
+static void	wait_for_pid(t_minishell *set)
+{
+	t_pid	*upd;
+
+	upd = set->pid;
+	while (upd)
+	{
+		waitpid(upd->id, NULL, 0);
+		upd = upd->next;
+	}
 }
 
 void	shell_pipe(t_minishell *set, t_command *cmd)
@@ -85,12 +98,13 @@ void	shell_pipe(t_minishell *set, t_command *cmd)
 		pipe_argument(set, &set->cmd);
 		if (i == 0 && pipe_begin(set) == Off)
 			error(" :command not found", set->pipe->name, 1);
-		if (i == max && pipe_end(set) == Off)
+		else if (i == max && pipe_end(set) == Off)
 			error(" :command not found", set->pipe->name, 1);
 		else if (i > 0 && i < max && pipe_between(set) == Off)
 			error(" :command not found", set->pipe->name, 1);
 		command_pop(&set->pipe);
 	}
+	wait_for_pid(set);
 	if (set->fd_in_p)
 		close(set->fd_in_p);
 	if (set->fd_out_p)
