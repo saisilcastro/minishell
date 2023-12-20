@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 20:56:30 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:05:16 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,24 @@ struct s_minishell{
 	t_command	*path;
 	t_command	*pipe;
 	t_status	run;
+	t_status	run_hdoc;
 	t_status	flag;
 	t_pid		*pid;
 	char		*name;
+	char		*hdoc;
 	int			fd_in;
 	int			fd_out;
 	int			fd_in_p;
 	int			fd_out_p;
 	void		(*special[2])(t_minishell *set, t_command *cmd);
 	void		(*builtin[7])(t_minishell *set, t_command *cmd, int fd);
-	short		status;
+	int			status;
 };
 
 //                    shell
 extern void			shell_set(t_minishell *set);
+extern t_minishell	*shell_get(void);
+extern void			shel_change(t_minishell *set);
 extern void			shell_function(t_minishell *set);
 extern int			shell_index(t_minishell *set, t_command **cmd, t_status p);
 extern void			shell_path(t_minishell *set);
@@ -68,9 +72,13 @@ extern void			shell_command(t_minishell *set);
 extern void			shell_parse(t_minishell *set, char *command);
 extern void			shell_loop(t_minishell *set);
 extern void			shell_pop(t_minishell *set);
+extern void			shell_run(t_minishell *set);
+
+//                    signal
 extern void			shell_ctrl_c(int sig);
 extern void			shell_ctrl_backslash(int sig);
-extern void			shell_run(t_minishell *set);
+extern void			heredoc_ctrl_c(int signal);
+extern int			ft_check_if_signaled(void);
 
 //                   parser and expansion
 extern void			environment_push(t_minishell *set);

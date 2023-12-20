@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:12:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 20:45:21 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:27:04 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,11 @@ static void	wait_for_pid(t_minishell *set)
 	upd = set->pid;
 	while (upd)
 	{
-		waitpid(upd->id, NULL, 0);
+		waitpid(upd->id, &set->status, 0);
+		if (WEXITSTATUS(set->status))
+			set->status = WEXITSTATUS(set->status);
+		else if (set->status == 2)
+			set->status = 130;
 		upd = upd->next;
 	}
 }

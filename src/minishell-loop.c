@@ -6,11 +6,18 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 20:41:57 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 14:56:27 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+t_minishell	*shell_get(void)
+{
+	static t_minishell	shell;
+
+	return (&shell);
+}
 
 static void	shell(t_minishell *set)
 {

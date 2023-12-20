@@ -1,0 +1,27 @@
+export hello
+export HELLO=123
+export A-
+export HELLO=123 A
+export HELLO="123 A-"
+export hello world
+export HELLO-=123
+export =
+export 123
+export A
+export A=
+export A=teste B=tambem C=final
+export -d
+export 1
+export 123
+export v@r+com-nome-errado=teste
+export n=3
+export a="$PWD/$USER.$USER#USER"
+export -asdf
+export -----
+export ----=----
+export _=açsldjflksdfj
+export $PWD="$PWD:lsaj$_dflksjdf"
+export ----
+export a-
+export ---1111------
+export a-----

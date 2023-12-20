@@ -1,0 +1,5 @@
+echo '             '
+echo 'a             b'
+echo 'oi tudo bem             b'
+echo 'oi tudo bem             b' 'oi' 'tchau' tchau
+echo $ 'oi tudo bem             b' 'oi' $ 'tchau' tchau

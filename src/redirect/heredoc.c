@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:45 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 20:33:45 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:38:31 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,27 +109,29 @@ static t_status	verify(char **line, char *eof)
 
 void	heredoc(t_minishell *set, t_command *cmd, char *eof)
 {
-	char	*line;
 	int		fd[2];
+	int		fdin;
 	char	buffer[1];
 
-	line = NULL;
 	if (pipe(fd) == -1)
 		return ;
-	while (1)
+	signal(SIGINT, heredoc_ctrl_c);
+	fdin = dup(STDIN_FILENO);
+	while (set->run_hdoc)
 	{
-		signal(SIGINT, shell_ctrl_c);
-		line = readline("> ");
-		if (!verify(&line, eof))
+		ms_putstr_fd("> ", 1);
+		set->hdoc = readline("");
+		if (!verify(&set->hdoc, eof) || !set->run_hdoc)
 			break ;
-		add_history(line);
-		if (line && ms_strchr(line, '$'))
-			heredoc_expansion(set, &line);
-		ms_putstr_fd(line, fd[1]);
+		add_history(set->hdoc);
+		if (set->hdoc && ms_strchr(set->hdoc, '$'))
+			heredoc_expansion(set, &set->hdoc);
+		ms_putstr_fd(set->hdoc, fd[1]);
 		ms_putstr_fd("\n", fd[1]);
-		if (line || !*line)
-			free(line);
+		if (set->hdoc || !*set->hdoc)
+			free(set->hdoc);
 	}
+	dup2(fdin, STDIN_FILENO);
 	close(fd[1]);
 	set->fd_in = fd[0];
 }

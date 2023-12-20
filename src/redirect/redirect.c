@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 16:15:11 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:37:36 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ static int	command_exec(t_minishell *set, t_command *cmd, char *path)
 			return (127);
 	}
 	else
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &set->status, 0);
+	if (WEXITSTATUS(set->status))
+			set->status = WEXITSTATUS(set->status);
 	free_arr(arg);
-	if (set->fd_out_p >= 0)
-		close(set->fd_out_p);
 	return (0);
 }
 
@@ -76,6 +76,10 @@ static void	redirect_execute(t_minishell *set, t_command *list, t_command *cmd)
 			return ;
 		}	
 		set->status = command_exec(set, list, cmd->name);
+		if (set->fd_out_p >= 0)
+			close(set->fd_out_p);
+		if (set->status == 2)
+			set->status = 130;
 	}
 }
 

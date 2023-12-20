@@ -1,0 +1,20 @@
+#ps | awk '{print $3}'
+#ps | awk '{print $3}' | wc -l
+#ps | awk '{print $1}' | wc
+cat file | grep bla | more
+cat Makefile | grep bla | more
+ls filethatdoesntexist | grep bla | more
+ls . | grep bla | more
+ls . | more
+cat ./test_files/infile_big | grep oi
+cat minishell.h | grep ");"$
+export GHOST=123 | env | grep GHOST
+ls "   |    " ls | a
+export | wc -l >a <a >>a
+ls asdf | grep | grep | more
+| |
+ls | | cat
+ls asldkjflsdfjksalkfdj | wc -l
+unset PATH
+env | wc -l
+ls >a >b <Makefile >> c >>d | wc -l

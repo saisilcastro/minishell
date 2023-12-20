@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:38:59 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/18 17:26:18 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 15:45:30 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	fd_reset(t_minishell *set)
 	set->fd_out = -3;
 	set->fd_in_p = -3;
 	set->fd_out_p = -3;
+	set->run_hdoc = On;
 }
 
 t_status	open_fds(t_minishell *set, char *redirect, char *name)

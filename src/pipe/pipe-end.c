@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 13:15:28 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/18 17:23:29 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:39:36 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_status	pipe_end(t_minishell *set)
 	pid_next_first(&set->pid, pid_push(fork()));
 	if (set->pid->id == 0)
 		pipe_execute(set, path);
-	close(set->fd_in_p);
+	if (set->fd_in_p)
+		close(set->fd_in_p);
 	return (On);
 }

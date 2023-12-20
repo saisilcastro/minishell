@@ -1,0 +1,4 @@
+ls asdf
+expr $? + $?
+exit 3
+expr $? + $?

@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 12:54:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/18 13:19:21 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:35:24 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,36 @@ void	argument_get(t_command *cmd, char ***arg)
 	*(*arg + i) = NULL;
 }
 
-static t_status	shell_execute(char *path, char **arg, int *fd, int mode)
+static t_status	shell_exec(t_minishell *set, char *path, char **arg, int *fd)
 {
 	int	pid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		if (!mode)
-			dup2(*(fd + 0), STDIN_FILENO);
-		else
-			dup2(*(fd + 1), STDOUT_FILENO);
+		dup2(*(fd + 1), STDOUT_FILENO);
 		close(*(fd + 0));
 		close(*(fd + 1));
 		if (execve(path, arg, __environ) == -1)
 			return (Off);
 	}
-	if (!mode)
+	close(fd[1]);
+	waitpid(pid, &set->status, 0);
+	if (WEXITSTATUS(set->status))
+		set->status = WEXITSTATUS(set->status);
+	else if (set->status == 2)
+		set->status = 130;
+	return (On);
+}
+
+t_status	check_permission(t_minishell *set, char *path)
+{
+	if (!access(path, F_OK) && access(path, X_OK) != 0)
 	{
-		close(fd[0]);
-		close(fd[1]);
+		error (" : permission denied", path, 2);
+		set->status = 126;
+		return (Off);
 	}
-	waitpid(pid, NULL, 0);
 	return (On);
 }
 
@@ -66,7 +74,7 @@ void	shell_run(t_minishell *set)
 	pipe(fd);
 	if (search_path(set->path, set->cmd, path))
 	{
-		if (!shell_execute(path, arg, &fd[1], 1))
+		if (check_permission(set, path) && !shell_exec(set, path, arg, &fd[1]))
 		{	
 			error(" : command not found", set->cmd->name, 2);
 			set->status = 127;
@@ -74,8 +82,8 @@ void	shell_run(t_minishell *set)
 	}
 	else
 	{
-		if (access(set->cmd->name, F_OK)
-			|| !shell_execute(set->cmd->name, arg, &fd[1], 1))
+		if (check_permission(set, set->cmd->name) && (access(set->cmd->name,
+					F_OK) || !shell_exec(set, set->cmd->name, arg, &fd[1])))
 		{
 			error(": command not found", set->cmd->name, 2);
 			set->status = 127;
