@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 13:15:21 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/18 17:23:33 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:43:15 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	pipe_execute(t_minishell *set, char *path, int *fd)
 {
 	char	**arg;
 
+	close(fd[0]);
 	if (!access(path, F_OK))
 	{
 		argument_get(set->pipe, &arg);
@@ -88,8 +89,8 @@ t_status	pipe_between(t_minishell *set)
 		set->fd_in_p = fd[0];
 		return (set->status = 127, Off);
 	}
-	pid_next_first(&set->pid, pid_push(fork()));
-	if (set->pid->id == 0)
+	pid_next_last(&set->pid, pid_push(fork()));
+	if (pid_last(set->pid)->id == 0)
 		pipe_execute(set, path, fd);
 	close(set->fd_in_p);
 	close(fd[1]);

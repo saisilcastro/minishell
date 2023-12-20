@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:12:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/20 16:27:04 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:59:50 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	shell_pipe(t_minishell *set, t_command *cmd)
 	max = pipe_counter(cmd);
 	i = -1;
 	set->status = 0;
-	while (++i <= max)
+	while (++i <= max && set->run_hdoc == On)
 	{
 		pipe_argument(set, &set->cmd);
 		if (i == 0 && pipe_begin(set) == Off)

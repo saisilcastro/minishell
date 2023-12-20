@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:45 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/20 16:38:31 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:56:59 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ static t_status	verify(char **line, char *eof)
 		free(*line);
 		return (Off);
 	}
+	if (!**line)
+		write(2, "\n", 1);
 	return (On);
 }
 
@@ -111,7 +113,6 @@ void	heredoc(t_minishell *set, t_command *cmd, char *eof)
 {
 	int		fd[2];
 	int		fdin;
-	char	buffer[1];
 
 	if (pipe(fd) == -1)
 		return ;
