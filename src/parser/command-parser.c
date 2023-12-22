@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command-parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:33:24 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 20:22:19 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:36:40 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	catch_parsing(char *command, char *buffer, t_minishell *set)
 	index = 0;
 	if (has_special(command[index]))
 	{
-		if (!catch_special(command + index, buffer, &index))
+		if (catch_special(command + index, buffer, &index) == Off)
 			return (-1);
 	}
 	else
@@ -55,35 +55,18 @@ static int	catch_parsing(char *command, char *buffer, t_minishell *set)
 	return (index);
 }
 
-void	symbol_remaider(char *command, char *buffer, int *i, char c)
+static t_status	command_error(t_minishell *set, char *command)
 {
-	int	index;
-
-	index = 1;
-	if (!command || command[1] == c)
-		return ;
-	*(buffer + *i) = command[0];
-	*i += 1;
-	while (command[index] && command[index] != c)
+	if (!command || command[0] == '|')
 	{
-		*(buffer + *i) = command[index];
-		*i += 1;
-		index++;
+		if (command[0] == '|')
+		{
+			set->status = 2;
+			error("error: syntax error unexpected", NULL, 2);
+		}
+		return (Off);
 	}
-	*(buffer + *i) = command[index];
-	*i += 1;
-}
-
-int	upd_index(char *command, char c)
-{
-	int	index;
-
-	index = 0;
-	if (!command)
-		return (0);
-	while (command[index] && command[index] != c)
-		index++;
-	return (index);
+	return (On);
 }
 
 t_status	command_parser(t_minishell *set, char *command)
@@ -92,7 +75,7 @@ t_status	command_parser(t_minishell *set, char *command)
 	int			update;
 	int			index;
 
-	if (!command)
+	if (command_error(set, command) == Off)
 		return (Off);
 	index = 0;
 	while (command[index])
@@ -103,9 +86,11 @@ t_status	command_parser(t_minishell *set, char *command)
 		if (update == -1)
 		{
 			set->status = 2;
+			command_pop(&set->cmd);
 			return (Off);
 		}
-		command_next_last(&set->cmd, command_push(buffer, Off));
+		if (*buffer)
+			command_next_last(&set->cmd, command_push(buffer, Off));
 		index += update;
 	}
 	expansion(&set->cmd, set->var, set);

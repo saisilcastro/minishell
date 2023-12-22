@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/15 10:43:47 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 16:27:37 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,34 +43,6 @@ static char	*value_get(char *command, char *value)
 	return (command);
 }
 
-t_status	valid_name(char *name, t_minishell *set)
-{
-	int	index;
-
-	index = -1;
-	if (!ms_isalpha(name[0]) && name[0] != '_'
-		&& !ms_isdigit(name[0]) && name[0] != '/' && name[0] != '=')
-	{
-		if (name[0] == '-')
-			error(": invalid option", name, 2);
-		else
-			error(": syntax erro unexpected", name, 2);
-		set->status = 2;
-		return (Off);
-	}
-	while (name && name[++index])
-	{
-		if (ms_isdigit(name[index]) || name[index] == '/' || name[index] == '='
-			|| (!ms_isalpha(name[index]) && name[index] != '_'))
-		{
-			error(": not a valid identifier", name, 2);
-			set->status = 1;
-			return (Off);
-		}
-	}
-	return (On);
-}
-
 static void	new_value(t_variable **var, char *name, char *value)
 {
 	t_variable	*curr;
@@ -96,8 +68,8 @@ static void	new_value(t_variable **var, char *name, char *value)
 		free (temp->value);
 	if (*value)
 		temp->value = ms_strdup(value);
-	else
-		temp->value = ms_strdup(value);
+	if (!ms_strncmp(name, "PATH", 4))
+		shell_path(shell_get());
 }
 
 void	export_variable(t_minishell *set, t_command *cmd)
@@ -117,7 +89,7 @@ void	export_variable(t_minishell *set, t_command *cmd)
 			new_value(&set->var, name, value);
 		else if (name[0] && !var_search(set->var, name))
 		{
-			if (valid_name(name, set))
+			if (valid_name(name, value, set))
 			{
 				if (!ms_strlen(value) && !ms_strchr(upd->name, '='))
 					var_next_last(&set->var, variable_push(name, NULL, Off));

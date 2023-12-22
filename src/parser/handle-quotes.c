@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   handle-quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:19:28 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/12 11:03:03 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 12:12:26 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	update_quotes(t_command *list, t_minishell *set, char c, int p)
+static void	update_quotes(t_command *list, char c, int p)
 {
 	char	copy[40000];
 	int		index;
@@ -37,7 +37,7 @@ static void	update_quotes(t_command *list, t_minishell *set, char c, int p)
 	list->name = ms_strdup(copy);
 }
 
-void	remove_quotes(t_command *list, t_minishell *set)
+void	remove_quotes(t_command *list)
 {
 	int	i;
 	int	temp;
@@ -51,7 +51,7 @@ void	remove_quotes(t_command *list, t_minishell *set)
 			i++;
 			while (list->name[i + 1] && list->name[i + 1] != '\'')
 				i++;
-			update_quotes(list, set, '\'', temp);
+			update_quotes(list, '\'', temp);
 		}
 		else if (list->name[i] && list->name[i] == '"')
 		{
@@ -59,7 +59,7 @@ void	remove_quotes(t_command *list, t_minishell *set)
 			i++;
 			while (list->name[i + 1] && list->name[i + 1] != '"')
 				i++;
-			update_quotes(list, set, '"', temp);
+			update_quotes(list, '"', temp);
 		}
 		if (list->name[i] && list->name[i] != '\'' && list->name[i] != '"')
 			i++;
@@ -92,8 +92,8 @@ int	handle_quotes(char *command, char *buffer, t_minishell *set)
 	while (command && command[index] && !has_space(command[index])
 		&& !has_special(command[index]))
 	{
-		if (command[index] == '\'' || (command[index] == '\"'
-				&& command[index - 1] != '\\'))
+		if (command[index] && (command[index] == '\''
+				|| command[index] == '\"'))
 		{
 			if (!quotes_is_closed(command + index, command[index], set, On))
 				return (-1);

@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe-between.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 13:15:21 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/20 17:43:15 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:55:17 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-static void	print_buffer(int fd)
-{
-	char	buffer[65535];
-	int		byte;
-
-	byte = read(fd, buffer, 65535);
-	ms_putstr_fd(buffer, 2);
-}
 
 static void	pipe_execute(t_minishell *set, char *path, int *fd)
 {
@@ -76,19 +67,21 @@ t_status	pipe_between(t_minishell *set)
 {
 	char	path[65535];
 	int		fd[2];
-	int		pid;
 
 	if (pipe(fd) < 0)
 		return (Off);
 	if (pipe_redirect_builtin_exec(set, fd))
 		return (On);
 	search_path(set->path, set->pipe, path);
-	if (access(path, F_OK) && access(set->pipe->name, F_OK))
+	if (access(path, F_OK) && (access(set->pipe->name, F_OK)
+			|| access(set->pipe->name, X_OK)))
 	{
+		close(set->fd_in_p);
 		close(fd[1]);
 		set->fd_in_p = fd[0];
 		return (set->status = 127, Off);
 	}
+	signal(SIGINT, shell_execute_ctrl_c);
 	pid_next_last(&set->pid, pid_push(fork()));
 	if (pid_last(set->pid)->id == 0)
 		pipe_execute(set, path, fd);

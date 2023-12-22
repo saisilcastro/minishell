@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:45 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/20 17:56:59 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/21 10:20:50 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,10 @@ static void	heredoc_expansion(t_minishell *set, char **line)
 
 static t_status	verify(char **line, char *eof)
 {
-	if (*line == NULL)
+	if (*line == NULL && shell_get()->status != 130)
 	{
-		write(2, "\n", 1);
+		ms_putstr_fd("minishell: warning: here-document at line 22 delimited "
+			"by end-of-file (wanted `eof')\n", 2);
 		return (Off);
 	}
 	if (*line && !ms_strncmp(*line, eof, ms_strlen(eof)))
@@ -104,12 +105,14 @@ static t_status	verify(char **line, char *eof)
 		free(*line);
 		return (Off);
 	}
-	if (!**line)
+	if (!*line && shell_get()->status == 130)
+		write(2, "\n", 1);
+	if (*line && !**line)
 		write(2, "\n", 1);
 	return (On);
 }
 
-void	heredoc(t_minishell *set, t_command *cmd, char *eof)
+void	heredoc(t_minishell *set, char *eof)
 {
 	int		fd[2];
 	int		fdin;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell-execution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 12:54:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/20 12:35:24 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:46:06 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static t_status	shell_exec(t_minishell *set, char *path, char **arg, int *fd)
 {
 	int	pid;
 
+	signal(SIGINT, shell_execute_ctrl_c);
 	pid = fork();
 	if (pid == 0)
 	{

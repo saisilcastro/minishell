@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable-find.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:18:03 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/12 15:14:07 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/21 10:24:38 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,6 @@ static void	update(t_command *list, char *value, int size, int position)
 	copy[i] = '\0';
 	free (list->name);
 	list->name = ms_strdup(copy);
-}
-
-static int	namelen(char *str)
-{
-	int	index;
-
-	index = 0;
-	while (!has_space(str[index]) && (ms_isalpha(str[index])
-			|| ms_isdigit(str[index]) || str[index] == 0x5F))
-		index++;
-	return (index - 1);
 }
 
 void	find_variable(t_command *line, t_variable *var, int i,

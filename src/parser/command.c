@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 20:23:46 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:45:33 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_command	*command_push(char *name, t_status flag)
 	t_command	*set;
 
 	set = (t_command *)malloc(sizeof(t_command));
-	if (!set)
+	if (!set || !name)
 		return (NULL);
 	set->name = ms_strdup(name);
 	set->flag_quotes = flag;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect-utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/15 19:55:17 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:59:37 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,6 @@ t_status	search_path(t_command *env, t_command *app, char *path)
 	}
 	*(path + i) = '\0';
 	return (i);
-}
-
-static void	does_redirect(t_command *curr, char ***arg, int *i)
-{
-	curr = curr->next->next;
-	while (curr && !has_redirect(curr))
-	{		
-		*(*arg + *i++) = ms_strdup(curr->name);
-		curr = curr->next;
-	}
 }
 
 void	redirect_argument_get(t_command *cmd, char ***arg)
@@ -87,4 +77,32 @@ char	*get_name(char *line)
 		name[index] = line[index];
 	name[index] = '\0';
 	return (ms_strdup(name));
+}
+
+t_status	open_redirects(t_minishell *set, t_command *cmd)
+{
+	t_command	*upd;
+
+	upd = cmd;
+	while (upd)
+	{
+		if (!upd->flag_quotes && (!ms_strncmp(upd->name, "<<", 2)
+				|| !ms_strncmp(upd->name, "<", 1)))
+		{
+			if (get_infile(set, upd) == Off)
+				return (Off);
+		}
+		else if (!upd->flag_quotes && (!ms_strncmp(upd->name, ">>", 1)
+				|| !ms_strncmp(upd->name, ">", 1)))
+		{
+			if (set->fd_out >= 0)
+			{
+				close(set->fd_out);
+				set->fd_out = -3;
+			}
+			open_fds(set, upd->name, upd->next->name);
+		}
+		upd = upd->next;
+	}
+	return (On);
 }

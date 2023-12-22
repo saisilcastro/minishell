@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:12:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/20 17:59:50 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:16:03 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ static t_status	valid_pipe(t_minishell *set, t_command *cmd)
 	{
 		if (!ms_strncmp(curr->name, "|", 1) && !curr->flag_quotes)
 		{
-			if (!curr->next || (has_special(curr->next->name[0])
+			if (!curr->next || (!ms_strncmp(curr->next->name, "|", 1)
 					&& !curr->next->flag_quotes))
 			{
 				set->status = 2;
-				error("syntax error near unexpected", NULL, 2);
+				error("syntax error near unexpected token `newline'", NULL, 2);
 				return (Off);
 			}
 		}
@@ -101,11 +101,11 @@ void	shell_pipe(t_minishell *set, t_command *cmd)
 	{
 		pipe_argument(set, &set->cmd);
 		if (i == 0 && pipe_begin(set) == Off)
-			error(" :command not found", set->pipe->name, 1);
+			error(" :command not found", set->pipe->name, 2);
 		else if (i == max && pipe_end(set) == Off)
-			error(" :command not found", set->pipe->name, 1);
+			error(" :command not found", set->pipe->name, 2);
 		else if (i > 0 && i < max && pipe_between(set) == Off)
-			error(" :command not found", set->pipe->name, 1);
+			error(" :command not found", set->pipe->name, 2);
 		command_pop(&set->pipe);
 	}
 	wait_for_pid(set);

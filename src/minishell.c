@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/20 15:15:21 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:15:10 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ void	shell_set(t_minishell *set)
 	set->hdoc = NULL;
 	set->run = On;
 	set->run_hdoc = On;
+	set->last_pipe = Off;
 	set->status = 0;
 	set->fd_in = -3;
 	set->fd_out = -3;
 	set->fd_in_p = -3;
 	set->fd_out_p = -3;
-	signal(SIGINT, shell_ctrl_c);
-	signal(SIGQUIT, shell_ctrl_backslash);
+	signal(SIGQUIT, SIG_IGN);
 	environment_push(set);
+	if (var_search(set->var, "HOME"))
+		set->home = ms_strdup(var_search(set->var, "HOME")->value);
 	shell_path(set);
 	shell_function(set);
 }
@@ -44,6 +46,7 @@ static int	shell_special_redirect(t_minishell *set, t_command *cmd)
 	static char	*redirect[] = {"<<", ">>", "<", ">", NULL};
 	int			i;
 
+	(void)set;
 	curr = cmd;
 	while (curr)
 	{
@@ -53,10 +56,6 @@ static int	shell_special_redirect(t_minishell *set, t_command *cmd)
 			if (!ms_strncmp(curr->name, redirect[i],
 					ms_strlen(redirect[i])) && !curr->flag_quotes)
 			{
-				if (!curr->next)
-					return (printf
-						("syntax error near unexpected token `newline'\n"),
-						set->status = 2, -2);
 				if (curr->flag_quotes == Off)
 					return (0);
 			}
@@ -68,7 +67,6 @@ static int	shell_special_redirect(t_minishell *set, t_command *cmd)
 
 static int	shell_special_index(t_minishell *set, t_command *cmd)
 {
-	int			i;
 	t_command	*curr;
 
 	curr = cmd;
@@ -128,5 +126,6 @@ void	shell_pop(t_minishell *set)
 		command_pop(&set->pipe);
 	if (set->pid)
 		pid_pop(&set->pid);
+	free(set->home);
 	rl_clear_history();
 }

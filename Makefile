@@ -1,3 +1,7 @@
+ifneq ($(OS), Windows_NT)
+	CREATE = mkdir -p $(1)
+	REMOVE = rm -rf $(1)
+endif
 NAME = minishell
 VPATH = src: ./src src: ./src/builtins src: ./src/redirect src: ./src/parser src: ./src/utils src: ./src/pipe
 SRC_FOLDER = minishell.c \
@@ -22,6 +26,7 @@ SRC_FOLDER = minishell.c \
 			 environment_push.c \
 			 command.c \
 			 command-parser.c \
+			 command-util.c \
 			 handle-quotes.c \
 			 expand.c \
 			 echo.c \
@@ -44,10 +49,7 @@ INCLUDE = -I./include
 OBJ = obj
 SRCOBJ = $(SRC:%.c=${OBJ}/%.o)
 LIB = -lreadline
-ifneq ($(OS), Windows_NT)
-	CREATE = mkdir -p $(1)
-	REMOVE = rm -rf $(1)
-endif
+FLAG = -Wall -Werror -Wextra -g3
 
 # Color codes for terminal output
 PURPLE = \033[1;35m
@@ -59,7 +61,7 @@ $(NAME): $(SRCOBJ)
 ${OBJ}/%.o : %.c
 	@$(call CREATE, ${OBJ})
 	@printf "\rMinishell: building $@                      "
-	@$(CC) -c $< -o $@ $(INCLUDE) -g3
+	@$(CC) -c $< -o $@ $(INCLUDE) $(FLAG)
 leak:
 	valgrind --leak-check=full -q ./$(NAME) -fanalyzer e -fsanitize=address
 clean:

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/20 12:37:36 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:09:55 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,17 @@ static void	redirect_execute(t_minishell *set, t_command *list, t_command *cmd)
 {
 	char		path[4096];
 
+	if (set->fd_in < 0 && set->fd_in_p < 0 && set->fd_out_p < 0)
+		return ;
 	if (shell_index(set, &cmd, Off) >= 4)
 		builtin_execute(set, list, shell_index(set, &cmd, Off), cmd->name);
 	else if ((search_path(set->path, cmd, path) && !access(path, F_OK)))
 		set->status = command_exec(set, list, path);
 	else
 	{
-		if (access(path, F_OK) < 0)
+		if (access(cmd->name, F_OK) < 0)
 		{
-			error(": command not found\n", path, 2);
+			error(": command not found\n", cmd->name, 2);
 			set->status = 127;
 			return ;
 		}	
@@ -92,12 +94,8 @@ void	shell_redirect(t_minishell *set, t_command *cmd)
 		set->status = 2;
 		return ;
 	}
-	if (count_redirects(cmd, "<<") + count_redirects(cmd, "<") > 0)
-		if (!get_infile(set, cmd))
-			return (close_fds(set));
-	if (count_redirects(cmd, ">>") + count_redirects(cmd, ">") > 0)
-		if (!get_outfile(set, cmd))
-			return (close_fds(set));
+	if (!open_redirects(set, cmd))
+		return ;
 	command = has_command(cmd);
 	if (command)
 		redirect_execute(set, cmd, command);

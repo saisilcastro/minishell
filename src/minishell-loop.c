@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell-loop.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/20 14:56:27 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:24:32 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_minishell	*shell_get(void)
 static void	shell(t_minishell *set)
 {
 	int		i;
-	int		j;
 
 	if (!set)
 		return ;
@@ -58,12 +57,13 @@ void	shell_loop(t_minishell *set)
 
 	while (set->run)
 	{
+		signal(SIGINT, shell_ctrl_c);
 		fd_reset(set);
 		command = readline(PURPLE">minishell: " WHITE);
 		if (!verify(&command))
 			continue ;
 		add_history(command);
-		if (!command_parser(set, command))
+		if (command_parser(set, command) == Off)
 		{
 			free (command);
 			continue ;

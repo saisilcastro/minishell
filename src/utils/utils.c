@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 10:10:17 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/11/01 16:54:59 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/21 10:49:21 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ char	has_space(char c)
 
 t_status	ms_isalpha(char c)
 {
-	if ((c > 64 && c < 91)
-		|| (c > 96 && c < 123))
+	if ((c >= 65 && c <= 90)
+		|| (c >= 97 && c <= 122))
 		return (On);
 	return (Off);
 }

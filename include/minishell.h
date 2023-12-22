@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/20 16:05:16 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:03:29 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,11 @@ struct s_minishell{
 	t_status	run;
 	t_status	run_hdoc;
 	t_status	flag;
+	t_status	last_pipe;
 	t_pid		*pid;
 	char		*name;
 	char		*hdoc;
+	char		*home;
 	int			fd_in;
 	int			fd_out;
 	int			fd_in_p;
@@ -68,6 +70,7 @@ extern void			shel_change(t_minishell *set);
 extern void			shell_function(t_minishell *set);
 extern int			shell_index(t_minishell *set, t_command **cmd, t_status p);
 extern void			shell_path(t_minishell *set);
+extern void			shell_path_update(t_minishell *set, char *path);
 extern void			shell_command(t_minishell *set);
 extern void			shell_parse(t_minishell *set, char *command);
 extern void			shell_loop(t_minishell *set);
@@ -76,6 +79,7 @@ extern void			shell_run(t_minishell *set);
 
 //                    signal
 extern void			shell_ctrl_c(int sig);
+extern void			shell_execute_ctrl_c(int signal);
 extern void			shell_ctrl_backslash(int sig);
 extern void			heredoc_ctrl_c(int signal);
 extern int			ft_check_if_signaled(void);
@@ -84,12 +88,12 @@ extern int			ft_check_if_signaled(void);
 extern void			environment_push(t_minishell *set);
 extern void			export_variable(t_minishell *set, t_command *cmd);
 extern void			expansion(t_command **list, t_variable *v, t_minishell *s);
-extern void			remove_quotes(t_command *list, t_minishell *set);
+extern void			remove_quotes(t_command *list);
 extern void			symbol_remaider(char *cmd, char *buffer, int *i, char c);
 extern void			find_variable(t_command *line, t_variable *var, int index,
 						t_minishell *set);
 extern int			handle_quotes(char *cmd, char *buffer, t_minishell *set);
-extern t_status		valid_name(char *name, t_minishell *set);
+extern t_status		valid_name(char *name, char *value, t_minishell *set);
 extern t_status		command_parser(t_minishell *set, char *command);
 extern t_status		quotes_is_closed(char *command, char c,
 						t_minishell *set, t_status msg);
@@ -119,19 +123,19 @@ extern t_status		pipe_between(t_minishell *set);
 extern t_status		pipe_end(t_minishell *set);
 
 //                     handle files
-extern void			close_fds(t_minishell *set);
+extern t_status		close_fds(t_minishell *set);
 extern t_status		open_fds(t_minishell *set, char *redirect, char *name);
 extern t_status		get_infile(t_minishell *set, t_command *cmd);
-extern t_status		get_outfile(t_minishell *set, t_command *cmd);
 extern void			fd_reset(t_minishell *set);
 
 //                     redirects
 extern void			shell_redirect(t_minishell *set, t_command *cmd);
-extern void			heredoc(t_minishell *set, t_command *cmd, char *eof);
+extern void			heredoc(t_minishell *set, char *eof);
 extern int			count_redirects(t_command *cmd, char *redirect);
 extern t_status		has_redirect(t_command *cmd);
 extern t_status		valid_redirect(t_command *cmd);
 extern t_status		heredoc_is_last(t_command *cmd);
+extern t_status		open_redirects(t_minishell *set, t_command *cmd);
 
 //                      builtins
 extern void			echo(t_minishell *set, t_command *cmd, int fd);

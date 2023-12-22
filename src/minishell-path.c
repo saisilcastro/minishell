@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:16:51 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/18 20:21:39 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 16:38:21 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,13 @@ void	shell_path(t_minishell *set)
 			*(buffer + ++i) = *path;
 			path++;
 		}
+		*(buffer + ++i) = '\0';
+		command_next_last(&set->path, command_push(buffer, Off));
 	}
+}
+
+void	shell_path_update(t_minishell *set, char *path)
+{
+	command_pop(&set->path);
+	command_next_last(&set->path, command_push(path, Off));
 }

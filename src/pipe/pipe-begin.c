@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe-begin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 13:15:07 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/20 17:42:06 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:54:37 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,14 @@ t_status	pipe_begin(t_minishell *set)
 	if (pipe_redirect_builtin_exec(set, fd))
 		return (On);
 	search_path(set->path, set->pipe, path);
-	if (access(path, F_OK) && access(set->pipe->name, F_OK))
+	if (access(path, F_OK) && (access(set->pipe->name, F_OK)
+			|| access(set->pipe->name, X_OK)))
 	{
 		close(fd[1]);
 		set->fd_in_p = fd[0];
 		return (set->status = 127, Off);
 	}
+	signal(SIGINT, shell_execute_ctrl_c);
 	pid_next_last(&set->pid, pid_push(fork()));
 	if (pid_last(set->pid)->id == 0)
 		pipe_execute(set, path, fd);

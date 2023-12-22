@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 17:09:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 19:50:58 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/21 10:28:23 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	exit_fn(t_minishell *set, t_command *cmd, int fd)
 	int		max;
 	long	status;
 
+	(void)set;
+	(void)fd;
 	status = 0;
 	max = command_size(cmd);
 	if (max > 2)
