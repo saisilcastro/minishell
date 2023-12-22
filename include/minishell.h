@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/22 13:03:29 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:56:16 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ extern int			upd_index(char *command, char c);
 extern int			count_args(t_command *cmd);
 extern void			error(char *error, char *str, int fd);
 extern void			node_delete(t_command **cmd, char *name);
+extern void			print_buffer(int fd);
 
 //						pipe functions
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/18 19:42:42 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:59:06 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,3 +85,14 @@ t_status	has_redirect(t_command *cmd)
 		return (On);
 	return (Off);
 }
+
+void	print_buffer(int fd)
+{
+	char	buffer[1];
+
+	if (fd < 0)
+		return ;
+	while (read(fd, buffer, 1) && buffer[0])
+		write(2, &buffer[0], 1);
+}
+

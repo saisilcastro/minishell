@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:12:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/22 11:16:03 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/22 17:41:37 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ static int	pipe_counter(t_command *cmd)
 {
 	int			count;
 	t_command	*upd;
-	t_status	cat;
 
-	cat = Off;
 	count = 0;
 	upd = cmd;
 	while (upd)

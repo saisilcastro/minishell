@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/22 16:00:02 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/22 17:54:41 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static t_status	valid_name_unset(char *name, char *value, t_minishell *set)
+static t_status	valid_name_unset(char *name, t_minishell *set)
 {
 	int	index;
 
@@ -34,7 +34,7 @@ static t_status	valid_name_unset(char *name, char *value, t_minishell *set)
 		}
 	}
 	if (!ms_strncmp(name, "PATH", 4))
-		shell_path_update(set, value);
+		command_pop(&set->path);
 	return (On);
 }
 
@@ -52,7 +52,7 @@ void	unset(t_minishell *set, t_command *cmd, int fd)
 		var = set->var;
 		while (var)
 		{
-			if (!valid_name_unset(curr_cmd->name, "", set))
+			if (!valid_name_unset(curr_cmd->name, set))
 				break ;
 			if (!ms_strcmp(var->name, curr_cmd->name))
 			{

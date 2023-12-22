@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell-execution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 12:54:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/21 15:46:06 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:46:41 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	shell_run(t_minishell *set)
 		if (check_permission(set, path) && !shell_exec(set, path, arg, &fd[1]))
 		{	
 			error(" : command not found", set->cmd->name, 2);
-			set->status = 127;
+			exit(127);
 		}
 	}
 	else
@@ -87,7 +87,7 @@ void	shell_run(t_minishell *set)
 					F_OK) || !shell_exec(set, set->cmd->name, arg, &fd[1])))
 		{
 			error(": command not found", set->cmd->name, 2);
-			set->status = 127;
+			exit(127);
 		}
 	}
 	free_arr(arg);

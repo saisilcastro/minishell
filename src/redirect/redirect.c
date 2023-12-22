@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:10 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/22 11:09:55 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:05:37 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	redirect_execute(t_minishell *set, t_command *list, t_command *cmd)
 {
 	char		path[4096];
 
-	if (set->fd_in < 0 && set->fd_in_p < 0 && set->fd_out_p < 0)
+	if (set->fd_in < 0 && set->fd_in_p < 0 && set->fd_out < 0 && set->fd_out_p < 0)
 		return ;
 	if (shell_index(set, &cmd, Off) >= 4)
 		builtin_execute(set, list, shell_index(set, &cmd, Off), cmd->name);

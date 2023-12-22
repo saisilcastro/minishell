@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export-variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/21 16:31:06 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:20:40 by mister-code      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,10 @@ void	export_variable(t_minishell *set, t_command *cmd)
 			}
 		}
 		upd = upd->next;
+	}
+	if (var_search(set->var, "PATH"))
+	{
+		command_pop(&set->path);
+		shell_path(set);
 	}
 }
