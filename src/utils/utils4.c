@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 10:27:20 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/13 16:08:35 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 12:56:24 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,51 @@ void	free_arr(char **arg)
 {
 	int	index;
 
+	if (!arg || !*arg)
+		return ;
 	index = -1;
 	while (arg[++index])
 		free(arg[index]);
 	free(arg);
+}
+
+static t_status	valid_first_char(t_minishell *set, char *name)
+{
+	if (ms_isalpha(name[0]) == Off && name[0] != '_')
+	{
+		if (name[0] == '-')
+		{
+			error(": invalid option", name, 2);
+			set->status = 2;
+		}
+		else
+		{
+			error(": not a valid identifier", name, 2);
+			set->status = 1;
+		}
+		return (Off);
+	}
+	return (On);
+}
+
+t_status	valid_name(char *name, char *value, t_minishell *set)
+{
+	int	index;
+
+	index = 0;
+	if (!valid_first_char(set, name))
+		return (Off);
+	while (name && name[++index])
+	{
+		if (ms_isdigit(name[index]) == Off && ms_isalpha(name[index]) == Off
+			&& name[index] != '_')
+		{
+			error(": not a valid identifier", name, 2);
+			set->status = 1;
+			return (Off);
+		}
+	}
+	if (!ms_strncmp(name, "PATH", 4))
+		shell_path_update(set, value);
+	return (On);
 }

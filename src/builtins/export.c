@@ -6,7 +6,7 @@
 /*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/13 11:02:57 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/18 11:45:13 by lumedeir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static t_variable	*variable_clone(t_variable *variable)
 	update = variable;
 	while (update)
 	{
-		var_next_last(&set, variable_push(update->name, update->value, update->env));
+		var_next_last(&set, variable_push(update->name,
+				update->value, update->env));
 		update = update->next;
 	}
 	return (set);

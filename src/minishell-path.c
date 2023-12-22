@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell-path.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:16:51 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/12 15:17:29 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:59:39 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	shell_path(t_minishell *set)
 			if (*path == ':')
 			{
 				*(buffer + ++i) = '\0';
-				command_next_last(&set->path, command_push(buffer));
+				command_next_last(&set->path, command_push(buffer, Off));
 				path++;
 				i = -1;
 			}
@@ -37,4 +37,10 @@ void	shell_path(t_minishell *set)
 			path++;
 		}
 	}
+}
+
+void	shell_path_update(t_minishell *set, char *path)
+{
+	command_pop(&set->path);
+	command_next_last(&set->path, command_push(path, Off));
 }

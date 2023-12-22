@@ -3,24 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/12 15:55:38 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 16:00:02 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static t_status	check_name(t_minishell *set, t_command *curr_cmd)
+static t_status	valid_name_unset(char *name, char *value, t_minishell *set)
 {
-	if (curr_cmd->name[0] && !ms_isalpha(curr_cmd->name[0])
-		&& curr_cmd->name[0] != '_')
+	int	index;
+
+	index = 0;
+	if (ms_isalpha(name[0]) == Off && name[0] != '_')
 	{
+		error(": not a valid identifier", name, 2);
 		set->status = 1;
-		error(" not a valid identifier", curr_cmd->name);
 		return (Off);
 	}
+	while (name && name[++index])
+	{
+		if (ms_isdigit(name[index]) == Off && ms_isalpha(name[index]) == Off
+			&& name[index] != '_')
+		{
+			error(": not a valid identifier", name, 2);
+			set->status = 1;
+			return (Off);
+		}
+	}
+	if (!ms_strncmp(name, "PATH", 4))
+		shell_path_update(set, value);
 	return (On);
 }
 
@@ -38,7 +52,7 @@ void	unset(t_minishell *set, t_command *cmd, int fd)
 		var = set->var;
 		while (var)
 		{
-			if (!check_name(set, curr_cmd))
+			if (!valid_name_unset(curr_cmd->name, "", set))
 				break ;
 			if (!ms_strcmp(var->name, curr_cmd->name))
 			{

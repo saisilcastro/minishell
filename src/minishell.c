@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/14 15:11:35 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:15:10 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,50 +20,70 @@ void	shell_set(t_minishell *set)
 	set->var = NULL;
 	set->path = NULL;
 	set->pipe = NULL;
-	set->status = 0;
 	set->name = NULL;
+	set->pid = NULL;
 	set->flag = Off;
+	set->hdoc = NULL;
 	set->run = On;
+	set->run_hdoc = On;
+	set->last_pipe = Off;
+	set->status = 0;
 	set->fd_in = -3;
 	set->fd_out = -3;
-	signal(SIGINT, shell_ctrl_c);
-	signal(SIGQUIT, shell_ctrl_backslash);
+	set->fd_in_p = -3;
+	set->fd_out_p = -3;
+	signal(SIGQUIT, SIG_IGN);
 	environment_push(set);
-	variable_next_first(&set->var, variable_push("test", "Olá", Off));
-	variable_next_first(&set->var, variable_push("test2", "Mundo!!", Off));
+	if (var_search(set->var, "HOME"))
+		set->home = ms_strdup(var_search(set->var, "HOME")->value);
 	shell_path(set);
 	shell_function(set);
 }
 
-static int	shell_special_index(t_minishell *set)
+static int	shell_special_redirect(t_minishell *set, t_command *cmd)
 {
-	static char	*redirect[] = {"<<", ">>", "<", ">", "|", NULL};
-	int			i;
 	t_command	*curr;
+	static char	*redirect[] = {"<<", ">>", "<", ">", NULL};
+	int			i;
 
-	curr = set->cmd;
+	(void)set;
+	curr = cmd;
 	while (curr)
 	{
 		i = -1;
 		while (redirect[++i])
 		{
-			if (!ms_strncmp(curr->name, redirect[i], ms_strlen(redirect[i])))
+			if (!ms_strncmp(curr->name, redirect[i],
+					ms_strlen(redirect[i])) && !curr->flag_quotes)
 			{
-				if (!curr->next)
-				{
-					printf("syntax error near unexpected token `newline'\n");
-					set->status = 2;
-					return (-2);
-				}
-				if (curr->flag_quotes == Off && i < 4)
+				if (curr->flag_quotes == Off)
 					return (0);
-				else if (curr->flag_quotes == Off && i == 4)
-					return (1);
 			}
 		}
 		curr = curr->next;
 	}
 	return (-1);
+}
+
+static int	shell_special_index(t_minishell *set, t_command *cmd)
+{
+	t_command	*curr;
+
+	curr = cmd;
+	while (curr)
+	{
+		if (!ms_strncmp(curr->name, "|", 1) && !curr->flag_quotes)
+		{
+			if (!curr->next)
+				return (printf
+					("syntax error near unexpected token `newline'\n"),
+					set->status = 2, -2);
+			if (curr->flag_quotes == Off)
+				return (1);
+		}
+		curr = curr->next;
+	}
+	return (shell_special_redirect(set, cmd));
 }
 
 int	shell_index(t_minishell *set, t_command **cmd, t_status priority)
@@ -74,7 +94,7 @@ int	shell_index(t_minishell *set, t_command **cmd, t_status priority)
 		command_pop_first(cmd);
 	i = 0;
 	if (*cmd)
-		i = shell_special_index(set);
+		i = shell_special_index(set, *cmd);
 	if (*cmd && (i == -1 || priority == Off))
 	{
 		if (!ms_strncmp((*cmd)->name, "echo", 4))
@@ -104,5 +124,8 @@ void	shell_pop(t_minishell *set)
 		command_pop(&set->cmd);
 	if (set->pipe)
 		command_pop(&set->pipe);
+	if (set->pid)
+		pid_pop(&set->pid);
+	free(set->home);
 	rl_clear_history();
 }

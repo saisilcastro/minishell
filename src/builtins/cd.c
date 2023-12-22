@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 14:06:43 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/12 15:17:29 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:06:20 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,19 @@ static void	update_oldpwd(t_variable **var, char *oldpwd)
 
 void	cd(t_minishell *set, t_command *cmd, int fd)
 {
-	char	*temp;
+	char		*temp;
 
-	if (cmd->next->next)
+	(void)fd;
+	if (cmd->next && cmd->next->next)
 	{
 		ms_putstr_fd("cd: too many arguments\n", 2);
 		set->status = 1;
 		return ;
 	}
 	temp = ms_strdup(getcwd(NULL, 0));
-	if (chdir(cmd->next->name) != 0)
+	if (!cmd->next)
+		chdir(set->home);
+	else if (chdir(cmd->next->name) != 0)
 	{
 		ms_putstr_fd("cd: No such file or directory\n", 2);
 		set->status = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:45 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/08 10:57:54 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/21 10:20:50 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,30 +92,50 @@ static void	heredoc_expansion(t_minishell *set, char **line)
 	}
 }
 
-void	heredoc(t_minishell *set, t_command *cmd, char *eof)
+static t_status	verify(char **line, char *eof)
 {
-	char	*line;
-	int		fd[2];
+	if (*line == NULL && shell_get()->status != 130)
+	{
+		ms_putstr_fd("minishell: warning: here-document at line 22 delimited "
+			"by end-of-file (wanted `eof')\n", 2);
+		return (Off);
+	}
+	if (*line && !ms_strncmp(*line, eof, ms_strlen(eof)))
+	{
+		free(*line);
+		return (Off);
+	}
+	if (!*line && shell_get()->status == 130)
+		write(2, "\n", 1);
+	if (*line && !**line)
+		write(2, "\n", 1);
+	return (On);
+}
 
-	line = NULL;
+void	heredoc(t_minishell *set, char *eof)
+{
+	int		fd[2];
+	int		fdin;
+
 	if (pipe(fd) == -1)
 		return ;
-	while (1)
-	{	
-		line = readline("> ");
-		if (line && !ms_strncmp(line, eof, ms_strlen(eof)))
-		{
-			free(line);
+	signal(SIGINT, heredoc_ctrl_c);
+	fdin = dup(STDIN_FILENO);
+	while (set->run_hdoc)
+	{
+		ms_putstr_fd("> ", 1);
+		set->hdoc = readline("");
+		if (!verify(&set->hdoc, eof) || !set->run_hdoc)
 			break ;
-		}
-		add_history(line);
-		if (line && ms_strchr(line, '$'))
-			heredoc_expansion(set, &line);
-		ms_putstr_fd(line, fd[1]);
+		add_history(set->hdoc);
+		if (set->hdoc && ms_strchr(set->hdoc, '$'))
+			heredoc_expansion(set, &set->hdoc);
+		ms_putstr_fd(set->hdoc, fd[1]);
 		ms_putstr_fd("\n", fd[1]);
-		if (line && *line)
-			free(line);
+		if (set->hdoc || !*set->hdoc)
+			free(set->hdoc);
 	}
+	dup2(fdin, STDIN_FILENO);
 	close(fd[1]);
 	set->fd_in = fd[0];
 }

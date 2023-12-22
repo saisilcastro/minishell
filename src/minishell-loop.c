@@ -6,16 +6,22 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/14 17:59:37 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:24:32 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+t_minishell	*shell_get(void)
+{
+	static t_minishell	shell;
+
+	return (&shell);
+}
+
 static void	shell(t_minishell *set)
 {
 	int		i;
-	int		j;
 
 	if (!set)
 		return ;
@@ -26,8 +32,23 @@ static void	shell(t_minishell *set)
 		set->special[i](set, set->cmd);
 	else if (i >= 4)
 		set->builtin[i - 4](set, set->cmd, 1);
-	else
+	else if (i == -1)
 		shell_run(set);
+}
+
+static t_status	verify(char **command)
+{
+	if (*command == NULL)
+	{
+		write(1, "\n", 1);
+		*command = "exit";
+	}
+	else if (!*command)
+	{
+		free (*command);
+		return (Off);
+	}
+	return (On);
 }
 
 void	shell_loop(t_minishell *set)
@@ -36,14 +57,13 @@ void	shell_loop(t_minishell *set)
 
 	while (set->run)
 	{
+		signal(SIGINT, shell_ctrl_c);
+		fd_reset(set);
 		command = readline(PURPLE">minishell: " WHITE);
-		if (!*command)
-		{
-			free (command);
+		if (!verify(&command))
 			continue ;
-		}
 		add_history(command);
-		if (!command_parser(set, command))
+		if (command_parser(set, command) == Off)
 		{
 			free (command);
 			continue ;

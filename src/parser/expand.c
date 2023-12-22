@@ -3,19 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 14:48:22 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/14 12:47:37 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 12:48:11 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+static void	upd_line(t_command *list, int *index)
+{
+	int		i;
+	int		j;
+	char	copy[65535];
+
+	i = 0;
+	while (list->name && list->name[i] && i < *index)
+	{
+		copy[i] = list->name[i];
+		i++;
+	}
+	j = i + 1;
+	while (list->name && list->name[i])
+	{
+		copy[i] = list->name[j];
+		j++;
+		i++;
+	}
+	*index += 1;
+	copy[i] = '\0';
+	free (list->name);
+	list->name = ms_strdup(copy);
+}
+
 static void	do_expansion(t_command *list, int *index,
 	t_variable *var, t_minishell *set)
 {
-	*index += 1;
+	if (list->name[*index] == '$' && list->name[*index + 2]
+		&& (list->name[*index + 1] == '"'
+			|| list->name[*index + 1] == '\''))
+		upd_line(list, index);
+	else
+		*index += 1;
 	while (list->name[*index] && list->name[*index] != '"')
 	{
 		if (list->name[*index] == '$' && (list->name[*index + 1] == 0x5F
@@ -30,31 +60,32 @@ static void	do_expansion(t_command *list, int *index,
 	}
 }
 
-static void	find_signal(t_command *list, t_variable *var, t_command **cmd,
+static void	find_signal(t_command *lst, t_variable *var,
 	t_minishell *set)
 {
 	int	i;
 
 	i = 0;
-	while (list->name && list->name[i])
+	while (lst->name && lst->name[i])
 	{
-		if (list->name[i] == '\'' && list->name[i + 1])
-			i += (upd_index(list->name + (i + 1), '\'') + 2);
-		else if (list->name[i] == '\"' && list->name[i + 1])
-			do_expansion(list, &i, var, set);
-		if (list->name[i] && list->name[i + 1] && list->name[i] == '$'
-			&& (ms_isalpha(list->name[i + 1])
-				|| list->name[i + 1] == '_' || list->name[i + 1] == '?'))
+		if (lst->name[i] == '\'' && lst->name[i + 1])
+			i += (upd_index(lst->name + (i + 1), '\'') + 2);
+		else if ((lst->name[i] == '\"' && lst->name[i + 1])
+			|| (lst->name[i] == '$' && (lst->name[i + 1] == '"'
+					|| lst->name[i + 1] == '\'')))
+			do_expansion(lst, &i, var, set);
+		if (lst->name[i] && lst->name[i + 1] && lst->name[i] == '$'
+			&& (ms_isalpha(lst->name[i + 1])
+				|| lst->name[i + 1] == '_' || lst->name[i + 1] == '?'))
 		{
-			find_variable(list, var, (i + 1), set);
+			find_variable(lst, var, (i + 1), set);
 			i = 0;
 			continue ;
 		}
-		if ((list->name[i] == '"' || list->name[i] == '\'')
-			&& !list->name[i + 1])
+		if ((lst->name[i] == '"' || lst->name[i] == '\'')
+			&& !lst->name[i + 1])
 			i++;
-		else if (list->name[i] && list->name[i]
-			!= '\'' && list->name[i] != '"')
+		else if (lst->name[i] && lst->name[i] != '\'' && lst->name[i] != '"')
 			i++;
 	}
 }
@@ -69,11 +100,11 @@ void	expansion(t_command **list, t_variable *var, t_minishell *set)
 	while (current)
 	{
 		if (current->name && ms_strchr(current->name, '$'))
-			find_signal(current, var, list, set);
+			find_signal(current, var, set);
 		if (ms_strchr(current->name, '\'') || ms_strchr(current->name, '"'))
 		{
 			current->flag_quotes = On;
-			remove_quotes(current, set);
+			remove_quotes(current);
 		}
 		current = current->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect-utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 11:17:24 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/12 15:33:35 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:13:47 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static void	create_new_list(t_command *original,
 		redirect_argument_get(original, &arg);
 	}
 	if (!arg)
-		command_next_last(new, command_push(command));
+		command_next_last(new, command_push(command, Off));
 	else
 		while (arg[++i])
-			command_next_last(new, command_push(arg[i]));
+			command_next_last(new, command_push(arg[i], Off));
 	if (arg)
 		free_arr(arg);
 }
@@ -45,8 +45,8 @@ void	builtin_execute(t_minishell *set, t_command *cmd,
 	create_new_list(cmd, &args, name_cmd);
 	if (set->fd_out >= 0)
 		set->builtin[builtin - 4](set, args, set->fd_out);
-	else
-		set->builtin[builtin - 4](set, args, 1);
+	else if (set->fd_out_p >= 0 && set->last_pipe == Off)
+		set->builtin[builtin - 4](set, args, set->fd_out_p);
 	command_pop(&args);
 }
 
@@ -74,12 +74,14 @@ t_status	valid_redirect(t_command *cmd)
 	while (curr)
 	{
 		if (!ms_strncmp(curr->name, "<<", 2) || !ms_strncmp(curr->name, ">>", 2)
-			|| !ms_strncmp(curr->name, "<", 1)
+			|| !ms_strncmp(curr->name, ">", 1)
 			|| !ms_strncmp(curr->name, "<", 1))
 		{
-			if (!curr->next || has_special(curr->next->name[0]))
+			if (!curr->next || (has_special(curr->next->name[0])
+					&& curr->next->flag_quotes))
 			{
-				error("syntax error near unexpected", NULL);
+				error("syntax error near unexpected token `newline'",
+					NULL, 2);
 				return (Off);
 			}
 		}
