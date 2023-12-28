@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:24:00 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/22 15:45:33 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:43:39 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ t_command	*command_push(char *name, t_status flag)
 {
 	t_command	*set;
 
+	if (!name || !*name)
+		return (NULL);
 	set = (t_command *)malloc(sizeof(t_command));
-	if (!set || !name)
+	if (!set)
 		return (NULL);
 	set->name = ms_strdup(name);
 	set->flag_quotes = flag;

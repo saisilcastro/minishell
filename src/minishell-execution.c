@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell-execution.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 12:54:37 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/22 18:46:41 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/12/28 15:46:22 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ static t_status	shell_exec(t_minishell *set, char *path, char **arg, int *fd)
 
 t_status	check_permission(t_minishell *set, char *path)
 {
+	if (access(path, F_OK))
+	{
+		error (" : command not found", path, 2);
+		set->status = 127;
+		return (Off);
+	}
 	if (!access(path, F_OK) && access(path, X_OK) != 0)
 	{
 		error (" : permission denied", path, 2);
@@ -71,6 +77,7 @@ void	shell_run(t_minishell *set)
 	char	**arg;
 	char	path[4096];
 
+	ms_memset(path, '\0', 4096);
 	argument_get(set->cmd, &arg);
 	pipe(fd);
 	if (search_path(set->path, set->cmd, path))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/22 18:21:23 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/12/28 16:38:02 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	print_sorted_command(t_minishell *set, t_variable *variable, int fd)
 		}
 		upd = upd->next;
 	}
-	variable_pop(sorted);
+	variable_pop(&sorted);
 	set->status = 0;
 }
 

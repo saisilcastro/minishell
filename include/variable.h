@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 10:59:55 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/13 11:02:01 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:37:39 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ extern void			variable_next_first(t_variable **list, t_variable *set);
 extern void			var_next_last(t_variable **list, t_variable *set);
 extern t_variable	*var_search(t_variable *list, char *name);
 extern void			variable_delete(t_variable **list, char *name);
-extern void			variable_pop(t_variable *list);
+extern void			variable_pop(t_variable **list);
 
 #endif

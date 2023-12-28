@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:16:51 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/22 15:59:39 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:46:20 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	shell_path(t_minishell *set)
 	char		buffer[65535];
 	int			i;
 
+	ms_memset(buffer, '\0', 65535);
 	var = var_search(set->var, "PATH");
 	if (var)
 	{
@@ -37,6 +38,7 @@ void	shell_path(t_minishell *set)
 			path++;
 		}
 	}
+	command_next_last(&set->path, command_push(buffer, Off));
 }
 
 void	shell_path_update(t_minishell *set, char *path)

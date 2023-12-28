@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:37:44 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/22 15:59:37 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:15:35 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_status	search_path(t_command *env, t_command *app, char *path)
 	int			j;
 
 	upd = env;
-	i = -1;
+	i = 0;
 	while (upd)
 	{
 		i = -1;

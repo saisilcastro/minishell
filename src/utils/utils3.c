@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 12:03:18 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/22 18:59:06 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/12/28 15:33:22 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,13 @@ t_status	has_redirect(t_command *cmd)
 	return (Off);
 }
 
-void	print_buffer(int fd)
+void	ms_memset(void *mem, char c, int size)
 {
-	char	buffer[1];
+	unsigned char	*buffer;
+	int				i;
 
-	if (fd < 0)
-		return ;
-	while (read(fd, buffer, 1) && buffer[0])
-		write(2, &buffer[0], 1);
+	buffer = (unsigned char *)mem;
+	i = -1;
+	while (++i < size)
+		*(buffer + i) = c;
 }
-

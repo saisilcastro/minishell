@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/22 18:56:16 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/12/28 15:33:39 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ extern t_status		search_path(t_command *env, t_command *app, char *path);
 extern t_command	*has_command(t_command *cmd);
 
 //                     utils
+extern void			ms_memset(void *mem, char c, int size);
 extern void			free_arr(char **arg);
 extern char			*get_name(char *line);
 extern void			error_and_clear(t_minishell *set, char *error);

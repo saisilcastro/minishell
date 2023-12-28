@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:25:22 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/22 11:15:10 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:37:49 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	shell_pop(t_minishell *set)
 {
 	if (!set)
 		return ;
-	variable_pop(set->var);
+	variable_pop(&set->var);
 	if (set->cmd)
 		command_pop(&set->cmd);
 	if (set->pipe)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumedeir < lumedeir@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/13 10:57:56 by lumedeir         ###   ########.fr       */
+/*   Updated: 2023/12/28 16:39:09 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,19 @@ t_variable	*var_search(t_variable *list, char *name)
 	return (NULL);
 }
 
-void	variable_pop(t_variable *head)
+void	variable_pop(t_variable **head)
 {
 	t_variable	*next;
 
-	while (head)
+	while (*head)
 	{
-		next = head->next;
-		if (head->name)
-			free(head->name);
-		if (head->value)
-			free(head->value);
-		free(head);
-		head = next;
+		next = (*head)->next;
+		if ((*head)->name)
+			free((*head)->name);
+		if ((*head)->value)
+			free((*head)->value);
+		free(*head);
+		*head = next;
 	}
+	*head = NULL;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell-loop.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:36:51 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/22 18:56:53 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/12/28 15:59:47 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ static void	shell(t_minishell *set)
 	if (!set)
 		return ;
 	i = shell_index(set, &set->cmd, On);
+	if (!set->cmd)
+	{
+		set->status = 0;
+		return ;
+	}
 	if (i == -1 && !set->cmd)
 		return ;
 	if (i >= 0 && i <= 1)

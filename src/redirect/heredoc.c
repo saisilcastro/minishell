@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 22:05:45 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/21 10:20:50 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/28 15:57:02 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,10 @@ static t_status	verify(char **line, char *eof)
 		return (Off);
 	}
 	if (!*line && shell_get()->status == 130)
+	{
 		write(2, "\n", 1);
+		return (Off);
+	}
 	if (*line && !**line)
 		write(2, "\n", 1);
 	return (On);
@@ -119,10 +122,11 @@ void	heredoc(t_minishell *set, char *eof)
 
 	if (pipe(fd) == -1)
 		return ;
-	signal(SIGINT, heredoc_ctrl_c);
+	set = shell_get();
 	fdin = dup(STDIN_FILENO);
 	while (set->run_hdoc)
 	{
+		signal(SIGINT, heredoc_ctrl_c);
 		ms_putstr_fd("> ", 1);
 		set->hdoc = readline("");
 		if (!verify(&set->hdoc, eof) || !set->run_hdoc)

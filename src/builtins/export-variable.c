@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export-variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/22 18:20:40 by mister-code      ###   ########.fr       */
+/*   Updated: 2023/12/28 16:49:17 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static char	*name_get(t_minishell *set, char *command, char *name)
+static inline char	*name_get(t_minishell *set, char *command, char *name)
 {
 	int	i;
 
@@ -32,7 +32,7 @@ static char	*name_get(t_minishell *set, char *command, char *name)
 	return (command);
 }
 
-static char	*value_get(char *command, char *value)
+static inline char	*value_get(char *command, char *value)
 {
 	int	i;
 
@@ -43,7 +43,7 @@ static char	*value_get(char *command, char *value)
 	return (command);
 }
 
-static void	new_value(t_variable **var, char *name, char *value)
+static inline void	new_value(t_variable **var, char *name, char *value)
 {
 	t_variable	*curr;
 	t_variable	*temp;
@@ -72,18 +72,26 @@ static void	new_value(t_variable **var, char *name, char *value)
 		temp->value = ms_strdup(value);
 }
 
+static inline void	path_update(t_minishell *set, char *name)
+{
+	if (!ms_strncmp(name, "PATH", 4) && var_search(set->var, "PATH"))
+	{
+		command_pop(&set->path);
+		shell_path(set);
+	}
+}
+
 void	export_variable(t_minishell *set, t_command *cmd)
 {
 	t_command	*upd;
-	char		name[64];
+	char		name[16000];
 	char		value[65535];
 	char		*update;
 
 	upd = cmd->next;
 	while (upd)
 	{
-		update = upd->name;
-		update = name_get(set, update, name);
+		update = name_get(set, upd->name, name);
 		update = value_get(update, value);
 		if (name[0] && var_search(set->var, name) && ms_strchr(upd->name, '='))
 			new_value(&set->var, name, value);
@@ -97,11 +105,7 @@ void	export_variable(t_minishell *set, t_command *cmd)
 					var_next_last(&set->var, variable_push(name, value, Off));
 			}
 		}
+		path_update(set, name);
 		upd = upd->next;
-	}
-	if (var_search(set->var, "PATH"))
-	{
-		command_pop(&set->path);
-		shell_path(set);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 13:15:28 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/21 15:55:55 by lde-cast         ###   ########.fr       */
+/*   Updated: 2023/12/28 20:04:56 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,9 @@ static void	pipe_execute(t_minishell *set, char *path)
 static t_status	pipe_redirect_builtin_exec(t_minishell *set)
 {
 	int	i;
-	int	j;
 
 	i = shell_index(set, &set->pipe, On);
-	j = shell_index(set, &set->pipe, Off);
-	if (i == 0 || j >= 4)
+	if (i == 0 || shell_index(set, &set->pipe, Off) >= 4)
 	{
 		if (i == 0)
 		{
@@ -55,7 +53,10 @@ static t_status	pipe_redirect_builtin_exec(t_minishell *set)
 			shell_redirect(set, set->pipe);
 		}
 		else
+		{
+			close(set->fd_in_p);
 			set->builtin[i - 4](set, set->pipe, 1);
+		}
 		return (On);
 	}
 	return (Off);
