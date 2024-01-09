@@ -16,7 +16,8 @@
 # include <minishell.h>
 
 typedef enum e_status	t_status;
-enum e_status{
+enum e_status
+{
 	Off,
 	On
 };

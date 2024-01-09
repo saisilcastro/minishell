@@ -28,7 +28,7 @@ int	count_args(t_command *cmd)
 			{
 				count++;
 				curr = curr->next;
-			}	
+			}
 		}
 		else if (curr)
 		{

@@ -83,7 +83,7 @@ void	shell_run(t_minishell *set)
 	if (search_path(set->path, set->cmd, path))
 	{
 		if (check_permission(set, path) && !shell_exec(set, path, arg, &fd[1]))
-		{	
+		{
 			error(" : command not found", set->cmd->name, 2);
 			exit(127);
 		}

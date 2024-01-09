@@ -20,8 +20,8 @@ void	env(t_minishell *set, t_command *cmd, int fd)
 	var = set->var;
 	while (var)
 	{
-		if (var->remove == Off && ms_strlen(var->value))
-		{	
+		if (var->remove == Off && var->equals == On)
+		{
 			ms_putstr_fd(var->name, fd);
 			ms_putstr_fd("=", fd);
 			ms_putstr_fd(var->value, fd);

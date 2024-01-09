@@ -14,23 +14,28 @@
 
 void	skip_newline(t_command **cmd, t_status *newline)
 {
-	int	size;
-	int	i;
+	t_command	*upd;
+	int			i;
 
-	if (*cmd && !ms_strncmp((*cmd)->name, "-n", 2))
+	if (*cmd)
 	{
-		while (*cmd)
+		upd = *cmd;
+		while (upd)
 		{
-			size = ms_strlen((*cmd)->name);
-			i = 1;
-			while (i < size)
-			{
-				if ((*cmd)->name[i] != 'n')
-					return ;
+			i = 0;
+			while (upd->name[i] && has_space(upd->name[i]))
 				i++;
+			if (upd->name[i++] == '-')
+			{
+				while (upd->name[i] && upd->name[i] == 'n')
+					i++;
+				if (!upd->name[i])
+				{
+					*newline = Off;
+					*cmd = upd->next;
+				}
 			}
-			*newline = Off;
-			*cmd = (*cmd)->next;
+			upd = upd->next;
 		}
 	}
 }
@@ -46,7 +51,7 @@ void	echo_execute(t_minishell *set, t_command *cmd, int fd)
 	upd = cmd->next;
 	skip_newline(&upd, &newline);
 	while (upd)
-	{	
+	{
 		ms_putstr_fd(upd->name, fd);
 		if (upd->name[0] != ' ' && upd->next)
 			ms_putstr_fd(" ", fd);

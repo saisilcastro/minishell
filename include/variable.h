@@ -26,7 +26,7 @@ struct s_variable
 };
 
 extern void			variable_set(t_variable *set);
-extern t_variable	*variable_push(char *n, char *v, t_status en, t_status e);
+extern t_variable	*variable_push(char *n, char *v, t_status rmv, t_status eq);
 extern void			variable_next_first(t_variable **list, t_variable *set);
 extern void			var_next_last(t_variable **list, t_variable *set);
 extern t_variable	*var_search(t_variable *list, char *name);

@@ -29,7 +29,8 @@
 # define PURPLE "\033[1;35m"
 
 typedef struct s_pid		t_pid;
-struct s_pid{
+struct s_pid
+{
 	int			id;
 	t_pid		*next;
 };
@@ -41,7 +42,8 @@ extern t_pid		*pid_last(t_pid *list);
 extern void			pid_pop(t_pid **list);
 
 typedef struct s_minishell	t_minishell;
-struct s_minishell{
+struct s_minishell
+{
 	t_variable	*var;
 	t_command	*cmd;
 	t_command	*path;
@@ -71,7 +73,6 @@ extern void			shell_function(t_minishell *set);
 extern int			shell_index(t_minishell *set, t_command **cmd, t_status p);
 extern void			shell_path(t_minishell *set);
 extern void			shell_path_update(t_minishell *set, char *path);
-extern void			shell_path_update_exists(t_minishell *set, char *name);
 extern void			shell_command(t_minishell *set);
 extern void			shell_parse(t_minishell *set, char *command);
 extern void			shell_loop(t_minishell *set);

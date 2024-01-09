@@ -54,7 +54,7 @@ static int	command_exec(t_minishell *set, t_command *cmd, char *path)
 	else
 		waitpid(pid, &set->status, 0);
 	if (WEXITSTATUS(set->status))
-			set->status = WEXITSTATUS(set->status);
+		set->status = WEXITSTATUS(set->status);
 	free_arr(arg);
 	return (0);
 }
@@ -77,7 +77,7 @@ static void	redirect_execute(t_minishell *set, t_command *list, t_command *cmd)
 			error(": command not found\n", cmd->name, 2);
 			set->status = 127;
 			return ;
-		}	
+		}
 		set->status = command_exec(set, list, cmd->name);
 		if (set->fd_out_p >= 0)
 			close(set->fd_out_p);

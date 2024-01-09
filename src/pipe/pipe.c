@@ -66,7 +66,7 @@ static void	pipe_argument(t_minishell *set, t_command **cmd)
 			command_push((*cmd)->name, (*cmd)->flag_quotes));
 		command_pop_first(cmd);
 		*cmd = next;
-	}	
+	}
 }
 
 static void	wait_for_pid(t_minishell *set)

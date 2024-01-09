@@ -37,7 +37,7 @@ static void	pipe_execute(t_minishell *set, char *path)
 			free_arr(arg);
 			return ;
 		}
-	}		
+	}
 }
 
 static t_status	pipe_redirect_builtin_exec(t_minishell *set)

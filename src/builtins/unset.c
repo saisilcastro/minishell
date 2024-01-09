@@ -38,7 +38,7 @@ static t_status	valid_name_unset(char *name, t_minishell *set)
 	return (On);
 }
 
-static void inline	remove_apply(t_variable **var)
+static inline void	remove_apply(t_variable **var)
 {
 	if ((*var)->value)
 		free((*var)->value);

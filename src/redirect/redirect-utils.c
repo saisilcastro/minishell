@@ -53,7 +53,7 @@ void	redirect_argument_get(t_command *cmd, char ***arg)
 		{
 			curr = curr->next->next;
 			while (curr && !has_redirect(curr))
-			{		
+			{
 				*(*arg + i++) = ms_strdup(curr->name);
 				curr = curr->next;
 			}

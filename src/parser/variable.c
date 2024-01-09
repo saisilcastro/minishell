@@ -19,7 +19,7 @@ void	variable_set(t_variable *set)
 	set->next = NULL;
 }
 
-t_variable	*variable_push(char *name, char *value, t_status env, t_status e)
+t_variable	*variable_push(char *name, char *value, t_status rmv, t_status eq)
 {
 	t_variable	*set;
 
@@ -27,8 +27,8 @@ t_variable	*variable_push(char *name, char *value, t_status env, t_status e)
 	variable_set(set);
 	set->name = ms_strdup(name);
 	set->value = ms_strdup(value);
-	set->remove = env;
-	set->equals = e;
+	set->remove = rmv;
+	set->equals = eq;
 	return (set);
 }
 

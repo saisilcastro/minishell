@@ -41,15 +41,6 @@ void	shell_path(t_minishell *set)
 	command_next_last(&set->path, command_push(buffer, Off));
 }
 
-void	shell_path_update_exists(t_minishell *set, char *name)
-{
-	if (!ms_strncmp(name, "PATH", 4) && var_search(set->var, "PATH"))
-	{
-		command_pop(&set->path);
-		shell_path(set);
-	}
-}
-
 void	shell_path_update(t_minishell *set, char *path)
 {
 	command_pop(&set->path);
