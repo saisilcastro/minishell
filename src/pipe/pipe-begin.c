@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 13:15:07 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/28 20:04:39 by lde-cast         ###   ########.fr       */
+/*   Updated: 2024/01/08 11:51:11 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static t_status	pipe_redirect_builtin_exec(t_minishell *set, int *fd)
 		else
 		{
 			close(set->fd_in_p);
+			if (i - 4 == 6)
+				return (On);
 			set->builtin[i - 4](set, set->pipe, fd[1]);
 		}
 		if (fd[1] >= 0)

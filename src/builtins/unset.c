@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mister-coder <mister-coder@student.42.f    +#+  +:+       +#+        */
+/*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:48:08 by lumedeir          #+#    #+#             */
-/*   Updated: 2023/12/22 17:54:41 by mister-code      ###   ########.fr       */
+/*   Updated: 2024/01/08 11:31:03 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ static t_status	valid_name_unset(char *name, t_minishell *set)
 	return (On);
 }
 
+static void inline	remove_apply(t_variable **var)
+{
+	if ((*var)->value)
+		free((*var)->value);
+	(*var)->value = (char *)malloc(sizeof(char));
+	*((*var)->value + 0) = '\0';
+	(*var)->remove = On;
+}
+
 void	unset(t_minishell *set, t_command *cmd, int fd)
 {
 	t_variable	*var;
@@ -56,10 +65,7 @@ void	unset(t_minishell *set, t_command *cmd, int fd)
 				break ;
 			if (!ms_strcmp(var->name, curr_cmd->name))
 			{
-				if (var->value)
-					free(var->value);
-				var->value = (char *)malloc(sizeof(char));
-				*(var->value + 0) = '\0';
+				remove_apply(&var);
 			}
 			var = var->next;
 		}

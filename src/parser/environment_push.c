@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 12:05:32 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/22 11:32:22 by lde-cast         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:30:14 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ void	environment_push(t_minishell *set)
 		command = *(__environ + i);
 		command = name_get(command, name);
 		command = value_get(command, value);
-		var_next_last(&set->var, variable_push(name, value, On));
+		var_next_last(&set->var, variable_push(name, value, Off, On));
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 10:59:55 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/28 16:37:39 by lde-cast         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:29:56 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ struct s_variable
 {
 	char		*name;
 	char		*value;
-	t_status	env;
+	t_status	remove;
+	t_status	equals;
 	t_variable	*next;
 };
 
 extern void			variable_set(t_variable *set);
-extern t_variable	*variable_push(char *name, char *value, t_status env);
+extern t_variable	*variable_push(char *n, char *v, t_status en, t_status e);
 extern void			variable_next_first(t_variable **list, t_variable *set);
 extern void			var_next_last(t_variable **list, t_variable *set);
 extern t_variable	*var_search(t_variable *list, char *name);

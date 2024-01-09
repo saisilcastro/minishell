@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 21:16:51 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/28 16:46:20 by lde-cast         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:00:10 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,15 @@ void	shell_path(t_minishell *set)
 		}
 	}
 	command_next_last(&set->path, command_push(buffer, Off));
+}
+
+void	shell_path_update_exists(t_minishell *set, char *name)
+{
+	if (!ms_strncmp(name, "PATH", 4) && var_search(set->var, "PATH"))
+	{
+		command_pop(&set->path);
+		shell_path(set);
+	}
 }
 
 void	shell_path_update(t_minishell *set, char *path)

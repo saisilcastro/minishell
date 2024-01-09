@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 13:50:20 by mister-code       #+#    #+#             */
-/*   Updated: 2023/12/28 16:49:17 by lde-cast         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:44:02 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ static inline void	new_value(t_variable **var, char *name, char *value)
 	temp = NULL;
 	while (curr)
 	{
-		if (!ms_name_cmp(name,
-				curr->name, ms_strlen(curr->name)))
+		if (!ms_name_cmp(name, curr->name, ms_strlen(curr->name)))
 		{
 			if (!temp)
 				temp = curr;
@@ -70,42 +69,41 @@ static inline void	new_value(t_variable **var, char *name, char *value)
 		temp->value = ms_strdup(value);
 	else
 		temp->value = ms_strdup(value);
+	temp->equals = On;
 }
 
-static inline void	path_update(t_minishell *set, char *name)
+static void inline	update_node(t_variable **var, char *name, char *value)
 {
-	if (!ms_strncmp(name, "PATH", 4) && var_search(set->var, "PATH"))
+	if (valid_name(name, val, set))
 	{
-		command_pop(&set->path);
-		shell_path(set);
+		if (!ms_strlen(val) && !ms_strchr(upd->name, '='))
+			var_next_last(var, variable_push(name, NULL, Off, Off));
+		else
+			var_next_last(&set->var, variable_push(name, val, Off, On));
 	}
 }
 
 void	export_variable(t_minishell *set, t_command *cmd)
 {
 	t_command	*upd;
+	t_variable	*var;
 	char		name[16000];
-	char		value[65535];
+	char		val[65535];
 	char		*update;
 
 	upd = cmd->next;
 	while (upd)
 	{
 		update = name_get(set, upd->name, name);
-		update = value_get(update, value);
-		if (name[0] && var_search(set->var, name) && ms_strchr(upd->name, '='))
-			new_value(&set->var, name, value);
-		else if (name[0] && !var_search(set->var, name))
+		update = value_get(update, val);
+		var = var_search(set->var, name);
+		if (name[0] && var && ms_strchr(upd->name, '=') && var->remove == Off)
+			new_value(&set->var, name, val);
+		else if (name[0] && (!var || var->remove == On))
 		{
-			if (valid_name(name, value, set))
-			{
-				if (!ms_strlen(value) && !ms_strchr(upd->name, '='))
-					var_next_last(&set->var, variable_push(name, NULL, Off));
-				else
-					var_next_last(&set->var, variable_push(name, value, Off));
-			}
+			
 		}
-		path_update(set, name);
+		shell_path_update_exists(set, name);
 		upd = upd->next;
 	}
 }

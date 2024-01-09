@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 18:24:46 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/28 15:33:39 by lde-cast         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:01:30 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ extern void			shell_function(t_minishell *set);
 extern int			shell_index(t_minishell *set, t_command **cmd, t_status p);
 extern void			shell_path(t_minishell *set);
 extern void			shell_path_update(t_minishell *set, char *path);
+extern void			shell_path_update_exists(t_minishell *set, char *name);
 extern void			shell_command(t_minishell *set);
 extern void			shell_parse(t_minishell *set, char *command);
 extern void			shell_loop(t_minishell *set);

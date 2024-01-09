@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 11:34:05 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/28 16:39:09 by lde-cast         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:29:38 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	variable_set(t_variable *set)
 	set->next = NULL;
 }
 
-t_variable	*variable_push(char *name, char *value, t_status env)
+t_variable	*variable_push(char *name, char *value, t_status env, t_status e)
 {
 	t_variable	*set;
 
@@ -27,7 +27,8 @@ t_variable	*variable_push(char *name, char *value, t_status env)
 	variable_set(set);
 	set->name = ms_strdup(name);
 	set->value = ms_strdup(value);
-	set->env = env;
+	set->remove = env;
+	set->equals = e;
 	return (set);
 }
 

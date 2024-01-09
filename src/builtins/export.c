@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2023/12/28 16:38:02 by lde-cast         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:30:40 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static t_variable	*variable_clone(t_variable *variable)
 	while (update)
 	{
 		var_next_last(&set, variable_push(update->name,
-				update->value, update->env));
+				update->value, update->remove, update->equals));
 		update = update->next;
 	}
 	return (set);
@@ -73,13 +73,16 @@ static void	print_sorted_command(t_minishell *set, t_variable *variable, int fd)
 	upd = sorted;
 	while (upd)
 	{
-		if (ms_strlen(upd->value))
+		if (upd->remove == Off)
 		{
 			ms_putstr_fd("declare -x ", fd);
 			ms_putstr_fd(upd->name, fd);
-			ms_putstr_fd("=\"", fd);
+			if (upd->equals == On)
+				ms_putstr_fd("=\"", fd);
 			ms_putstr_fd(upd->value, fd);
-			ms_putstr_fd("\"\n", fd);
+			if (upd->equals == On)
+				ms_putstr_fd("\"", fd);
+			ms_putstr_fd("\n", fd);
 		}
 		upd = upd->next;
 	}
