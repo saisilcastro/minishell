@@ -6,7 +6,7 @@
 /*   By: lde-cast <lde-cast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:54:25 by lde-cast          #+#    #+#             */
-/*   Updated: 2024/01/08 12:30:40 by lde-cast         ###   ########.fr       */
+/*   Updated: 2024/01/11 15:10:17 by lde-cast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,16 @@ void	variable_swap(t_variable **first, t_variable **second)
 		return ;
 	upd.name = (*first)->name;
 	upd.value = (*first)->value;
+	upd.equals = (*first)->equals;
+	upd.remove = (*first)->remove;
 	(*first)->name = (*second)->name;
 	(*first)->value = (*second)->value;
+	(*first)->equals = (*second)->equals;
+	(*first)->remove = (*second)->remove;
 	(*second)->name = upd.name;
 	(*second)->value = upd.value;
+	(*second)->equals = upd.equals;
+	(*second)->remove = upd.remove;
 }
 
 static t_variable	*bubble_sort(t_variable *variable)
